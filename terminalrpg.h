@@ -12,6 +12,8 @@
 #include <unistd.h>
 #endif
 
+enum {FALHA = -1, OK = 0};  
+
 typedef struct {
     int vida;
     int dano;
@@ -53,5 +55,16 @@ typedef struct {
     Status status;
     float qnt_xp;
 } Inimigo;
+
+// FUNCTIONS.C
+void delay(int tempo_ms);
+void limpar_buffer();
+void print_erro(char *texto);
+
+// ARQUIVO.C
+int criar_arquivo(const char* nome_arquivo);
+FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura);
+int ler_arquivo(const char* nome_arquivo, void **array, size_t tamanho_struct, bool bin);
+int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos, bool bin);
 
 #endif
