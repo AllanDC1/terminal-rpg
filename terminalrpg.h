@@ -12,6 +12,10 @@
 #include <unistd.h>
 #endif
 
+#define TAM_LOGIN 20
+#define TAM_SENHA 15
+#define TAM_NICK 30
+
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
 
 typedef struct {
@@ -32,9 +36,9 @@ typedef struct {
 } Habilidade;
 
 typedef struct {
-    char nome_usuario[20];
-    char senha[15];
-    char nickname[30];
+    char nome_usuario[TAM_LOGIN];
+    char senha[TAM_SENHA];
+    char nickname[TAM_NICK];
     double nivel;
     Item consumiveis[5];
     Habilidade inventario[10];
@@ -59,7 +63,9 @@ typedef struct {
 // FUNCTIONS.C
 void delay(int tempo_ms);
 void limpar_buffer();
+void verificar_buffer(char *entrada);
 void print_erro(char *texto);
+void print_sucesso(char *texto);
 int iniciar_usuarios(Usuario **usuarios, int *qnt_usuarios);
 
 // ARQUIVO.C
@@ -71,5 +77,6 @@ int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct,
 // MENU.C
 int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
+int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 
 #endif

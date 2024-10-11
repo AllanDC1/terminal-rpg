@@ -26,3 +26,33 @@ int menu_inicial() {
 
     return escolher_operacao(3);
 }
+
+int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
+    char entrada_login[TAM_LOGIN], entrada_senha[TAM_SENHA];    
+    int idx_usuario;
+
+    if (qnt_usuarios == 0) {
+        print_erro("Nenhuma conta foi criada no sistema.\n");
+        return FALHA;
+    }
+
+    do {
+        printf("Realize seu login para entrar no jogo:\n");
+
+        printf("> Nome de Usuario: ");
+        fgets(entrada_login, sizeof(entrada_login), stdin);
+        verificar_buffer(entrada_login);
+
+        printf("> Senha: ");
+        fgets(entrada_senha, sizeof(entrada_senha), stdin);
+        verificar_buffer(entrada_senha);
+
+        idx_usuario = validar_usuario(entrada_login, entrada_senha, array_usuarios, qnt_usuarios);
+
+    } while (idx_usuario == FALHA);
+
+    *usuario_logado = array_usuarios[idx_usuario];
+
+    print_sucesso("Login realizado com sucesso!\n");
+    return OK;
+}

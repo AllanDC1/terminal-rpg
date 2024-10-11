@@ -4,6 +4,7 @@
 
 int main() {
     Usuario *usuarios = NULL; // NULL para ainda nao alocar memoria
+    Usuario usuario_logado;
     int qnt_usuarios = 0;
     bool continuar = true;
     
@@ -18,7 +19,10 @@ int main() {
     do{
         switch (menu_inicial()) {
         case 1:
-            //login();
+            if (login(usuarios, qnt_usuarios, &usuario_logado) == FALHA) {
+                continue;
+            }
+            // menu pos login
             break;
         case 2:
             //registro();

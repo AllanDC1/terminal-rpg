@@ -15,8 +15,20 @@ void limpar_buffer() {
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
+void verificar_buffer(char *entrada) {
+    if (entrada[strlen(entrada) -1] != '\n') {
+        limpar_buffer();
+    } else {
+        entrada[strcspn(entrada, "\n")] = 0;    
+    }
+}
+
 void print_erro(char *texto) {
     printf("\033[0;31m%s\033[0m", texto);
+}
+
+void print_sucesso(char *texto) {
+    printf("\033[1;32m%s\033[0m", texto);
 }
 
 int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
