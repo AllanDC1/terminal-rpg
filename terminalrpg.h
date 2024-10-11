@@ -69,7 +69,7 @@ int ler_arquivo(const char* nome_arquivo, void **array, size_t tamanho_struct, b
 int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos, bool bin);
 
 // MENU.C
-int menu_inicial();
 int escolher_operacao(int qnt_operacoes);
+int menu_inicial();
 
 #endif
