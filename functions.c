@@ -18,3 +18,12 @@ void limpar_buffer() {
 void print_erro(char *texto) {
     printf("\033[0;31m%s\033[0m", texto);
 }
+
+int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
+    *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)&array_usuarios, sizeof(Usuario), true);
+    if (qnt_usuarios == FALHA) {
+        print_erro("Falha ao carregar dados dos usuarios.\n");
+        return FALHA;
+    }
+    return OK;
+}

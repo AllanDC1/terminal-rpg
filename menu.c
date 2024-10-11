@@ -2,7 +2,7 @@
 
 //Funções e exibições dos menus
 
-void menu_inicial() {   
+int menu_inicial() {   
     printf("|---------------------------|\n");
     printf("|    1. Login               |\n");
     printf("|    2. Registrar-se        |\n");
@@ -12,14 +12,13 @@ void menu_inicial() {
     switch (escolher_operacao(3)) {
         case 1:
             //login();
-            break;
+            return OK;
         case 2:
             //registro();
-            break;
+            return OK;
         case 3:
-            //logout();
-            break;
-    }    
+            return SAIDA;
+    }
 }
 
 int escolher_operacao(int qnt_operacoes) {
