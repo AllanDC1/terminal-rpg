@@ -31,6 +31,11 @@ void print_sucesso(char *texto) {
     printf("\033[1;32m%s\033[0m", texto);
 }
 
+void voltar_menu() {
+    printf("\n\033[0;32m Pressione ENTER para voltar ao menu. \033[0m");
+    getchar();
+}
+
 int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
     *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)&array_usuarios, sizeof(Usuario), true);
     if (qnt_usuarios == FALHA) {
