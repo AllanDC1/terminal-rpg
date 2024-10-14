@@ -44,3 +44,11 @@ int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {
     }
     return OK;
 }
+
+void limpa_tela () {
+    #ifdef _WIN32
+    system("cls"); // Para Windows
+    #else
+    system("clear"); // Para Unix/Linux (Replit)
+    #endif
+}

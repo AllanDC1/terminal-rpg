@@ -1,0 +1,35 @@
+Bem-vindo a Loja do jogo!
+
+1. Ver lista de itens disponiveis
+2. comprar itens
+3. sair
+
+
+
+
+--------------------------------
+1= 
+
+Itens disponiveis:
+
+1. Pocao de cura
+2. pocao de forca
+3. pocao de resistencia
+4. pocao de transformação (transforma o inimigo em ovelha por exemplo)
+5. pocao da imunidade (fica imune a ataques?)
+6. cegar (joga areia no zoio dos bicho kkkkkkkkk) 
+
+
+pressione qualquer tecla para voltar.
+
+------------------------------------
+2=
+// tem 3 jeitos legal de fazer a compra de itens:
+// o primeiro jeito que pensei é deixa aleatorio, ele paga um valor e gera um item aleatorio para o usuario.
+// o segundo jeito é ter todos os itens disponiveis e ele comprar qual ele quiser.
+// terceiro jeito é igual ao primeiro só que ele pode escolher de qual categoria de item ele quer comprar. exemplo: o jogo tem capacete, armadura e bota. dentre esse tem varios itens.
+
+--------------------------------------
+3= 
+
+// auto intuitivo
