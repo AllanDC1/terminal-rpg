@@ -83,7 +83,7 @@ int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct,
     if (qnt_escritos != qnt_elementos) {
         perror("Erro ao salvar arquivo. Cancelando operacao...\n");
         fclose(fP);
-        return -1;
+        return FALHA;
     }
 
     fclose(fP);

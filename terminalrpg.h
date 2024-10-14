@@ -66,6 +66,7 @@ void limpar_buffer();
 void verificar_buffer(char *entrada);
 void print_erro(char *texto);
 void print_sucesso(char *texto);
+void voltar_menu();
 int iniciar_usuarios(Usuario **usuarios, int *qnt_usuarios);
 
 // ARQUIVO.C
@@ -78,5 +79,13 @@ int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct,
 int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
+int registro(Usuario *array_usuarios, int *qnt_usuarios);
+
+// USUARIO.C
+int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
+int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios);
+int validar_senha(char *entrada);
+int validar_nickname(char *entrada);
+void zerar_usuario(Usuario *usuario);
 
 #endif

@@ -25,7 +25,9 @@ int main() {
             // menu pos login
             break;
         case 2:
-            //registro();
+            if (registro(usuarios, qnt_usuarios) == FALHA) {
+                continue;
+            }
             break;
         case 3:
             continuar = false;       
