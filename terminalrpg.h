@@ -68,6 +68,7 @@ void print_erro(char *texto);
 void print_sucesso(char *texto);
 void voltar_menu();
 int iniciar_usuarios(Usuario **usuarios, int *qnt_usuarios);
+void limpa_tela();
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);

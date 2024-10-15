@@ -2,8 +2,9 @@
 
 //Funções e exibições da loja
 void menu_loja () {
+    limpa_tela();
     printf("Bem-vindo a Loja!\n\n");
-    printf("1. Comprar item\n");
+    printf("1. Comprar itens\n");
     printf("2. Ver lista de itens\n");
     printf("3. Sair da loja\n");
 }
@@ -14,12 +15,15 @@ void menu_comprar_item (){
 
 }
 
+void criacao_arq_itens (){
+    
+}
+
 int opcao_menu_loja () {
     char buffer[100];
     int opcao = 0, aprov = 0;
     
     do{
-        // 
         menu_loja();
         printf("> Escolha a opcao: ");
         if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
@@ -28,12 +32,12 @@ int opcao_menu_loja () {
                 aprov = 1;
             }
         }
-
-
     }while (aprov == 0);
     
     return opcao;
 }
+
+
 
 // switch (opcao){
 //         case 1:
