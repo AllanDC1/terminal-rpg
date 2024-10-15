@@ -9,10 +9,67 @@ void menu_loja () {
     printf("3. Sair da loja\n");
 }
 
-void menu_comprar_item (){
-    
-    printf("Itens disponiveis\n");
+void menu_itens_compraveis() {
+    FILE *arquivo = abrir_arquivo("itens.txt", "r");
+    if (arquivo == NULL) {
+        print_erro("Erro ao abrir o arquivo para leitura dos itens.\n");
+        return;
+    }
 
+    Item item;
+    int id_desejado;
+
+    // Cabeçalho da tabela
+    printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida", "Força", "Preço");
+    printf("---------------------------------------------------------------\n");
+
+    // Leitura e exibição dos itens
+    while (fscanf(arquivo, "%d,%254[^,],%d,%d,%d\n", 
+            &item.ID, item.nome, 
+            &item.vida_recuperada, 
+            &item.dano_aumentado, 
+            &item.preco) == 5) {
+        // Exibe cada item em formato tabular
+        printf("%-5d %-25s %-10d %-10d %-10d\n", 
+            item.ID, item.nome, 
+            item.vida_recuperada, 
+            item.dano_aumentado, 
+            item.preco);
+    }
+
+    fclose(arquivo);
+
+    // pede o ID para o cara
+    printf("\nDigite o ID da poção desejada: ");
+    scanf("%d", &id_desejado);
+
+    // vai atras do item
+    arquivo = abrir_arquivo("itens.txt", "r");
+    if (arquivo == NULL) {
+        print_erro("Erro ao reabrir o arquivo para busca do item.\n");
+        return;
+    }
+
+    // Busca o item pelo ID
+    while (fscanf(arquivo, "%d,%254[^,],%d,%d,%d\n", 
+            &item.ID, item.nome, 
+            &item.vida_recuperada, 
+            &item.dano_aumentado, 
+            &item.preco) == 5) {
+        if (item.ID == id_desejado) {
+            printf("\nVocê escolheu a poção:\n");
+            printf("ID: %d\n", item.ID);
+            printf("Nome: %s\n", item.nome);
+            printf("Vida Recuperada: %d\n", item.vida_recuperada);
+            printf("Dano Aumentado: %d\n", item.dano_aumentado);
+            printf("Preco: %d\n", item.preco);
+            break;
+        }
+    }
+
+    // ai precisa add o item no arquivo do usuario nn sei como vai fazer ainda com o arq do usario
+
+    fclose(arquivo);
 }
 
 void criacao_arq_itens (){
@@ -24,11 +81,11 @@ void criacao_arq_itens (){
 
     Item lista_itens[] = {
         {1, "Pocao de Vida fraca", 25, 0, 100},
-        {1, "Pocao de Vida media", 50, 0, 200},
-        {1, "Pocao de Vida forte", 75, 0, 500},
-        {1, "Pocao de forca Fraca", 10, 0, 100},
-        {1, "Pocao de forca media", 25, 0, 200},
-        {1, "Pocao de forca forte", 50, 0, 500},
+        {2, "Pocao de Vida media", 50, 0, 200},
+        {3, "Pocao de Vida forte", 75, 0, 500},
+        {4, "Pocao de forca Fraca", 10, 0, 100},
+        {5, "Pocao de forca media", 25, 0, 200},
+        {6, "Pocao de forca forte", 50, 0, 500},
     };
 
     FILE *arquivo = abrir_arquivo("itens.txt", "a");
