@@ -13,7 +13,8 @@ Bem-vindo a Loja do jogo!
 Itens disponiveis:
 
 1. Pocao de cura
-2. pocao de forca
+2. pocao de forca 
+// vou só colocar essas duas pocoes no comeco
 3. pocao de resistencia
 4. pocao de transformação (transforma o inimigo em ovelha por exemplo)
 5. pocao da imunidade (fica imune a ataques?)

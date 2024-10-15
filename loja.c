@@ -16,7 +16,39 @@ void menu_comprar_item (){
 }
 
 void criacao_arq_itens (){
-    
+    if (criar_arquivo("itens.txt") == OK) {
+        printf("Arquivo criado com sucesso!\n");
+    } else {
+        printf("Falha ao criar o arquivo.\n");
+    }
+
+    Item lista_itens[] = {
+        {1, "Pocao de Vida fraca", 25, 0, 100},
+        {1, "Pocao de Vida media", 50, 0, 200},
+        {1, "Pocao de Vida forte", 75, 0, 500},
+        {1, "Pocao de forca Fraca", 10, 0, 100},
+        {1, "Pocao de forca media", 25, 0, 200},
+        {1, "Pocao de forca forte", 50, 0, 500},
+    };
+
+    FILE *arquivo = abrir_arquivo("itens.txt", "a");
+
+    if (arquivo == NULL) {
+        print_erro("Erro ao abrir o arquivo para adicionar itens.\n");
+        return;
+    }
+
+    for (size_t i = 0; i < sizeof(lista_itens) / sizeof(lista_itens[0]); i++) {
+        fprintf(arquivo, "%d;%s;%d;%d;%d\n", 
+            lista_itens[i].ID, 
+            lista_itens[i].nome, 
+            lista_itens[i].vida_recuperada, 
+            lista_itens[i].dano_aumentado, 
+            lista_itens[i].preco
+            );
+    }
+
+    fclose(arquivo);
 }
 
 int opcao_menu_loja () {

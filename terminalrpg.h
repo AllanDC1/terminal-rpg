@@ -26,7 +26,9 @@ typedef struct {
 typedef struct {
     int ID;
     char nome[255];
-    int quantidade;
+    int vida_recuperada; // valor em porcentagem
+    int dano_aumentado; // valor em porcentagem
+    int preco;
 } Item;
 
 typedef struct {
