@@ -33,10 +33,12 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
 
     if (qnt_usuarios == 0) {
         print_erro("Nenhuma conta foi criada no sistema.\n");
+        delay(1000);
         return FALHA;
     }
 
     do {
+        limpa_tela();
         printf("Realize seu login para entrar no jogo:\n");
 
         printf("> Nome de Usuario: ");
@@ -62,13 +64,15 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1], entrada_nickname[TAM_NICK + 1]; //testar se o limite esta correto
     int auth;
 
+    limpa_tela();
+
     do {
         printf("Registre sua conta:\n");
 
         printf("> Informe nome de usuario (Usado para login): ");
         fgets(entrada_login, sizeof(entrada_login), stdin);
         verificar_buffer(entrada_login);
-        auth = validar_nome_usuario(entrada_login, array_usuarios, qnt_usuarios);
+        auth = validar_nome_usuario(entrada_login, array_usuarios, *qnt_usuarios);
 
         if (auth == SAIDA) {
             return FALHA; // volta pro menu
@@ -95,7 +99,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     array_usuarios[*qnt_usuarios] = novo_usuario;
     (*qnt_usuarios)++;
 
-    if (salvar_arquivo("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios, true) == FALHA) {
+    if (salvar_arquivo("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios, true) == FALHA) {
         return FALHA;
     }
 
@@ -103,4 +107,17 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
 
     voltar_menu();
     return OK;
+}
+
+// funcoes para o menu principal do personagem provisorio
+
+int menu_principal() {   
+    printf("|---------------------------|\n");
+    printf("|    1. batalhar            |\n");
+    printf("|    2. inventario          |\n");
+    printf("|    3. loja                |\n");
+    printf("|    4. Sair                |\n");
+    printf("|---------------------------|\n");
+
+    return escolher_operacao(4);
 }

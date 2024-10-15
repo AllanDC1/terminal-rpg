@@ -83,6 +83,7 @@ int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios);
+int menu_principal();
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
@@ -93,7 +94,8 @@ void zerar_usuario(Usuario *usuario);
 
 // LOJA.C
 void menu_loja();
-void menu_comprar_item();
+void menu_itens_compraveis();
+int criacao_arq_itens();
 int opcao_menu_loja();
 
 #endif

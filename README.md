@@ -80,7 +80,7 @@ Projeto 2 do curso de CC 2° sem Noturno da FEI.
   - Dano <br>
   - Velocidade ? <br>
 
-- A loja será armazenada em txt contendo 2 poções (vida e força) e X ataques provisoriamente. <br>
+- A loja será armazenada em binario contendo 2 poções (vida e força) e X ataques provisoriamente. <br>
 
   ???????? <br>
 
