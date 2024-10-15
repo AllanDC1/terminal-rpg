@@ -94,7 +94,7 @@ void zerar_usuario(Usuario *usuario);
 
 // LOJA.C
 void menu_loja();
-void menu_itens_compraveis();
+int menu_itens_compraveis();
 int criacao_arq_itens();
 int opcao_menu_loja();
 

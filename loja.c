@@ -9,15 +9,15 @@ void menu_loja() {
     printf("3. Sair da loja\n");
 }
 
-void menu_itens_compraveis() {
-    FILE *arquivo = abrir_arquivo("itens.bin", "rb");
-    if (arquivo == NULL) {
-        print_erro("Erro ao abrir o arquivo para leitura dos itens.\n");
-        return;
+int menu_itens_compraveis() {
+    Item *array_itens = NULL;
+    int id_desejado, qnt_itens;
+    
+    qnt_itens = ler_arquivo("itens.bin", (void**)array_itens, sizeof(Item), true);
+    if (qnt_itens == FALHA){
+        print_erro("Erro ao ler os itens.\n");
+        return FALHA;
     }
-
-    Item item;
-    int id_desejado;
 
     limpa_tela();
 
@@ -25,52 +25,39 @@ void menu_itens_compraveis() {
     printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida", "Forca", "Preco");
     printf("---------------------------------------------------------------\n");
 
-    // Leitura e exibição dos itens
-    while (fread(&item, sizeof(Item), 1, arquivo) == 1) {
-        // Exibe cada item em formato tabular
+    for (int i = 0; i < qnt_itens; i++) {
         printf("%-5d %-25s %-10d %-10d %-10d\n", 
-            item.ID, item.nome, 
-            item.vida_recuperada, 
-            item.dano_aumentado, 
-            item.preco);
+            array_itens[i].ID,
+            array_itens[i].nome, 
+            array_itens[i].vida_recuperada, 
+            array_itens[i].dano_aumentado, 
+            array_itens[i].preco
+        );
     }
-
-    fclose(arquivo);
-
-    // pede o ID para o cara
+    // Pede o ID do item
     printf("\nDigite o ID do item desejado: ");
-    scanf("%d", &id_desejado);
-
-    // Reabre o arquivo para busca do item
-    arquivo = abrir_arquivo("itens.bin", "rb");
-    if (arquivo == NULL) {
-        print_erro("Erro ao reabrir o arquivo para busca do item.\n");
-        return;
+    while (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > qnt_itens - 1) {
+        print_erro("ID invalido. Insira novamente.\n");
+        limpar_buffer();
     }
+    limpar_buffer(); 
 
-    // Busca o item pelo ID
-    bool item_encontrado = false;
-    while (fread(&item, sizeof(Item), 1, arquivo) == 1) {
-        if (item.ID == id_desejado) {
+    for (int i = 0; i < qnt_itens; i++) {
+        if (array_itens[i].ID == id_desejado) {
             printf("\nVocê escolheu a poção:\n");
-            printf("ID: %d\n", item.ID);
-            printf("Nome: %s\n", item.nome);
-            printf("Vida Recuperada: %d\n", item.vida_recuperada);
-            printf("Dano Aumentado: %d\n", item.dano_aumentado);
-            printf("Preco: %d\n", item.preco);
-            item_encontrado = true;
+            printf("ID: %d\n", array_itens[i].ID);
+            printf("Nome: %s\n", array_itens[i].nome);
+            printf("Vida Recuperada: %d\n", array_itens[i].vida_recuperada);
+            printf("Dano Aumentado: %d\n", array_itens[i].dano_aumentado);
+            printf("Preco: %d\n", array_itens[i].preco);
             break;  // Sai do loop ao encontrar o item
         }
     }
 
-    if (!item_encontrado) {
-        printf("Item com ID %d não encontrado.\n", id_desejado);
-    }
-
-    fclose(arquivo);
+    // Pedir confirmacao talvez
 
     // ai precisa add o item no arquivo do usuario nn sei como vai fazer ainda com o arq do usario
-
+    return OK;
 }
 
 int criacao_arq_itens(){

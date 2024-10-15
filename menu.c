@@ -113,11 +113,12 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
 
 int menu_principal() {   
     printf("|---------------------------|\n");
-    printf("|    1. batalhar            |\n");
-    printf("|    2. inventario          |\n");
-    printf("|    3. loja                |\n");
-    printf("|    4. Sair                |\n");
+    printf("|    1. Jogar               |\n");
+    printf("|    2. Inventario          |\n");
+    printf("|    3. Loja                |\n");
+    printf("|    4. Modificar Conta     |\n");
+    printf("|    5. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(4);
+    return escolher_operacao(5);
 }
