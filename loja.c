@@ -1,10 +1,4 @@
-// #include "terminalrpg.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
+#include "terminalrpg.h"
 
 //Funções e exibições da loja
 void menu_loja () {
@@ -21,44 +15,39 @@ void menu_comprar_item (){
 }
 
 int opcao_menu_loja () {
-    int opcao = 0;
+    char buffer[100];
+    int opcao = 0, aprov = 0;
     
     do{
         // 
         menu_loja();
-        scanf("%d", &opcao);
-        if (scanf("%d", &opcao) != 1) { 
-            printf("Entrada inválida! Digite um número.\n");
-            while (getchar() != '\n');
-            opcao = 0;
+        printf("> Escolha a opcao: ");
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+            opcao = atoi(buffer);
+            if (opcao >= 1 && opcao <= 3){
+                aprov = 1;
+            }
         }
 
 
-    }while (opcao > 0 || opcao <= 3);
+    }while (aprov == 0);
     
-    
-    
-
-    switch (opcao){
-        case 1:
-            // vai para o menu de comprar item
-            break;
-        
-        case 2:
-            // vai para a lista de itens
-            break;
-        
-        case 3:
-            // volta para o menu principal
-            break;
-
-        default:
-            break;
-    }
+    return opcao;
 }
 
-int main() {
-    opcao_menu_loja();
+// switch (opcao){
+//         case 1:
+//             // vai para o menu de comprar item
+//             break;
+        
+//         case 2:
+//             // vai para a lista de itens
+//             break;
+        
+//         case 3:
+//             // volta para o menu principal
+//             break;
 
-    return 1;
-}
+//         default:
+//             break;
+//     }
