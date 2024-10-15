@@ -26,7 +26,9 @@ typedef struct {
 typedef struct {
     int ID;
     char nome[255];
-    int quantidade;
+    int vida_recuperada; // valor em porcentagem
+    int dano_aumentado; // valor em porcentagem
+    int preco;
 } Item;
 
 typedef struct {
@@ -68,6 +70,7 @@ void print_erro(char *texto);
 void print_sucesso(char *texto);
 void voltar_menu();
 int iniciar_usuarios(Usuario **usuarios, int *qnt_usuarios);
+void limpa_tela();
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
@@ -80,6 +83,7 @@ int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios);
+int menu_principal();
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
@@ -87,5 +91,11 @@ int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuario
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario);
+
+// LOJA.C
+void menu_loja();
+void menu_itens_compraveis();
+int criacao_arq_itens();
+int opcao_menu_loja();
 
 #endif

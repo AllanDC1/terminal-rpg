@@ -37,10 +37,18 @@ void voltar_menu() {
 }
 
 int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
-    *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)&array_usuarios, sizeof(Usuario), true);
-    if (qnt_usuarios == FALHA) {
+    *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)array_usuarios, sizeof(Usuario), true);
+    if (*qnt_usuarios == FALHA) {
         print_erro("Falha ao carregar dados dos usuarios.\n");
         return FALHA;
     }
     return OK;
+}
+
+void limpa_tela () {
+    #ifdef _WIN32
+    system("cls"); // Para Windows
+    #else
+    system("clear"); // Para Unix/Linux (Replit)
+    #endif
 }
