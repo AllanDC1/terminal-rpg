@@ -16,7 +16,7 @@
 #define TAM_SENHA 15
 #define TAM_NICK 30
 
-#define MAX_CONSUMIVEIS 6
+#define QNT_CONSUMIVEIS 6
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
 
@@ -27,7 +27,7 @@ typedef struct {
 
 typedef struct {
     int ID;
-    char nome[255];
+    char nome[25];
     int vida_recuperada; // valor em porcentagem
     int dano_aumentado; // valor em porcentagem
     int preco;
@@ -45,7 +45,7 @@ typedef struct {
     char nickname[TAM_NICK];
     double nivel;
     int moedas;
-    Item consumiveis[MAX_CONSUMIVEIS];
+    Item consumiveis[QNT_CONSUMIVEIS];
     Habilidade inventario[10];
     Status status;
 } Usuario;
@@ -78,8 +78,10 @@ void limpa_tela();
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
 FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura);
-int ler_arquivo(const char* nome_arquivo, void **array, size_t tamanho_struct, bool bin);
-int salvar_arquivo(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos, bool bin);
+int ler_arquivo_bin(const char* nome_arquivo, void **array, size_t tamanho_struct);
+int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos);
+int ler_arq_itens(Item *array_itens);
+int criar_arq_itens();
 
 // MENU.C
 int escolher_operacao(int qnt_operacoes);
@@ -98,6 +100,5 @@ void zerar_usuario(Usuario *usuario);
 // LOJA.C
 int menu_loja();
 int menu_itens_compraveis(Usuario* usuario_logado);
-int criacao_arq_itens();
 
 #endif

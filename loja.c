@@ -12,11 +12,10 @@ int menu_loja() {
 }
 
 int menu_itens_compraveis(Usuario* usuario_logado) {
-    Item *array_itens = NULL;
-    int id_desejado, qnt_itens;
+    Item array_itens[QNT_CONSUMIVEIS];
+    int id_desejado;
     
-    qnt_itens = ler_arquivo("itens.bin", (void**)array_itens, sizeof(Item), true);
-    if (qnt_itens == FALHA){
+    if (ler_arq_itens(&array_itens) == FALHA){
         print_erro("Erro ao ler os itens.\n");
         return FALHA;
     }
@@ -27,7 +26,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida", "Forca", "Preco");
     printf("---------------------------------------------------------------\n");
     // Printa lista de itens
-    for (int i = 0; i < qnt_itens; i++) {
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         printf("%-5d %-25s %-10d %-10d %-10d\n", 
             array_itens[i].ID,
             array_itens[i].nome, 
@@ -39,7 +38,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
 
     // Pede o ID do item
     printf("\nDigite o ID do item desejado: ");
-    while (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > qnt_itens - 1) {
+    while (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > QNT_CONSUMIVEIS - 1) {
         print_erro("ID invalido. Insira novamente.\n");
         limpar_buffer();
     }
@@ -63,38 +62,5 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     usuario_logado->moedas -= array_itens[id_desejado].preco;
 
     print_sucesso("Compra bem sucedida!\n");
-    return OK;
-}
-
-int criacao_arq_itens(){
-
-    Item lista_itens[] = {
-        {1, "Pocao de Vida fraca", 25, 0, 100},
-        {2, "Pocao de Vida media", 50, 0, 200},
-        {3, "Pocao de Vida forte", 75, 0, 500},
-        {4, "Pocao de forca Fraca", 0, 10, 100},
-        {5, "Pocao de forca media", 0, 25, 200},
-        {6, "Pocao de forca forte", 0, 50, 500},
-    };
-
-    FILE *arquivo = abrir_arquivo("itens.bin", "wb");
-
-    if (arquivo == NULL) {
-        print_erro("Erro ao abrir o arquivo para adicionar itens.\n");
-        return FALHA;
-    }
-
-    size_t qnt_itens = sizeof(lista_itens) / sizeof(lista_itens[0]);
-
-    // Grava a lista no arq
-    size_t elementos_escritos = fwrite(lista_itens, sizeof(Item), qnt_itens, arquivo);
-    if (elementos_escritos != qnt_itens) {
-        print_erro("Erro ao gravar os itens no arquivo.\n");
-        fclose(arquivo);
-        return FALHA;
-    }
-
-    fclose(arquivo);
-
     return OK;
 }

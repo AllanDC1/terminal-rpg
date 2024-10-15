@@ -14,7 +14,7 @@ int main() {
         return 0;
     }
 
-    if (criacao_arq_itens() == FALHA){
+    if (criar_arq_itens() == FALHA){
         print_erro("Encerrando programa...\n");
         //logout() talvez
         return 0;

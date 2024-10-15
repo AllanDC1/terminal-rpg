@@ -99,7 +99,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     array_usuarios[*qnt_usuarios] = novo_usuario;
     (*qnt_usuarios)++;
 
-    if (salvar_arquivo("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios, true) == FALHA) {
+    if (salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
         return FALHA;
     }
 

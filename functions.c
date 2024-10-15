@@ -37,7 +37,7 @@ void voltar_menu() {
 }
 
 int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
-    *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)array_usuarios, sizeof(Usuario), true);
+    *qnt_usuarios = ler_arquivo_bin("dados-usuarios.bin", (void **)array_usuarios, sizeof(Usuario));
     if (*qnt_usuarios == FALHA) {
         print_erro("Falha ao carregar dados dos usuarios.\n");
         return FALHA;
