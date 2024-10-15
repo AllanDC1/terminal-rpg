@@ -49,6 +49,7 @@ int validar_nickname(char *entrada) {
 
 void zerar_usuario(Usuario *usuario) {
     usuario->nivel = 0.0;
+    usuario->moedas = 0;
     //usuario->inventario[0] = habilidades[0]; atribuir a habilidade inicial
    // usuario->status.dano = inventario[0].dano; relacionar a habilidade
    usuario->status.vida = 100; //exemplo

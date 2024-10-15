@@ -16,6 +16,8 @@
 #define TAM_SENHA 15
 #define TAM_NICK 30
 
+#define MAX_CONSUMIVEIS 6
+
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
 
 typedef struct {
@@ -42,7 +44,8 @@ typedef struct {
     char senha[TAM_SENHA];
     char nickname[TAM_NICK];
     double nivel;
-    Item consumiveis[5];
+    int moedas;
+    Item consumiveis[MAX_CONSUMIVEIS];
     Habilidade inventario[10];
     Status status;
 } Usuario;
@@ -93,9 +96,8 @@ int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario);
 
 // LOJA.C
-void menu_loja();
-int menu_itens_compraveis();
+int menu_loja();
+int menu_itens_compraveis(Usuario* usuario_logado);
 int criacao_arq_itens();
-int opcao_menu_loja();
 
 #endif

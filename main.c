@@ -38,14 +38,13 @@ int main() {
                     break;
                 case 2:
                     // inventario?
-                    break;
-                
+                    break;                
                 case 3:
                     // loja
-                    switch (opcao_menu_loja()){
+                    switch (menu_loja()){
                     case 1:
                         // comprar itens
-                        menu_itens_compraveis();
+                        menu_itens_compraveis(&usuario_logado);
                         break;
                     case 2:
                         // ver lista de itens
