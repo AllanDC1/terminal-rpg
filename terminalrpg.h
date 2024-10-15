@@ -88,4 +88,9 @@ int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario);
 
+// LOJA.C
+void menu_loja();
+void menu_comprar_item();
+int opcao_menu_loja();
+
 #endif
