@@ -50,7 +50,10 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
         verificar_buffer(entrada_senha);
 
         idx_usuario = validar_usuario(entrada_login, entrada_senha, array_usuarios, qnt_usuarios);
-
+        if (idx_usuario == FALHA) {
+            print_erro("Credenciais incorretas. Insira novamente.\n");
+            delay(1000);
+        }        
     } while (idx_usuario == FALHA);
 
     *usuario_logado = array_usuarios[idx_usuario];
@@ -65,6 +68,11 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     int auth;
 
     limpa_tela();
+
+    if (*qnt_usuarios >= MAX_USUARIOS) {
+        print_erro("Quantidade limite de usuarios criados atingida. Cancelando operacao...\n");
+        return FALHA;
+    }
 
     do {
         printf("Registre sua conta:\n");
@@ -99,7 +107,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     array_usuarios[*qnt_usuarios] = novo_usuario;
     (*qnt_usuarios)++;
 
-    if (salvar_arquivo("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios, true) == FALHA) {
+    if (salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
         return FALHA;
     }
 
@@ -113,11 +121,12 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
 
 int menu_principal() {   
     printf("|---------------------------|\n");
-    printf("|    1. batalhar            |\n");
-    printf("|    2. inventario          |\n");
-    printf("|    3. loja                |\n");
-    printf("|    4. Sair                |\n");
+    printf("|    1. Jogar               |\n");
+    printf("|    2. Inventario          |\n");
+    printf("|    3. Loja                |\n");
+    printf("|    4. Modificar Conta     |\n");
+    printf("|    5. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(4);
+    return escolher_operacao(5);
 }

@@ -36,8 +36,8 @@ void voltar_menu() {
     getchar();
 }
 
-int iniciar_usuarios(Usuario **array_usuarios, int *qnt_usuarios) {    
-    *qnt_usuarios = ler_arquivo("dados-usuarios.bin", (void **)array_usuarios, sizeof(Usuario), true);
+int iniciar_usuarios(Usuario *array_usuarios, int *qnt_usuarios) {    
+    *qnt_usuarios = ler_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario));
     if (*qnt_usuarios == FALHA) {
         print_erro("Falha ao carregar dados dos usuarios.\n");
         return FALHA;
@@ -51,4 +51,10 @@ void limpa_tela () {
     #else
     system("clear"); // Para Unix/Linux (Replit)
     #endif
+}
+
+void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
+    salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
+    printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");
+    delay(1000);
 }
