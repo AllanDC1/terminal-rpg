@@ -15,7 +15,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     Item array_itens[QNT_CONSUMIVEIS];
     int id_desejado;
     
-    if (ler_arq_itens(&array_itens) == FALHA){
+    if (ler_arq_itens(array_itens) == FALHA){
         print_erro("Erro ao ler os itens.\n");
         return FALHA;
     }
