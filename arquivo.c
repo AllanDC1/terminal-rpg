@@ -28,7 +28,7 @@ FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura) {
     return ponteiro_arquivo;
 }
 
-int ler_arquivo_bin(const char* nome_arquivo, void **array, size_t tamanho_struct) {
+int ler_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct) {
     FILE *fP = abrir_arquivo(nome_arquivo, "rb");
     
     if (fP == NULL) {
@@ -41,16 +41,12 @@ int ler_arquivo_bin(const char* nome_arquivo, void **array, size_t tamanho_struc
     long tamanho_arquivo = ftell(fP);
     rewind(fP);
 
-    // Descobre quantos elementos dos procurados o arquivo possui
-    size_t qnt_elementos = tamanho_arquivo / tamanho_struct;
-    // Aloca memoria para o array
-    *array = malloc(qnt_elementos * tamanho_struct);
-
+    // Descobre quantos elementos o arquivo possui
+    size_t qnt_elementos_arquivo = tamanho_arquivo / tamanho_struct;
     // Le os elementos e salva no array
-    size_t qnt_lidos = fread(*array, tamanho_struct, qnt_elementos, fP);
-    if (qnt_lidos != qnt_elementos) {
+    size_t qnt_lidos = fread(array, tamanho_struct, qnt_elementos_arquivo, fP);
+    if (qnt_lidos != qnt_elementos_arquivo) {
         print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
-        free(*array);
         fclose(fP);
         return FALHA;
     }
@@ -69,7 +65,7 @@ int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_str
     
     size_t qnt_escritos = fwrite(array, tamanho_struct, qnt_elementos, fP);
     if (qnt_escritos != qnt_elementos) {
-        perror("Erro ao salvar arquivo. Cancelando operacao...\n");
+        print_erro("Erro ao salvar arquivo. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;
     }
@@ -98,7 +94,7 @@ int ler_arq_itens(Item *array_itens) {
     }
 
     if (i != QNT_CONSUMIVEIS) {
-        perror("Erro ao ler arquivo. Cancelando operacao...\n");
+        print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;
     }

@@ -3,20 +3,20 @@
 //Execução principal/inicial do programa
 
 int main() {
-    Usuario *usuarios = NULL; // NULL para ainda nao alocar memoria
+    Usuario usuarios[MAX_USUARIOS];
     Usuario usuario_logado;
     int qnt_usuarios = 0;
     bool continuar = true;
-    
-    if (iniciar_usuarios(&usuarios, &qnt_usuarios) == FALHA) {
+
+    if (iniciar_usuarios(usuarios, &qnt_usuarios) == FALHA) {
         print_erro("Encerrando programa...\n");
-        //logout() talvez
+        encerrar_sistema(usuarios, qnt_usuarios);
         return 0;
     }
 
     if (criar_arq_itens() == FALHA){
         print_erro("Encerrando programa...\n");
-        //logout() talvez
+        encerrar_sistema(usuarios, qnt_usuarios);
         return 0;
     }
 
@@ -28,10 +28,11 @@ int main() {
             if (login(usuarios, qnt_usuarios, &usuario_logado) == FALHA) {
                 continue;
             }
+            delay(1000);
             // menu pos login
-
             do {
                 limpa_tela();
+                printf("Bem-Vindo %s!\n", usuario_logado.nickname);
                 switch (menu_principal()) {
                 case 1:
                     // batalha?
@@ -52,21 +53,19 @@ int main() {
                     case 3:
                         // voltar para o menu principal
                         break;
-                    }
-                    
+                    }                    
                     break;
-
                 case 4:
-                    // sair?
-                    // logout();
-                    return 0;
+                    // alterar dados conta                    
+                    break;
+                case 5:
+                    continuar = false;
                     break;
                 }
 
-            } while (true);
-
+            } while (continuar);
+            continuar = true;
             break;
-
         case 2:
             if (registro(usuarios, &qnt_usuarios) == FALHA) {
                 continue;
@@ -78,6 +77,6 @@ int main() {
         }
     } while (continuar);
 
-    //logout()
+    encerrar_sistema(usuarios, qnt_usuarios);
     return 0;
 }

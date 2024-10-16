@@ -50,7 +50,10 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
         verificar_buffer(entrada_senha);
 
         idx_usuario = validar_usuario(entrada_login, entrada_senha, array_usuarios, qnt_usuarios);
-
+        if (idx_usuario == FALHA) {
+            print_erro("Credenciais incorretas. Insira novamente.\n");
+            delay(1000);
+        }        
     } while (idx_usuario == FALHA);
 
     *usuario_logado = array_usuarios[idx_usuario];
@@ -65,6 +68,11 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     int auth;
 
     limpa_tela();
+
+    if (*qnt_usuarios >= MAX_USUARIOS) {
+        print_erro("Quantidade limite de usuarios criados atingida. Cancelando operacao...\n");
+        return FALHA;
+    }
 
     do {
         printf("Registre sua conta:\n");
