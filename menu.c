@@ -116,7 +116,6 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial)
     
     limpa_tela();
     print_sucesso("Usuario criado com sucesso!\n");
-    delay(1000);
 
     voltar_menu();
     return OK;
