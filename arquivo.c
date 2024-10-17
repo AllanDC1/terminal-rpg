@@ -77,12 +77,12 @@ int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_str
 int criar_arq_itens(){
 
     Item lista_itens[] = {
-        {0, "Pocao de Vida fraca", 25, 0, 100},
-        {1, "Pocao de Vida media", 50, 0, 200},
-        {2, "Pocao de Vida forte", 75, 0, 500},
-        {3, "Pocao de forca Fraca", 0, 10, 100},
-        {4, "Pocao de forca media", 0, 25, 200},
-        {5, "Pocao de forca forte", 0, 50, 500},
+        {1, "Pocao de Vida fraca", 25, 0, 100},
+        {2, "Pocao de Vida media", 50, 0, 200},
+        {3, "Pocao de Vida forte", 75, 0, 500},
+        {4, "Pocao de forca Fraca", 0, 10, 100},
+        {5, "Pocao de forca media", 0, 25, 200},
+        {6, "Pocao de forca forte", 0, 50, 500},
     };
 
     FILE *fP = abrir_arquivo("itens.txt", "w");
