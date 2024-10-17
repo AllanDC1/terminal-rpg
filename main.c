@@ -5,19 +5,13 @@
 int main() {
     Usuario usuarios[MAX_USUARIOS];
     Usuario usuario_logado;
+    Habilidade habilidades[QNT_HABILIDADES];
     int qnt_usuarios = 0;
     bool continuar = true;
 
-    if (iniciar_usuarios(usuarios, &qnt_usuarios) == FALHA) {
-        print_erro("Encerrando programa...\n");
+    if (iniciar_sistema(usuarios, &qnt_usuarios, habilidades) == FALHA) {
         encerrar_sistema(usuarios, qnt_usuarios);
-        return 0;
-    }
-
-    if (criar_arq_itens() == FALHA){
-        print_erro("Encerrando programa...\n");
-        encerrar_sistema(usuarios, qnt_usuarios);
-        return 0;
+        return 1;
     }
 
     do{
@@ -67,7 +61,7 @@ int main() {
             continuar = true;
             break;
         case 2:
-            if (registro(usuarios, &qnt_usuarios) == FALHA) {
+            if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
                 continue;
             }
             break;

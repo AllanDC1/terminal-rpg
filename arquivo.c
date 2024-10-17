@@ -74,36 +74,6 @@ int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_str
     return OK;
 }
 
-int ler_arq_itens(Item *array_itens) {
-    FILE *fP = abrir_arquivo("itens.txt", "r");
-    
-    if (fP == NULL) {
-        print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
-        return FALHA;
-    }
-
-    int i = 0; // itens lidos
-
-    while (i < QNT_CONSUMIVEIS && fscanf(fP, "%d %25s %d %d %d", 
-        &array_itens[i].ID,
-        array_itens[i].nome,
-        &array_itens[i].vida_recuperada, 
-        &array_itens[i].dano_aumentado, 
-        &array_itens[i].preco) == 5) {  // Espera ler 5 campos por linha
-        i++;
-    }
-
-    if (i != QNT_CONSUMIVEIS) {
-        print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
-        fclose(fP);
-        return FALHA;
-    }
-
-    fclose(fP);
-
-    return i;
-}
-
 int criar_arq_itens(){
 
     Item lista_itens[] = {
@@ -122,7 +92,7 @@ int criar_arq_itens(){
     }
 
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        fprintf(fP, "%d %-20s %d %d %d\n", 
+        fprintf(fP, "%d \"%s\" %d %d %d\n", 
             lista_itens[i].ID,
             lista_itens[i].nome,
             lista_itens[i].vida_recuperada,
@@ -133,4 +103,110 @@ int criar_arq_itens(){
 
     fclose(fP);
     return OK;
+}
+
+int criar_arq_habilidades(){
+
+    Habilidade lista_habilidades[] = {
+        {0, "Corte fugaz", 5, 0},
+        {1, "Bola de fogo", 3, 5},
+        {2, "Golpe flamejante", 10, 10},
+        {3, "Raio do julgamento", 7, 15},
+        {4, "Marretada relampago", 15, 20},
+        {5, "Terremoto", 12, 25},
+        {6, "Soco sismico", 20, 30}
+    };
+
+    FILE *fP = abrir_arquivo("habilidades.txt", "w");
+    if (fP == NULL) {
+        print_erro("Erro ao criar arquivo de habilidades.\n");
+        return FALHA;
+    }
+
+    for (int i = 0; i < QNT_HABILIDADES; i++) {
+        fprintf(fP, "%d \"%s\" %d %d\n", 
+            lista_habilidades[i].ID,
+            lista_habilidades[i].nome,
+            lista_habilidades[i].dano,
+            lista_habilidades[i].requisito_xp
+        );
+    }
+
+    fclose(fP);
+    return OK;
+}
+
+int ler_arq_itens(Item *array_itens) {    
+
+    FILE *fP = abrir_arquivo("itens.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; //buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_CONSUMIVEIS && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d %d", 
+            &array_itens[i].ID,
+            array_itens[i].nome,
+            &array_itens[i].vida_recuperada, 
+            &array_itens[i].dano_aumentado, 
+            &array_itens[i].preco) == 5) {
+            i++; 
+        } else {
+            print_erro("Erro ao processar linha de itens.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_CONSUMIVEIS) {
+        print_erro("Erro ao ler arquivo de itens. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
+}
+
+int ler_arq_habilidades(Habilidade *array_habilidades) {    
+
+    FILE *fP = abrir_arquivo("habilidades.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao abrir arquivo de habilidades. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; // buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_HABILIDADES && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d", 
+                   &array_habilidades[i].ID,
+                   array_habilidades[i].nome,
+                   &array_habilidades[i].dano, 
+                   &array_habilidades[i].requisito_xp) == 4) {
+            i++; // Incrementa contador de habilidades lidas
+        } else {
+            print_erro("Erro ao processar linha de habilidades.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_HABILIDADES) {
+        print_erro("Erro ao ler arquivo de habilidades. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
 }

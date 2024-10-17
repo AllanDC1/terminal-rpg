@@ -65,7 +65,7 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
     return OK;
 }
 
-int registro(Usuario *array_usuarios, int *qnt_usuarios) {
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial) {
     Usuario novo_usuario;
     char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1], entrada_nickname[TAM_NICK + 1]; //testar se o limite esta correto
     int auth;
@@ -102,7 +102,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
         verificar_buffer(entrada_nickname);        
     } while (validar_nickname(entrada_nickname) == FALHA);
 
-    zerar_usuario(&novo_usuario);
+    zerar_usuario(&novo_usuario, atq_inicial);
     strcpy(novo_usuario.nome_usuario, entrada_login);
     strcpy(novo_usuario.senha, entrada_senha);
     strcpy(novo_usuario.nickname, entrada_nickname);

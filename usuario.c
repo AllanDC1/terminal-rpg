@@ -57,10 +57,10 @@ int validar_nickname(char *entrada) {
     return OK;
 }
 
-void zerar_usuario(Usuario *usuario) {
+void zerar_usuario(Usuario *usuario, Habilidade atq_inicial) {    
     usuario->nivel = 0.0;
     usuario->moedas = 0;
-    //usuario->inventario[0] = habilidades[0]; atribuir a habilidade inicial
-   // usuario->status.dano = inventario[0].dano; relacionar a habilidade
-   usuario->status.vida = 100; //exemplo
+    usuario->atq_basico = atq_inicial;
+    //usuario->atq_especial = NULL; // testar pra ver se precisara declarar o atq especial como vazio inicialmente
+    usuario->vida = 100; //exemplo
 }

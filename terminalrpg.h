@@ -19,6 +19,7 @@
 #define MAX_USUARIOS 10
 
 #define QNT_CONSUMIVEIS 6
+#define QNT_HABILIDADES 7
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
 
@@ -37,8 +38,9 @@ typedef struct {
 
 typedef struct {
     int ID;
-    char nome[255];
+    char nome[20];
     int dano;
+    int requisito_xp;
 } Habilidade;
 
 typedef struct {
@@ -48,8 +50,9 @@ typedef struct {
     double nivel;
     int moedas;
     Item consumiveis[QNT_CONSUMIVEIS];
-    Habilidade inventario[10];
-    Status status;
+    Habilidade atq_basico;
+    Habilidade atq_especial;
+    int vida;
 } Usuario;
 
 typedef struct {
@@ -76,21 +79,25 @@ void print_sucesso(char *texto);
 void voltar_menu();
 int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
+void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
 FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura);
 int ler_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct);
 int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos);
-int ler_arq_itens(Item *array_itens);
 int criar_arq_itens();
+int criar_arq_habilidades();
+int ler_arq_itens(Item *array_itens);
+int ler_arq_habilidades(Habilidade *array_habilidades);
 
 // MENU.C
 int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
-int registro(Usuario *array_usuarios, int *qnt_usuarios);
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int menu_principal();
 
 // USUARIO.C
@@ -98,7 +105,7 @@ int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usu
 int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios);
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
-void zerar_usuario(Usuario *usuario);
+void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
 
 // LOJA.C
 int menu_loja();
