@@ -55,6 +55,7 @@ void limpa_tela () {
 
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
     salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
-    printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");
+    limpa_tela();
+    printf("Obrigado pela sua presenca!\nEncerrando o programa...\n\n\n\n");
     delay(1000);
 }

@@ -58,7 +58,10 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
 
     *usuario_logado = array_usuarios[idx_usuario];
 
+    limpa_tela();
     print_sucesso("Login realizado com sucesso!\n");
+    delay(1000);
+
     return OK;
 }
 
@@ -110,8 +113,10 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios) {
     if (salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
         return FALHA;
     }
-
+    
+    limpa_tela();
     print_sucesso("Usuario criado com sucesso!\n");
+    delay(1000);
 
     voltar_menu();
     return OK;
