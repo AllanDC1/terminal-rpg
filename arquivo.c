@@ -134,3 +134,34 @@ int criar_arq_itens(){
     fclose(fP);
     return OK;
 }
+
+int criar_arq_habilidades(){
+
+    Habilidade lista_habilidades[] = {
+        {0, "Corte fugaz", 5, 0},
+        {1, "Bola de fogo", 3, 5},
+        {2, "Golpe flamejante", 10, 10},
+        {3, "Raio do julgamento", 7, 15},
+        {4, "Marretada relampago", 15, 20},
+        {5, "Terremoto", 12, 25},
+        {6, "Soco sismico", 20, 30}
+    };
+
+    FILE *fP = abrir_arquivo("habilidades.txt", "w");
+    if (fP == NULL) {
+        print_erro("Erro ao criar arquivo de habilidades.\n");
+        return FALHA;
+    }
+
+    for (int i = 0; i < QNT_HABILIDADES; i++) {
+        fprintf(fP, "%d %-20s %d %d\n", 
+            lista_habilidades[i].ID,
+            lista_habilidades[i].nome,
+            lista_habilidades[i].dano,
+            lista_habilidades[i].requisito_xp
+        );
+    }
+
+    fclose(fP);
+    return OK;
+}

@@ -19,6 +19,7 @@
 #define MAX_USUARIOS 10
 
 #define QNT_CONSUMIVEIS 6
+#define QNT_HABILIDADES 7
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
 
@@ -37,8 +38,9 @@ typedef struct {
 
 typedef struct {
     int ID;
-    char nome[255];
+    char nome[20];
     int dano;
+    int requisito_xp;
 } Habilidade;
 
 typedef struct {
@@ -76,6 +78,7 @@ void print_sucesso(char *texto);
 void voltar_menu();
 int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
 
 // ARQUIVO.C
@@ -85,6 +88,7 @@ int ler_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct
 int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_struct, size_t qnt_elementos);
 int ler_arq_itens(Item *array_itens);
 int criar_arq_itens();
+int criar_arq_habilidades();
 
 // MENU.C
 int escolher_operacao(int qnt_operacoes);

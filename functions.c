@@ -53,6 +53,15 @@ void limpa_tela () {
     #endif
 }
 
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios) {
+        if (iniciar_usuarios(array_usuarios, qnt_usuarios) == FALHA ||
+            criar_arq_itens() == FALHA ||
+            criar_arq_habilidades() == FALHA) {
+            return FALHA;
+        }
+        return OK;
+}
+
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
     salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
     printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");

@@ -8,16 +8,9 @@ int main() {
     int qnt_usuarios = 0;
     bool continuar = true;
 
-    if (iniciar_usuarios(usuarios, &qnt_usuarios) == FALHA) {
-        print_erro("Encerrando programa...\n");
+    if (iniciar_sistema(usuarios, &qnt_usuarios) == FALHA) {
         encerrar_sistema(usuarios, qnt_usuarios);
-        return 0;
-    }
-
-    if (criar_arq_itens() == FALHA){
-        print_erro("Encerrando programa...\n");
-        encerrar_sistema(usuarios, qnt_usuarios);
-        return 0;
+        return 1;
     }
 
     do{
