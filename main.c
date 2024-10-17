@@ -3,21 +3,15 @@
 //Execução principal/inicial do programa
 
 int main() {
-    Usuario *usuarios = NULL; // NULL para ainda nao alocar memoria
+    Usuario usuarios[MAX_USUARIOS];
     Usuario usuario_logado;
+    Habilidade habilidades[QNT_HABILIDADES];
     int qnt_usuarios = 0;
     bool continuar = true;
-    
-    if (iniciar_usuarios(&usuarios, &qnt_usuarios) == FALHA) {
-        print_erro("Encerrando programa...\n");
-        //logout() talvez
-        return 0;
-    }
 
-    if (criacao_arq_itens() == FALHA){
-        print_erro("Encerrando programa...\n");
-        //logout() talvez
-        return 0;
+    if (iniciar_sistema(usuarios, &qnt_usuarios, habilidades) == FALHA) {
+        encerrar_sistema(usuarios, qnt_usuarios);
+        return 1;
     }
 
     do{
@@ -28,24 +22,24 @@ int main() {
             if (login(usuarios, qnt_usuarios, &usuario_logado) == FALHA) {
                 continue;
             }
+            delay(1000);
             // menu pos login
-
             do {
                 limpa_tela();
+                printf("Bem-Vindo %s!\n", usuario_logado.nickname);
                 switch (menu_principal()) {
                 case 1:
                     // batalha?
                     break;
                 case 2:
                     // inventario?
-                    break;
-                
+                    break;                
                 case 3:
                     // loja
-                    switch (opcao_menu_loja()){
+                    switch (menu_loja()){
                     case 1:
                         // comprar itens
-                        menu_itens_compraveis();
+                        menu_itens_compraveis(&usuario_logado);
                         break;
                     case 2:
                         // ver lista de itens
@@ -53,23 +47,21 @@ int main() {
                     case 3:
                         // voltar para o menu principal
                         break;
-                    }
-                    
+                    }                    
                     break;
-
                 case 4:
-                    // sair?
-                    // logout();
-                    return 0;
+                    // alterar dados conta                    
+                    break;
+                case 5:
+                    continuar = false;
                     break;
                 }
 
-            } while (true);
-
+            } while (continuar);
+            continuar = true;
             break;
-
         case 2:
-            if (registro(usuarios, &qnt_usuarios) == FALHA) {
+            if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
                 continue;
             }
             break;
@@ -79,6 +71,6 @@ int main() {
         }
     } while (continuar);
 
-    //logout()
+    encerrar_sistema(usuarios, qnt_usuarios);
     return 0;
 }
