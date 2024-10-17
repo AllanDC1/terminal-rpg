@@ -5,10 +5,11 @@
 int main() {
     Usuario usuarios[MAX_USUARIOS];
     Usuario usuario_logado;
+    Habilidade habilidades[QNT_HABILIDADES];
     int qnt_usuarios = 0;
     bool continuar = true;
 
-    if (iniciar_sistema(usuarios, &qnt_usuarios) == FALHA) {
+    if (iniciar_sistema(usuarios, &qnt_usuarios, habilidades) == FALHA) {
         encerrar_sistema(usuarios, qnt_usuarios);
         return 1;
     }
@@ -60,7 +61,7 @@ int main() {
             continuar = true;
             break;
         case 2:
-            if (registro(usuarios, &qnt_usuarios) == FALHA) {
+            if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
                 continue;
             }
             break;
