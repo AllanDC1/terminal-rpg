@@ -84,3 +84,20 @@ void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
     printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");
     delay(1000);
 }
+
+void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades) {
+    for (int i = 0; i < QNT_HABILIDADES; i++) {
+        if (usuario_logado->nivel >= array_habilidades[i].requisito_xp) {
+            if (strcmp(usuario_logado->atq_basico.nome, array_habilidades[i].nome) != 0 &&
+                strcmp(usuario_logado->atq_especial.nome, array_habilidades[i].nome) != 0)
+                {
+                printf("Nova habilidade desbloqueada: %s!\n", array_habilidades[i].nome);
+                if (array_habilidades[i].ID % 2 == 0) {
+                    usuario_logado->atq_basico = array_habilidades[i];
+                } else {
+                    usuario_logado->atq_especial = array_habilidades[i];
+                }
+            }
+        }
+    }
+}

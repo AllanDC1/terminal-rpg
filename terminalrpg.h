@@ -81,6 +81,7 @@ int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
 int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
+void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
