@@ -12,9 +12,8 @@ Projeto 2 do curso de CC 2° sem Noturno da FEI.
 ### Menu Pós-Login
 
 - _Jogar_: Usuário começa a jogar.
-- _Criar novo_: Pede uma confirmação da exclusão do personagem atual, caso confirme, apaga o personagem, e cria um novo zerado.
-- _Loja_: Exibir os itens disponíveis, serão 9 itens aleatórios entre X possibilidades (array), ? loja muda toda vez que é aberta ?
-- _Inventário_: Exibi os itens no inventário do player, pode vender/descartar um item escolhendo o índice dele.
+- _Loja_: Exibir os itens disponíveis, usuário poderá escolher 1 deles para comprar por uma quantidade de moedas.
+- _Inventário_: Exibi os itens no inventário do player.
 - _Alterar conta_: Exibi os dados do usuário e permite ele excluir conta, alterar nome de usuário, etc.
 
 ## Em jogo
@@ -39,8 +38,9 @@ Projeto 2 do curso de CC 2° sem Noturno da FEI.
 
 - Cada inimigo derrotado dará uma quantidade X de XP, ? de acordo com sua dificuldade. ?
 - ? O inimigo final da dungeon dará a maior quantidade de XP se derrotado. ?
-- Quando a dungeon for concluída, será recompensada uma quantidade X de Moedas e um item que será baseado em um número aleatório, ? de diferentes raridades. ?
+- Quando a dungeon for concluída, será recompensada uma quantidade X de Moedas.
 - A XP será somada no nível do player, e as Moedas poderão ser gastas na loja.
+- Quando o player atingir marcos de nível (5,10,15,...) ele receberá novos ataques.
 
 ## Estrutura das mecânicas
 
@@ -50,7 +50,9 @@ Projeto 2 do curso de CC 2° sem Noturno da FEI.
   - Senha <br>
   - Apelido (nickname dentro do jogo) <br>
   - Nível (XP float) <br>
-  - Inventário (Ataques/itens) <br>
+  - Inventário de consumíveis <br>
+  - Ataque básico
+  - Ataque especial
   - Status <br>
 
 - Status será uma struct contendo: <br>
@@ -80,13 +82,13 @@ Projeto 2 do curso de CC 2° sem Noturno da FEI.
   - Dano <br>
   - Velocidade ? <br>
 
-- A loja será armazenada em binario contendo 2 poções (vida e força) e X ataques provisoriamente. <br>
-
-  ???????? <br>
+- A loja será armazenada em binario contendo 2 tipos de poções (vida e força) com diferentes potências. <br>
 
   - _Poções:_ <br>
   - ID <br>
   - Nome <br>
-  - Efeito <br>
+  - Vida recuperada <br>
+  - Dano Aumentado <br>
+  - Preço <br>
 
 ...

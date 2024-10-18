@@ -133,8 +133,6 @@ int menu_principal() {
     printf("|---------------------------|\n");
 
     return escolher_operacao(5);
-<<<<<<< Updated upstream
-=======
 }
 
 // FUNÇÕES PARA A LOJA
@@ -252,5 +250,4 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
 
     print_sucesso("Compra bem sucedida!\n");
     return OK;
->>>>>>> Stashed changes
 }

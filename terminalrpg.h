@@ -99,6 +99,7 @@ int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int menu_principal();
+int menu_itens_compraveis(Usuario* usuario_logado);
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
@@ -106,9 +107,5 @@ int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuario
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
-
-// LOJA.C
-int menu_loja();
-int menu_itens_compraveis(Usuario* usuario_logado);
 
 #endif
