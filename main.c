@@ -32,11 +32,13 @@ int main() {
                     // batalha?
                     break;
                 case 2:
-                    // inventario?
-                    break;                
+                    // INVENTARIO
+                    menu_inventario(&usuario_logado);
+                    break;
                 case 3:
-                    // LOJA  
+                    // LOJA
                     menu_itens_compraveis(&usuario_logado);
+                    break;
                 case 4:
                     // alterar dados conta                    
                     break;
@@ -62,3 +64,4 @@ int main() {
     encerrar_sistema(usuarios, qnt_usuarios);
     return 0;
 }
+
