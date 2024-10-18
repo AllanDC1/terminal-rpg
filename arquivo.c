@@ -76,6 +76,7 @@ int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_str
 
 int criar_arq_itens(){
 
+
     Item lista_itens_criar[] = {
         {1, "Pocao de Vida fraca", 25, 0, 100},
         {2, "Pocao de Vida media", 50, 0, 200},

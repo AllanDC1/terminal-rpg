@@ -101,6 +101,7 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
+
 int menu_inventario(Usuario* usuario_logado);
 
 // USUARIO.C
