@@ -110,8 +110,4 @@ int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
 
-// LOJA.C
-int menu_loja();
-int menu_itens_compraveis(Usuario* usuario_logado);
-
 #endif
