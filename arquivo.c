@@ -76,13 +76,13 @@ int salvar_arquivo_bin(const char* nome_arquivo, void *array, size_t tamanho_str
 
 int criar_arq_itens(){
 
-    Item lista_itens[] = {
-        {0, "Pocao de Vida fraca", 25, 0, 100},
-        {1, "Pocao de Vida media", 50, 0, 200},
-        {2, "Pocao de Vida forte", 75, 0, 500},
-        {3, "Pocao de forca Fraca", 0, 10, 100},
-        {4, "Pocao de forca media", 0, 25, 200},
-        {5, "Pocao de forca forte", 0, 50, 500},
+    Item lista_itens_criar[] = {
+        {1, "Pocao de Vida fraca", 25, 0, 100},
+        {2, "Pocao de Vida media", 50, 0, 200},
+        {3, "Pocao de Vida forte", 75, 0, 500},
+        {4, "Pocao de forca Fraca", 0, 10, 100},
+        {5, "Pocao de forca media", 0, 25, 200},
+        {6, "Pocao de forca forte", 0, 50, 500},
     };
 
     FILE *fP = abrir_arquivo("itens.txt", "w");
@@ -91,13 +91,13 @@ int criar_arq_itens(){
         return FALHA;
     }
 
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
         fprintf(fP, "%d \"%s\" %d %d %d\n", 
-            lista_itens[i].ID,
-            lista_itens[i].nome,
-            lista_itens[i].vida_recuperada,
-            lista_itens[i].dano_aumentado,
-            lista_itens[i].preco
+            lista_itens_criar[i].ID,
+            lista_itens_criar[i].nome,
+            lista_itens_criar[i].vida_recuperada,
+            lista_itens_criar[i].dano_aumentado,
+            lista_itens_criar[i].preco
         );
     }
 
@@ -148,7 +148,7 @@ int ler_arq_itens(Item *array_itens) {
     char linha[100]; //buffer
     int i = 0; // itens lidos
 
-    while (i < QNT_CONSUMIVEIS && fgets(linha, sizeof(linha), fP) != NULL) {
+    while (i < QNT_ITENS_LOJA && fgets(linha, sizeof(linha), fP) != NULL) {
         if (sscanf(linha, "%d \"%[^\"]\" %d %d %d", 
             &array_itens[i].ID,
             array_itens[i].nome,
@@ -163,7 +163,7 @@ int ler_arq_itens(Item *array_itens) {
         }
     }
 
-    if (i != QNT_CONSUMIVEIS) {
+    if (i != QNT_ITENS_LOJA) {
         print_erro("Erro ao ler arquivo de itens. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;

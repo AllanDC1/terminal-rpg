@@ -32,23 +32,11 @@ int main() {
                     // batalha?
                     break;
                 case 2:
-                    // inventario?
-                    break;                
+                    // INVENTARIO
+                    menu_inventario(&usuario_logado);
                 case 3:
-                    // loja
-                    switch (menu_loja()){
-                    case 1:
-                        // comprar itens
-                        menu_itens_compraveis(&usuario_logado);
-                        break;
-                    case 2:
-                        // ver lista de itens
-                        break;
-                    case 3:
-                        // voltar para o menu principal
-                        break;
-                    }                    
-                    break;
+                    // LOJA
+                    menu_itens_compraveis(&usuario_logado);
                 case 4:
                     // alterar dados conta                    
                     break;

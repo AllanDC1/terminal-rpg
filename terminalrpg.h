@@ -18,7 +18,8 @@
 
 #define MAX_USUARIOS 10
 
-#define QNT_CONSUMIVEIS 6
+#define QNT_CONSUMIVEIS 10
+#define QNT_ITENS_LOJA 6
 #define QNT_HABILIDADES 7
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
@@ -49,7 +50,7 @@ typedef struct {
     char nickname[TAM_NICK];
     double nivel;
     int moedas;
-    Item consumiveis[QNT_CONSUMIVEIS];
+    Item consumiveis[QNT_ITENS_LOJA];
     Habilidade atq_basico;
     Habilidade atq_especial;
     int vida;
@@ -99,6 +100,8 @@ int menu_inicial();
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int menu_principal();
+int menu_itens_compraveis(Usuario* usuario_logado);
+int menu_inventario(Usuario* usuario_logado);
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
