@@ -46,7 +46,7 @@ typedef struct {
     char nickname[TAM_NICK];
     double nivel;
     int moedas;
-    Item consumiveis[QNT_ITENS_LOJA];
+    Item consumiveis[QNT_CONSUMIVEIS];
     Habilidade atq_basico;
     Habilidade atq_especial;
     int vida;
@@ -95,8 +95,6 @@ int criar_arq_inimigos();
 // MENU.C
 int escolher_operacao(int qnt_operacoes);
 int menu_inicial();
-int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
-int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
 
@@ -108,5 +106,7 @@ int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuario
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
+int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado);
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 
 #endif

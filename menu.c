@@ -27,100 +27,6 @@ int menu_inicial() {
     return escolher_operacao(3);
 }
 
-int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
-    char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1]; //testar se o limite esta correto
-    int idx_usuario;
-
-    if (qnt_usuarios == 0) {
-        print_erro("Nenhuma conta foi criada no sistema.\n");
-        delay(1000);
-        return FALHA;
-    }
-
-    do {
-        limpa_tela();
-        printf("Realize seu login para entrar no jogo:\n");
-
-        printf("> Nome de Usuario: ");
-        fgets(entrada_login, sizeof(entrada_login), stdin);
-        verificar_buffer(entrada_login);
-
-        printf("> Senha: ");
-        fgets(entrada_senha, sizeof(entrada_senha), stdin);
-        verificar_buffer(entrada_senha);
-
-        idx_usuario = validar_usuario(entrada_login, entrada_senha, array_usuarios, qnt_usuarios);
-        if (idx_usuario == FALHA) {
-            print_erro("Credenciais incorretas. Insira novamente.\n");
-            delay(1000);
-        }        
-    } while (idx_usuario == FALHA);
-
-    *usuario_logado = array_usuarios[idx_usuario];
-
-    limpa_tela();
-    print_sucesso("Login realizado com sucesso!\n");
-    delay(1000);
-
-    return OK;
-}
-
-int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial) {
-    Usuario novo_usuario;
-    char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1], entrada_nickname[TAM_NICK + 1]; //testar se o limite esta correto
-    int auth;
-
-    limpa_tela();
-
-    if (*qnt_usuarios >= MAX_USUARIOS) {
-        print_erro("Quantidade limite de usuarios criados atingida. Cancelando operacao...\n");
-        return FALHA;
-    }
-
-    do {
-        printf("Registre sua conta:\n");
-
-        printf("> Informe nome de usuario (Usado para login): ");
-        fgets(entrada_login, sizeof(entrada_login), stdin);
-        verificar_buffer(entrada_login);
-        auth = validar_nome_usuario(entrada_login, array_usuarios, *qnt_usuarios);
-
-        if (auth == SAIDA) {
-            return FALHA; // volta pro menu
-        }        
-    } while (auth == FALHA);
-
-    do {
-        printf("> Informe uma senha (6-15 caracteres): ");
-        fgets(entrada_senha, sizeof(entrada_senha), stdin);
-        verificar_buffer(entrada_senha);        
-    } while (validar_senha(entrada_senha) == FALHA);
-
-    do {
-        printf("> Informe um nickname (Nome mostrado em jogo): ");
-        fgets(entrada_nickname, sizeof(entrada_nickname), stdin);
-        verificar_buffer(entrada_nickname);        
-    } while (validar_nickname(entrada_nickname) == FALHA);
-
-    zerar_usuario(&novo_usuario, atq_inicial);
-    strcpy(novo_usuario.nome_usuario, entrada_login);
-    strcpy(novo_usuario.senha, entrada_senha);
-    strcpy(novo_usuario.nickname, entrada_nickname);
-
-    array_usuarios[*qnt_usuarios] = novo_usuario;
-    (*qnt_usuarios)++;
-
-    if (salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
-        return FALHA;
-    }
-    
-    limpa_tela();
-    print_sucesso("Usuario criado com sucesso!\n");
-
-    voltar_menu();
-    return OK;
-}
-
 // funcoes para o menu principal do personagem provisorio
 
 int menu_principal() {   
@@ -149,33 +55,39 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     limpa_tela();
 
     // Cabeçalho da tabela
-    printf("BEM-VINDO A LOJA!\n\n");
-    printf("---------------------------------------------------------------\n");
-    printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida (%)", "Forca (%)", "Preco");
-    printf("---------------------------------------------------------------\n");
-    // Printa lista de itens
-    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-        printf("%-5d %-25s %-10d %-10d %-10d\n", 
-            array_itens[i].ID,
-            array_itens[i].nome, 
-            array_itens[i].vida_recuperada, 
-            array_itens[i].dano_aumentado, 
-            array_itens[i].preco
-        );
-    }
-
-    // Pede o ID do item
-    printf("\nDigite o 0 para sair ou ID do item desejado: ");
-    while (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > QNT_ITENS_LOJA - 1) {
-        print_erro("ID invalido. Insira novamente.\n");
+    do {
+        printf("BEM-VINDO A LOJA!\n");
+        printf("---------------------------------------------------------------\n");
+        printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida (%)", "Forca (%)", "Preco");
+        printf("---------------------------------------------------------------\n");
+        // Printa lista de itens
+        for (int i = 0; i < QNT_ITENS_LOJA; i++) {
+            printf("%-5d %-25s %-10d %-10d %-10d\n", 
+                array_itens[i].ID,
+                array_itens[i].nome, 
+                array_itens[i].vida_recuperada, 
+                array_itens[i].dano_aumentado, 
+                array_itens[i].preco
+            );
+        }
+        // Pede o ID do item
+        printf("\nDigite 0 para sair ou ID do item desejado: ");
+        if (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > QNT_ITENS_LOJA) {
+            print_erro("ID invalido. Insira novamente.\n");
+            delay(1000);
+            id_desejado = FALHA;
+        }
         limpar_buffer();
+        limpa_tela();
+    } while (id_desejado == FALHA);    
+
+    if (id_desejado == 0){
+        return OK;
+    } else {
+        id_desejado -= 1; // id do array comeca do 0
     }
-    limpar_buffer();
 
-    if (id_desejado == 0){return OK;}
-
-    limpa_tela();
-    printf("\nVocê escolheu a poção:\n");
+    printf("\nVoce escolheu a pocao:\n");
     printf("ID: %d\n", array_itens[id_desejado].ID);
     printf("Nome: %s\n", array_itens[id_desejado].nome);
     printf("Vida Recuperada: %d\n", array_itens[id_desejado].vida_recuperada);
@@ -183,18 +95,34 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     printf("Preco: %d\n", array_itens[id_desejado].preco);
 
     if (array_itens[id_desejado].preco > usuario_logado->moedas) {
+        print_erro("\nVoce nao possui moedas suficientes para esse item.\n");
+        voltar_menu();
         limpa_tela();
-        print_erro("Voce nao possui moedas suficientes para esse item.\n");
-        delay(1000);
         return FALHA; // cancela compra
     }
 
-    // Pedir confirmacao talvez
+    int idx_disp = FALHA; // indice do inventario que nao possui item
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        if (usuario_logado->consumiveis[i].ID == -1) {
+            idx_disp = i;
+            break;
+        }        
+    }
 
-    usuario_logado->consumiveis[array_itens[id_desejado].ID] = array_itens[id_desejado];
+    if (idx_disp == FALHA) {
+        print_erro("\nSeu inventario esta cheio.\n");
+        voltar_menu();
+        limpa_tela();
+        return FALHA; // cancela a compra
+    }
+
+    // Pedir confirmacao talvez
+    
+    usuario_logado->consumiveis[idx_disp] = array_itens[id_desejado]; 
     usuario_logado->moedas -= array_itens[id_desejado].preco;
 
-    print_sucesso("Compra bem sucedida!\n");
+    print_sucesso("\nCompra bem sucedida!\n");
+    voltar_menu();
     return OK;
 }
 
@@ -210,65 +138,64 @@ int menu_inventario(Usuario* usuario_logado) {
     printf("|  Vida:   %-20d|\n", usuario_logado->vida);
     printf("|------------------------------|\n\n");
 
+    int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
+    Item item_temp;
 
-
-    int quantidade[QNT_CONSUMIVEIS] = {0};
+    // conta a quantidade de cada item no inventario
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        if (usuario_logado->consumiveis[i].ID != -1) {
+            item_temp = usuario_logado->consumiveis[i];
+            quantidade[item_temp.ID - 1]++;
+        }
+    }  
 
     // Verifica se tem item
-    int itens_presentes = 0;
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+    bool itens_presentes = false;
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
         if (quantidade[i] > 0) {
-            itens_presentes = 1;
+            itens_presentes = true;
             break;
         }
     }
 
     if (!itens_presentes) {
         printf("Nenhum item no inventario!\n");
-        printf("\nPressione qualquer tecla para voltar ao menu principal...\n");
-        getchar();
-
+        voltar_menu();
         return OK;
     }
 
     printf("| CONSUMIVEIS:                                     |\n");
     printf("|--------------------------------------------------|\n");
-    printf("| %-3s %-16s %-16s %-10s |\n", "ID", "Nome", "Efeito", "Quantidade");
-    printf("|--------------------------------------------------|\n");
+    printf("| %-3s %-20s %-10s %-12s |\n", "ID", "Nome", "Efeito", "Quantidade");
+    printf("|--------------------------------------------------|\n");      
 
-    // conta a quantidade de cada item no inventario
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        if (usuario_logado->consumiveis[i].ID != 0) {
-            Item item = usuario_logado->consumiveis[i];
-            quantidade[item.ID]++;
-        }
-    }
-
-    
-
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
         if (quantidade[i] > 0) {  // Exibe apenas os itens presentes no inventário
-            Item item = usuario_logado->consumiveis[i];
+            for (int j = 0; j < QNT_CONSUMIVEIS; j++) {  // interno
+                if (usuario_logado->consumiveis[j].ID == i + 1) {
+                    item_temp = usuario_logado->consumiveis[j];
+                    break; // break no interno
+                }
+            }  
 
             // Define o efeito do item
             char efeito[50];
-            if (item.vida_recuperada > 0) {
-                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item.vida_recuperada);
-            } else if (item.dano_aumentado > 0) {
-                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item.dano_aumentado);
+            if (item_temp.vida_recuperada > 0) {
+                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item_temp.vida_recuperada);
+            } else if (item_temp.dano_aumentado > 0) {
+                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item_temp.dano_aumentado);
             } else {
                 snprintf(efeito, sizeof(efeito), "Nenhum efeito");
             }
 
             // Exibe as informações formatadas
-            printf("| %-3d %-16s %-16s %-10d |\n", 
-            item.ID, item.nome, efeito, quantidade[item.ID]);
+            printf("| %-3d %-20s %-10s %-12d |\n", 
+            item_temp.ID, item_temp.nome, efeito, quantidade[item_temp.ID - 1]);
         }
     }
 
     printf("|--------------------------------------------------|\n");
-    printf("\nPressione qualquer tecla para voltar ao menu principal...\n");
-    getchar();
+    voltar_menu();
 
     return OK;
 }
