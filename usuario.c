@@ -168,7 +168,10 @@ int alterar_apelido(Usuario *usuario_logado) {
         verificar_buffer(entrada_nickname);        
     } while (validar_nickname(entrada_nickname) == FALHA);
     
-    // pedir confirmacao return saida/falha
+    if (confirmar_acao() == FALHA) {
+        printf("Alteracao de apelido cancelada.\n");
+        return FALHA;
+    }
 
     strcpy(usuario_logado->nickname, entrada_nickname);
     return OK;
@@ -190,7 +193,10 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
     fgets(entrada, sizeof(entrada), stdin);
     verificar_buffer(entrada);
     if (strcmp(entrada, usuario_logado->nome_usuario) == 0) {
-        // pedir outra confirmacao talvez
+        if (confirmar_acao() == FALHA) {
+            printf("Exclusao de conta cancelada.\n");
+            return FALHA;
+        }
         for (int i = idx_usuario; i < *qnt_usuarios - 1; i++) {
             array_usuarios[i] = array_usuarios[i + 1];
         }

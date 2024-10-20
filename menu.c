@@ -116,7 +116,11 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
         return FALHA; // cancela a compra
     }
 
-    // Pedir confirmacao talvez
+    if (confirmar_acao() == FALHA) {
+        printf("Compra cancelada.\n");
+        voltar_menu();
+        return FALHA;
+    }
     
     usuario_logado->consumiveis[idx_disp] = array_itens[id_desejado]; 
     usuario_logado->moedas -= array_itens[id_desejado].preco;
@@ -213,7 +217,11 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
     switch (escolher_operacao(4))
     {
     case 1:
-        // pedir confirmacao
+        if (confirmar_acao() == FALHA) {
+            printf("Reinicio de personagem cancelada.\n");
+            voltar_menu();
+            return FALHA;
+        }
         zerar_usuario(usuario_logado, atq_inicial);
         print_sucesso("Seu usuario foi reiniciado. Boa sorte em sua nova aventura!\n");
         voltar_menu();

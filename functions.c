@@ -111,3 +111,23 @@ void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades) {
         }
     }
 }
+
+int confirmar_acao() {
+    int confirmacao;
+
+    do{
+        printf("\nConfirme sua acao:\n");
+        printf("1-Confirmar ou 2-Cancelar: ");
+        if (scanf("%d", &confirmacao) != 1 || confirmacao != 1 && confirmacao != 2) {
+            print_erro("Escolha invalida.\n");
+            confirmacao = FALHA;
+        }            
+        limpar_buffer();
+    }while (confirmacao == FALHA);
+
+    if (confirmacao == 1) {
+        return OK;
+    } else {
+        return FALHA;
+    }
+}
