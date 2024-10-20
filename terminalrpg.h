@@ -21,13 +21,9 @@
 #define QNT_CONSUMIVEIS 10
 #define QNT_ITENS_LOJA 6
 #define QNT_HABILIDADES 7
+#define QNT_DUNGEONS 5
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};  
-
-typedef struct {
-    int vida;
-    int dano;
-} Status;
 
 typedef struct {
     int ID;
@@ -58,17 +54,17 @@ typedef struct {
 
 typedef struct {
     int ID;
-    char nome[255];
+    char nome[20];
     int dificuldade;
     int qnt_moedas;
-    Habilidade recompensas[5];
 } Dungeon;
 
 typedef struct {
-    int ID;
-    char nome[255];
-    Status status;
-    float qnt_xp;
+    int id_dungeon;
+    char nome[20];
+    int vida;
+    int dano;
+    int nivel;
 } Inimigo;
 
 // FUNCTIONS.C
@@ -93,6 +89,8 @@ int criar_arq_itens();
 int criar_arq_habilidades();
 int ler_arq_itens(Item *array_itens);
 int ler_arq_habilidades(Habilidade *array_habilidades);
+int criar_arq_dungeons();
+int criar_arq_inimigos();
 
 // MENU.C
 int escolher_operacao(int qnt_operacoes);

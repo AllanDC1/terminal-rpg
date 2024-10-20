@@ -3,9 +3,9 @@
 //Execução principal/inicial do programa
 
 int main() {
-    Usuario usuarios[MAX_USUARIOS];
-    Usuario usuario_logado;
+    Usuario usuarios[MAX_USUARIOS], usuario_logado;
     Habilidade habilidades[QNT_HABILIDADES];
+
     int qnt_usuarios = 0;
     bool continuar = true;
 
@@ -15,7 +15,7 @@ int main() {
     }
 
     do{
-        limpa_tela();
+        //limpa_tela();
         printf("Bem-Vindo ao Terminal RPG !\n");
         switch (menu_inicial()) {
         case 1:
@@ -26,7 +26,7 @@ int main() {
             // menu pos login
             do {
                 limpa_tela();
-                printf("Bem-Vindo %s!\n", usuario_logado.nickname);
+                printf("Bem-Vindo, %s!\n", usuario_logado.nickname);
                 switch (menu_principal()) {
                 case 1:
                     // batalha?

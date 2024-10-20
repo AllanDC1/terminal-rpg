@@ -58,22 +58,31 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
     if (iniciar_usuarios(array_usuarios, qnt_usuarios) == FALHA) {
         print_erro("Erro ao iniciar usuarios.\n");
         return FALHA;
-    }
+    }    
 
-    if (ler_arq_habilidades(array_habilidades) == FALHA) {
-        if (criar_arq_habilidades() == FALHA) {
-            print_erro("Erro ao criar arquivo de habilidades.\n");
-            return FALHA;
-        }
-        if (ler_arq_habilidades(array_habilidades) == FALHA) {
-            print_erro("Erro ao ler habilidades apos criacao do arquivo.\n");
-            return FALHA;
-        }
+    if (criar_arq_habilidades() == FALHA) {
+        print_erro("Erro ao criar arquivo de habilidades.\n");
+        return FALHA;
     }
 
     if (criar_arq_itens() == FALHA) {
         print_erro("Erro ao criar arquivo de itens.\n");
         return FALHA;
+    }
+
+    if (criar_arq_dungeons() == FALHA) {
+        print_erro("Erro ao criar arquivo de dungeons.\n");
+        return FALHA;
+    }
+
+    if (criar_arq_inimigos() == FALHA) {
+        print_erro("Erro ao criar arquivo de inimigos.\n");
+        return FALHA;
+    }
+
+    if (ler_arq_habilidades(array_habilidades) == FALHA) {
+        print_erro("Erro ao ler arquivo de habilidades.\n");
+        return FALHA;        
     }
 
     return OK;
@@ -82,7 +91,7 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
     salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
     limpa_tela();
-    printf("Obrigado pela sua presenca!\nEncerrando o programa...\n\n\n\n");
+    printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");
 }
 
 void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades) {

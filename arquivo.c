@@ -202,6 +202,7 @@ int ler_arq_habilidades(Habilidade *array_habilidades) {
     }
 
     if (i != QNT_HABILIDADES) {
+        printf("Qnt de habil lidas: %d\n", i);
         print_erro("Erro ao ler arquivo de habilidades. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;
@@ -210,4 +211,83 @@ int ler_arq_habilidades(Habilidade *array_habilidades) {
     fclose(fP);
 
     return i;
+}
+
+int criar_arq_dungeons() {
+
+    Dungeon lista_dungeons[] = {
+        {1, "Floresta do Leste", 1, 150},
+        {2, "Montanha Gelida", 2, 300},
+        {3, "Caverna das Cinzas", 3, 500},
+        {4, "Vale do Dragao", 4, 750},    
+        {5, "Fortaleza Sombria", 5, 1000}
+    };
+
+    FILE *fP = abrir_arquivo("dungeons.txt", "w");
+    if (fP == NULL) {
+        print_erro("Erro ao criar arquivo de dungeons.\n");
+        return FALHA;
+    }
+
+    for (int i = 0; i < QNT_DUNGEONS; i++) {
+        fprintf(fP, "%d \"%s\" %d %d\n", 
+            lista_dungeons[i].ID,
+            lista_dungeons[i].nome,
+            lista_dungeons[i].dificuldade,
+            lista_dungeons[i].qnt_moedas
+        );
+    }
+
+    fclose(fP);
+    return OK;
+}
+
+int criar_arq_inimigos() {
+
+    Inimigo lista_inimigos[] = {
+    //inimigos_floresta
+        {1, "Goblin", 12, 3, 1},
+        {1, "Lobo", 18, 4, 1},
+        {1, "Espirito Floral", 22, 6, 3},
+        {1, "General Ogro", 40, 8, 5},
+    //inimigos_montanha
+        {2, "Elemental de Gelo", 12, 3, 2},
+        {2, "Arqueiro", 18, 4, 2},
+        {2, "Urso Polar", 25, 7, 4},
+        {2, "Golem Congelado", 45, 10, 6},
+    //inimigos_caverna
+        {3, "Rato de Cinzas", 12, 3, 2},
+        {3, "Zumbi Carbonizado", 20, 5, 3},
+        {3, "Esqueleto Negro", 22, 6, 4},
+        {3, "Gargula das Chamas", 50, 10, 6},
+    //inimigos_vale
+        {4, "Cultista Draconico", 12, 4, 2},
+        {4, "Lagarto", 20, 5, 3},
+        {4, "Principe Prateado", 25, 7, 5},
+        {4, "Deus Dragao", 55, 12, 7},
+    //inimigos_fortaleza
+        {5, "Cavaleiro", 15, 4, 3},
+        {5, "Corvo Estranho", 20, 5, 3},
+        {5, "Espectro Abissal", 25, 7, 5},
+        {5, "Lorde Roberto", 60, 12, 8}
+    };
+
+    FILE *fP = fopen("inimigos.txt", "w");
+    if (fP == NULL) {
+        printf("Erro ao criar arquivo de inimigos.\n");
+        return FALHA;
+    }
+
+    for (int i = 0; i < 4 * QNT_DUNGEONS; i++) {
+        fprintf(fP, "%d \"%s\" %d %d %d\n", 
+            lista_inimigos[i].id_dungeon,
+            lista_inimigos[i].nome,
+            lista_inimigos[i].vida,
+            lista_inimigos[i].dano,
+            lista_inimigos[i].nivel
+        );
+    }
+
+    fclose(fP);
+    return OK;
 }
