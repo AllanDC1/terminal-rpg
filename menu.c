@@ -101,12 +101,28 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
         return FALHA; // cancela compra
     }
 
+    int idx_disp = FALHA; // indice do inventario que nao possui item
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        if (usuario_logado->consumiveis[i].ID == -1) {
+            idx_disp = i;
+            break;
+        }        
+    }
+
+    if (idx_disp == FALHA) {
+        print_erro("\nSeu inventario esta cheio.\n");
+        voltar_menu();
+        limpa_tela();
+        return FALHA; // cancela a compra
+    }
+
     // Pedir confirmacao talvez
+    
+    usuario_logado->consumiveis[idx_disp] = array_itens[id_desejado]; 
+    usuario_logado->moedas -= array_itens[id_desejado].preco;
 
-    usuario_logado->consumiveis[array_itens[id_desejado].ID] = array_itens[id_desejado];
-    usuario_logado->moedas -= array_itens[id_desejado].preco;    
-
-    print_sucesso("Compra bem sucedida!\n");
+    print_sucesso("\nCompra bem sucedida!\n");
+    voltar_menu();
     return OK;
 }
 
@@ -122,13 +138,22 @@ int menu_inventario(Usuario* usuario_logado) {
     printf("|  Vida:   %-20d|\n", usuario_logado->vida);
     printf("|------------------------------|\n\n");
 
-    int quantidade[QNT_CONSUMIVEIS] = {0};
+    int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
+    Item item_temp;
+
+    // conta a quantidade de cada item no inventario
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        if (usuario_logado->consumiveis[i].ID != -1) {
+            item_temp = usuario_logado->consumiveis[i];
+            quantidade[item_temp.ID - 1]++;
+        }
+    }  
 
     // Verifica se tem item
-    int itens_presentes = 0;
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+    bool itens_presentes = false;
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
         if (quantidade[i] > 0) {
-            itens_presentes = 1;
+            itens_presentes = true;
             break;
         }
     }
@@ -141,34 +166,31 @@ int menu_inventario(Usuario* usuario_logado) {
 
     printf("| CONSUMIVEIS:                                     |\n");
     printf("|--------------------------------------------------|\n");
-    printf("| %-3s %-16s %-16s %-10s |\n", "ID", "Nome", "Efeito", "Quantidade");
-    printf("|--------------------------------------------------|\n");
+    printf("| %-3s %-20s %-10s %-12s |\n", "ID", "Nome", "Efeito", "Quantidade");
+    printf("|--------------------------------------------------|\n");      
 
-    // conta a quantidade de cada item no inventario
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        if (usuario_logado->consumiveis[i].ID != 0) {
-            Item item = usuario_logado->consumiveis[i];
-            quantidade[item.ID]++;
-        }
-    }    
-
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
         if (quantidade[i] > 0) {  // Exibe apenas os itens presentes no inventário
-            Item item = usuario_logado->consumiveis[i];
+            for (int j = 0; j < QNT_CONSUMIVEIS; j++) {  // interno
+                if (usuario_logado->consumiveis[j].ID == i + 1) {
+                    item_temp = usuario_logado->consumiveis[j];
+                    break; // break no interno
+                }
+            }  
 
             // Define o efeito do item
             char efeito[50];
-            if (item.vida_recuperada > 0) {
-                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item.vida_recuperada);
-            } else if (item.dano_aumentado > 0) {
-                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item.dano_aumentado);
+            if (item_temp.vida_recuperada > 0) {
+                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item_temp.vida_recuperada);
+            } else if (item_temp.dano_aumentado > 0) {
+                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item_temp.dano_aumentado);
             } else {
                 snprintf(efeito, sizeof(efeito), "Nenhum efeito");
             }
 
             // Exibe as informações formatadas
-            printf("| %-3d %-16s %-16s %-10d |\n", 
-            item.ID, item.nome, efeito, quantidade[item.ID]);
+            printf("| %-3d %-20s %-10s %-12d |\n", 
+            item_temp.ID, item_temp.nome, efeito, quantidade[item_temp.ID - 1]);
         }
     }
 

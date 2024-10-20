@@ -59,10 +59,13 @@ int validar_nickname(char *entrada) {
 
 void zerar_usuario(Usuario *usuario, Habilidade atq_inicial) {    
     usuario->nivel = 0.0;
-    usuario->moedas = 0;
+    usuario->moedas = 1000; // TESTE
     usuario->atq_basico = atq_inicial;
-    //usuario->atq_especial = NULL; // testar pra ver se precisara declarar o atq especial como vazio inicialmente
+    usuario->atq_especial = (Habilidade){-1, "", 0, 0}; // inicia como valor padrao
     usuario->vida = 100; //exemplo
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
+    }
 }
 
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {

@@ -46,7 +46,7 @@ typedef struct {
     char nickname[TAM_NICK];
     double nivel;
     int moedas;
-    Item consumiveis[QNT_ITENS_LOJA];
+    Item consumiveis[QNT_CONSUMIVEIS];
     Habilidade atq_basico;
     Habilidade atq_especial;
     int vida;
