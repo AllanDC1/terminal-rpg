@@ -106,7 +106,7 @@ int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuario
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
 void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
-int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado);
+int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 
 #endif

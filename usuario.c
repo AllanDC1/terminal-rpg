@@ -65,7 +65,7 @@ void zerar_usuario(Usuario *usuario, Habilidade atq_inicial) {
     usuario->vida = 100; //exemplo
 }
 
-int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
+int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
     char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1]; //testar se o limite esta correto
     int idx_usuario;
 
@@ -94,7 +94,7 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario *usuario_logado) {
         }        
     } while (idx_usuario == FALHA);
 
-    *usuario_logado = array_usuarios[idx_usuario];
+    *usuario_logado = &array_usuarios[idx_usuario];
 
     limpa_tela();
     print_sucesso("Login realizado com sucesso!\n");
