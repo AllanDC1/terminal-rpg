@@ -13,9 +13,7 @@ int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usu
             }
         }
     }
-    limpa_tela();
-    print_erro("Credenciais incorretas. Insira novamente.\n");
-    delay(1000);
+    
     return FALHA;
 }
 
@@ -160,4 +158,47 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial)
 
     voltar_menu();
     return OK;
+}
+
+int alterar_apelido(Usuario *usuario_logado) {
+    char entrada_nickname[TAM_NICK + 1];
+    do {
+        printf("> Informe um novo nickname: ");
+        fgets(entrada_nickname, sizeof(entrada_nickname), stdin);
+        verificar_buffer(entrada_nickname);        
+    } while (validar_nickname(entrada_nickname) == FALHA);
+    
+    // pedir confirmacao return saida/falha
+
+    strcpy(usuario_logado->nickname, entrada_nickname);
+    return OK;
+}
+
+int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado) {
+    char entrada[TAM_LOGIN + 1];
+    int idx_usuario;
+
+    // achar idx do usuario no array
+    for (int i = 0; i < *qnt_usuarios; i++) {
+        if (strcmp(array_usuarios[i].nome_usuario, usuario_logado->nome_usuario) == 0) {
+            idx_usuario = i;
+            break;
+        }
+    }
+
+    printf("> Digite seu nome de usuario para confirmar a exclusao: ");
+    fgets(entrada, sizeof(entrada), stdin);
+    verificar_buffer(entrada);
+    if (strcmp(entrada, usuario_logado->nome_usuario) == 0) {
+        // pedir outra confirmacao talvez
+        for (int i = idx_usuario; i < *qnt_usuarios - 1; i++) {
+            array_usuarios[i] = array_usuarios[i + 1];
+        }
+        (*qnt_usuarios)--;
+        return SAIDA;        
+    } else {
+        print_erro("Nome de usuario incorreto. Exclusao cancelada.\n");
+        voltar_menu();
+        return OK;
+    }    
 }

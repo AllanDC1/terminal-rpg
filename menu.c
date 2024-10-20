@@ -199,3 +199,42 @@ int menu_inventario(Usuario* usuario_logado) {
 
     return OK;
 }
+
+int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade atq_inicial) {
+    limpa_tela();
+    printf("ALTERE DADOS DA SUA CONTA\n\n");
+    printf("|---------------------------|\n");
+    printf("|    1. Zerar Personagem    |\n");
+    printf("|    2. Alterar Apelido     |\n");
+    printf("|    3. Excluir Conta       |\n");
+    printf("|    4. Sair                |\n");
+    printf("|---------------------------|\n");
+
+    switch (escolher_operacao(4))
+    {
+    case 1:
+        // pedir confirmacao
+        zerar_usuario(usuario_logado, atq_inicial);
+        print_sucesso("Seu usuario foi reiniciado. Boa sorte em sua nova aventura!\n");
+        voltar_menu();
+        break;    
+    case 2:
+        if (alterar_apelido(usuario_logado) == OK) {
+            print_sucesso("Seu apelido foi alterado!\n");
+            voltar_menu();
+        }
+        break;    
+    case 3:
+        if (excluir_conta(array_usuarios, qnt_usuarios, usuario_logado) == SAIDA) {
+            usuario_logado = NULL;
+            print_sucesso("Sua conta foi excluida do sistema. Ate a proxima!\n");
+            delay(2000);
+            return SAIDA;
+        }
+        break;    
+    case 4:        
+        break;
+    }
+
+    return OK;
+}
