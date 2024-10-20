@@ -14,12 +14,12 @@ int main() {
         return 1;
     }
 
-    do{
-        //limpa_tela();
+    do{        
         printf("Bem-Vindo ao Terminal RPG !\n");
         switch (menu_inicial()) {
         case 1:
             if (login(usuarios, qnt_usuarios, &usuario_logado) == FALHA) {
+                limpa_tela();
                 continue;
             }
             delay(1000);
@@ -49,11 +49,14 @@ int main() {
 
             } while (continuar);
             continuar = true;
+            limpa_tela();
             break;
         case 2:
             if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
+                limpa_tela();
                 continue;
             }
+            limpa_tela();
             break;
         case 3:
             continuar = false;       

@@ -54,7 +54,8 @@ void limpa_tela () {
 }
 
 int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
-    
+    limpa_tela();
+
     if (iniciar_usuarios(array_usuarios, qnt_usuarios) == FALHA) {
         print_erro("Erro ao iniciar usuarios.\n");
         return FALHA;
