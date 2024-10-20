@@ -40,9 +40,13 @@ int main() {
                     menu_itens_compraveis(usuario_logado);
                     break;
                 case 4:
-                    // alterar dados conta                    
+                    // alterar dados conta
+                    if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades[0]) == SAIDA) {
+                        continuar = false;
+                    }            
                     break;
                 case 5:
+                    // saida / logout
                     continuar = false;
                     break;
                 }
