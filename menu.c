@@ -246,3 +246,49 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
 
     return OK;
 }
+
+// Menu das opcoes da dungeon
+
+int ler_dungeons_print() {
+    Dungeon dungeons[QNT_DUNGEONS];
+
+    limpa_tela();
+
+    FILE *fP = fopen("dungeons.txt", "r");
+    if (fP == NULL) {
+        printf("Erro ao abrir o arquivo de dungeons.\n");
+        return FALHA;
+    }
+
+    int i = 0;
+    while (i < QNT_DUNGEONS && 
+           fscanf(fP, "%d \"%[^\"]\" %d %d", 
+                  &dungeons[i].ID, 
+                  dungeons[i].nome, 
+                  &dungeons[i].dificuldade, 
+                  &dungeons[i].qnt_moedas) == 4) {
+        i++;
+    }
+    fclose(fP);
+
+    if (i != QNT_DUNGEONS) {
+        printf("Erro: numero de dungeons lidas (%d) nao corresponde ao esperado (%d).\n", i, QNT_DUNGEONS);
+        return FALHA;
+    }
+
+    qsort(dungeons, QNT_DUNGEONS, sizeof(Dungeon), comparar_por_ID_decrescente);
+
+    // printa as dungeons
+    printf("|----------------------------------------------|\n");
+    printf("| ID  Nome da Dungeon      Dificuldade  Moedas |\n");
+    printf("|----------------------------------------------|\n");
+    for (int j = 0; j < QNT_DUNGEONS; j++) {
+        printf("| %-3d %-20s %-12d %-6d |\n",
+        dungeons[j].ID, dungeons[j].nome, dungeons[j].dificuldade, dungeons[j].qnt_moedas);
+        }
+    printf("|----------------------------------------------|\n");
+
+    getchar();
+
+    return OK;
+}

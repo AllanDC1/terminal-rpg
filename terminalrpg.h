@@ -80,6 +80,7 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
 void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 int confirmar_acao();
+int comparar_por_ID_decrescente(const void *a, const void *b);
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
@@ -100,6 +101,7 @@ int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
 int menu_inventario(Usuario* usuario_logado);
 int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade atq_inicial);
+int ler_dungeons_print();
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);

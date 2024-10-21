@@ -30,6 +30,8 @@ int main() {
                 switch (menu_principal()) {
                 case 1:
                     // batalha?
+                    ler_dungeons_print();
+                    
                     break;
                 case 2:
                     // INVENTARIO
