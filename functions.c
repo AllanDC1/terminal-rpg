@@ -53,7 +53,7 @@ void limpa_tela () {
     #endif
 }
 
-int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades, Dungeon *array_dungeons) {
     limpa_tela();
 
     if (iniciar_usuarios(array_usuarios, qnt_usuarios) == FALHA) {
@@ -83,6 +83,11 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 
     if (ler_arq_habilidades(array_habilidades) == FALHA) {
         print_erro("Erro ao ler arquivo de habilidades.\n");
+        return FALHA;        
+    }
+
+    if (ler_arq_dungeons(array_dungeons) == FALHA) {
+        print_erro("Erro ao ler arquivo de dungeons.\n");
         return FALHA;        
     }
 
@@ -130,4 +135,10 @@ int confirmar_acao() {
     } else {
         return FALHA;
     }
+}
+
+int comparar_por_ID_decrescente(const void *a, const void *b) {
+    Dungeon *dungeonA = (Dungeon *)a;
+    Dungeon *dungeonB = (Dungeon *)b;
+    return dungeonB->ID - dungeonA->ID; // decrescente, se quiser colocar crescente tem q só mudar
 }

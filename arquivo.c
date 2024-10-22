@@ -202,7 +202,6 @@ int ler_arq_habilidades(Habilidade *array_habilidades) {
     }
 
     if (i != QNT_HABILIDADES) {
-        printf("Qnt de habil lidas: %d\n", i);
         print_erro("Erro ao ler arquivo de habilidades. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;
@@ -290,4 +289,79 @@ int criar_arq_inimigos() {
 
     fclose(fP);
     return OK;
+}
+
+int ler_arq_dungeons(Dungeon *array_dungeons) {    
+
+    FILE *fP = abrir_arquivo("dungeons.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; // buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_DUNGEONS && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d", 
+                   &array_dungeons[i].ID,
+                   array_dungeons[i].nome,
+                   &array_dungeons[i].dificuldade, 
+                   &array_dungeons[i].qnt_moedas) == 4) {
+            i++;
+        } else {
+            print_erro("Erro ao processar linha de dungeons.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_DUNGEONS) {
+        print_erro("Erro ao ler arquivo de dungeons. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
+}
+
+int ler_arq_inimigos(Inimigo *array_inimigos) {    
+
+    FILE *fP = abrir_arquivo("inimigos.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; // buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_INIMIGOS && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d %d", 
+                   &array_inimigos[i].id_dungeon,
+                   array_inimigos[i].nome,
+                   &array_inimigos[i].vida, 
+                   &array_inimigos[i].dano,
+                   &array_inimigos[i].nivel) == 5) {
+            i++;
+        } else {
+            print_erro("Erro ao processar linha de inimigos.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_INIMIGOS) {
+        print_erro("Erro ao ler arquivo de inimigos. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
 }

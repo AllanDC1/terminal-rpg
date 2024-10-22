@@ -5,11 +5,12 @@
 int main() {
     Usuario usuarios[MAX_USUARIOS], *usuario_logado;
     Habilidade habilidades[QNT_HABILIDADES];
+    Dungeon dungeons[QNT_DUNGEONS];
 
     int qnt_usuarios = 0;
     bool continuar = true;
 
-    if (iniciar_sistema(usuarios, &qnt_usuarios, habilidades) == FALHA) {
+    if (iniciar_sistema(usuarios, &qnt_usuarios, habilidades, dungeons) == FALHA) {
         encerrar_sistema(usuarios, qnt_usuarios);
         return 1;
     }
