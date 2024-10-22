@@ -288,7 +288,5 @@ int ler_dungeons_print() {
         }
     printf("|----------------------------------------------|\n");
 
-    getchar();
-
     return OK;
 }

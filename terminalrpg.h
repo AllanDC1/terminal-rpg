@@ -67,6 +67,15 @@ typedef struct {
     int nivel;
 } Inimigo;
 
+typedef struct {
+    int ID;
+    char nome[20];
+    int vida_base;
+    int vida_atual;
+    int dano_base;
+    float dano_multiplicado;
+} Batalha;
+
 // FUNCTIONS.C
 void delay(int tempo_ms);
 void limpar_buffer();
@@ -113,5 +122,9 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado);
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
 int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
+
+// JOGO.C
+void escrever_arq_batalha(Usuario* usuario_logado, int id_dungeon, int camada);
+
 
 #endif

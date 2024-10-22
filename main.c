@@ -6,6 +6,8 @@ int main() {
     Usuario usuarios[MAX_USUARIOS], *usuario_logado;
     Habilidade habilidades[QNT_HABILIDADES];
 
+    int dungeon_escolhida;
+
     int qnt_usuarios = 0;
     bool continuar = true;
 
@@ -30,8 +32,11 @@ int main() {
                 switch (menu_principal()) {
                 case 1:
                     // batalha?
+
                     ler_dungeons_print();
-                    
+                    dungeon_escolhida = escolher_operacao(5);
+                    escrever_arq_batalha(usuario_logado, dungeon_escolhida, 1);\
+
                     break;
                 case 2:
                     // INVENTARIO
