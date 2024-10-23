@@ -29,7 +29,8 @@ int main() {
                 printf("Bem-Vindo, %s!\n", usuario_logado->nickname);
                 switch (menu_principal()) {
                 case 1:
-                    // batalha?
+                    // JOGAR
+                    jogar(usuario_logado);
                     break;
                 case 2:
                     // INVENTARIO
