@@ -2,13 +2,13 @@
 
 //Funções e exibições dos menus
 
-int escolher_operacao(int qnt_operacoes) {
+int escolher_operacao(int qnt_operacoes, char *texto) {
     int escolha;
     
     do {
-        printf("> Escolha a operacao: ");
+        printf("> Escolha %s: ", texto);
         if (scanf("%d", &escolha) != 1 || (escolha < 1 || escolha > qnt_operacoes) ) {
-            print_erro("Operacao invalida.\n\n");
+            print_erro("Escolha invalida.\n\n");
             escolha = FALHA;
         }
         limpar_buffer();
@@ -24,7 +24,7 @@ int menu_inicial() {
     printf("|    3. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(3);
+    return escolher_operacao(3, "a operacao");
 }
 
 // funcoes para o menu principal do personagem provisorio
@@ -38,7 +38,7 @@ int menu_principal() {
     printf("|    5. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(5);
+    return escolher_operacao(5, "a operacao");
 }
 
 // MENU PARA LOJA
@@ -214,7 +214,7 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
     printf("|    4. Sair                |\n");
     printf("|---------------------------|\n");
 
-    switch (escolher_operacao(4))
+    switch (escolher_operacao(4, "a operacao"))
     {
     case 1:
         if (confirmar_acao() == FALHA) {

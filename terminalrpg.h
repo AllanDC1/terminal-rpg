@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -24,7 +25,9 @@
 #define QNT_DUNGEONS 5
 #define QNT_INIMIGOS 20
 
-enum {SAIDA = -2, FALHA = -1, OK = 0};  
+enum {SAIDA = -2, FALHA = -1, OK = 0};
+enum {VITORIA = 1, DERROTA = -3, CONTINUAR = 2};
+enum {BASICO = 3, ESPECIAL = 4};
 
 typedef struct {
     int ID;
@@ -73,8 +76,8 @@ typedef struct {
     char nick[TAM_NICK];
     int vida_base;
     int vida_atual;
-    int dano_basico;
-    int dano_especial;
+    Habilidade atq_basico;
+    Habilidade atq_especial;
     float dano_multiplicado;
 } PlayerBatalha;
 
@@ -108,7 +111,7 @@ int ler_arq_dungeons(Dungeon *array_dungeons);
 int ler_arq_inimigos(Inimigo *array_inimigos);
 
 // MENU.C
-int escolher_operacao(int qnt_operacoes);
+int escolher_operacao(int qnt_operacoes, char *texto);
 int menu_inicial();
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
@@ -134,5 +137,12 @@ int selecao_dungeon(Dungeon *array_dungeons);
 int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
 void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
+int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
+int menu_combate();
+int tentar_fuga();
+int escolha_ataque(PlayerBatalha jogador);
+int escolher_alvo(Inimigo *inimigos);
+int calcular_dano(PlayerBatalha jogador, int ataque);
+void atacar(PlayerBatalha jogador, Inimigo *inimigos);
 
 #endif
