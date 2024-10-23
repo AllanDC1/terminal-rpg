@@ -202,7 +202,6 @@ int ler_arq_habilidades(Habilidade *array_habilidades) {
     }
 
     if (i != QNT_HABILIDADES) {
-        printf("Qnt de habil lidas: %d\n", i);
         print_erro("Erro ao ler arquivo de habilidades. Cancelando operacao...\n");
         fclose(fP);
         return FALHA;
@@ -246,30 +245,30 @@ int criar_arq_inimigos() {
 
     Inimigo lista_inimigos[] = {
     //inimigos_floresta
-        {1, "Goblin", 12, 3, 1},
-        {1, "Lobo", 18, 4, 1},
-        {1, "Espirito Floral", 22, 6, 3},
-        {1, "General Ogro", 40, 8, 5},
+        {1, "Goblin", 12, 12, 3, 1},
+        {1, "Lobo", 18, 18, 4, 1},
+        {1, "Espirito Floral", 22, 22, 6, 3},
+        {1, "General Ogro", 40, 40, 8, 5},
     //inimigos_montanha
-        {2, "Elemental de Gelo", 12, 3, 2},
-        {2, "Arqueiro", 18, 4, 2},
-        {2, "Urso Polar", 25, 7, 4},
-        {2, "Golem Congelado", 45, 10, 6},
+        {2, "Elemental de Gelo", 12, 12, 3, 2},
+        {2, "Arqueiro", 18, 18, 4, 2},
+        {2, "Urso Polar", 25, 25, 7, 4},
+        {2, "Golem Congelado", 45, 45, 10, 6},
     //inimigos_caverna
-        {3, "Rato de Cinzas", 12, 3, 2},
-        {3, "Zumbi Carbonizado", 20, 5, 3},
-        {3, "Esqueleto Negro", 22, 6, 4},
-        {3, "Gargula das Chamas", 50, 10, 6},
+        {3, "Rato de Cinzas", 12, 12, 3, 2},
+        {3, "Zumbi Carbonizado", 20, 20, 5, 3},
+        {3, "Esqueleto Negro", 22, 22, 6, 4},
+        {3, "Gargula das Chamas", 50, 50, 10, 6},
     //inimigos_vale
-        {4, "Cultista Draconico", 12, 4, 2},
-        {4, "Lagarto", 20, 5, 3},
-        {4, "Principe Prateado", 25, 7, 5},
-        {4, "Deus Dragao", 55, 12, 7},
+        {4, "Cultista Draconico", 12, 12, 4, 2},
+        {4, "Lagarto", 20, 20, 5, 3},
+        {4, "Principe Prateado", 25, 25, 7, 5},
+        {4, "Deus Dragao", 55, 55, 12, 7},
     //inimigos_fortaleza
-        {5, "Cavaleiro", 15, 4, 3},
-        {5, "Corvo Estranho", 20, 5, 3},
-        {5, "Espectro Abissal", 25, 7, 5},
-        {5, "Lorde Roberto", 60, 12, 8}
+        {5, "Cavaleiro", 15, 15, 4, 3},
+        {5, "Corvo Estranho", 20, 20, 5, 3},
+        {5, "Espectro Abissal", 25, 25, 7, 5},
+        {5, "Lorde Roberto", 60, 60, 12, 8}
     };
 
     FILE *fP = fopen("inimigos.txt", "w");
@@ -279,10 +278,11 @@ int criar_arq_inimigos() {
     }
 
     for (int i = 0; i < 4 * QNT_DUNGEONS; i++) {
-        fprintf(fP, "%d \"%s\" %d %d %d\n", 
+        fprintf(fP, "%d \"%s\" %d %d %d %d\n", 
             lista_inimigos[i].id_dungeon,
             lista_inimigos[i].nome,
-            lista_inimigos[i].vida,
+            lista_inimigos[i].vida_total,
+            lista_inimigos[i].vida_atual,
             lista_inimigos[i].dano,
             lista_inimigos[i].nivel
         );
@@ -290,4 +290,80 @@ int criar_arq_inimigos() {
 
     fclose(fP);
     return OK;
+}
+
+int ler_arq_dungeons(Dungeon *array_dungeons) {    
+
+    FILE *fP = abrir_arquivo("dungeons.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; // buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_DUNGEONS && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d", 
+                   &array_dungeons[i].ID,
+                   array_dungeons[i].nome,
+                   &array_dungeons[i].dificuldade, 
+                   &array_dungeons[i].qnt_moedas) == 4) {
+            i++;
+        } else {
+            print_erro("Erro ao processar linha de dungeons.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_DUNGEONS) {
+        print_erro("Erro ao ler arquivo de dungeons. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
+}
+
+int ler_arq_inimigos(Inimigo *array_inimigos) {    
+
+    FILE *fP = abrir_arquivo("inimigos.txt", "r");
+    
+    if (fP == NULL) {
+        print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");
+        return FALHA;
+    }
+
+    char linha[100]; // buffer
+    int i = 0; // itens lidos
+
+    while (i < QNT_INIMIGOS && fgets(linha, sizeof(linha), fP) != NULL) {
+        if (sscanf(linha, "%d \"%[^\"]\" %d %d %d %d", 
+                   &array_inimigos[i].id_dungeon,
+                   array_inimigos[i].nome,
+                   &array_inimigos[i].vida_total, 
+                   &array_inimigos[i].vida_atual, 
+                   &array_inimigos[i].dano,
+                   &array_inimigos[i].nivel) == 6) {
+            i++;
+        } else {
+            print_erro("Erro ao processar linha de inimigos.\n");
+            fclose(fP);
+            return FALHA;
+        }
+    }
+
+    if (i != QNT_INIMIGOS) {
+        print_erro("Erro ao ler arquivo de inimigos. Cancelando operacao...\n");
+        fclose(fP);
+        return FALHA;
+    }
+
+    fclose(fP);
+
+    return i;
 }

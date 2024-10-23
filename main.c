@@ -4,7 +4,7 @@
 
 int main() {
     Usuario usuarios[MAX_USUARIOS], *usuario_logado;
-    Habilidade habilidades[QNT_HABILIDADES];
+    Habilidade habilidades[QNT_HABILIDADES];    
 
     int qnt_usuarios = 0;
     bool continuar = true;

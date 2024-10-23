@@ -246,3 +246,19 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
 
     return OK;
 }
+
+// Menu das opcoes da dungeon
+void exibir_dungeons(Dungeon *array_dungeons) {    
+    
+    //qsort(array_dungeons, QNT_DUNGEONS, sizeof(Dungeon), comparar_por_ID_decrescente); se quiser decrescente
+    
+    // printa as dungeons
+    printf("|----------------------------------------------|\n");
+    printf("| ID  Nome da Dungeon      Dificuldade  Moedas |\n");
+    printf("|----------------------------------------------|\n");
+    for (int j = 0; j < QNT_DUNGEONS; j++) {
+        printf("| %-3d %-20s %-12d %-6d |\n",
+        array_dungeons[j].ID, array_dungeons[j].nome, array_dungeons[j].dificuldade, array_dungeons[j].qnt_moedas);
+        }
+    printf("|----------------------------------------------|\n");
+}

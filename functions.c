@@ -131,3 +131,9 @@ int confirmar_acao() {
         return FALHA;
     }
 }
+
+int comparar_por_ID_decrescente(const void *a, const void *b) {
+    Dungeon *dungeonA = (Dungeon *)a;
+    Dungeon *dungeonB = (Dungeon *)b;
+    return dungeonB->ID - dungeonA->ID; // decrescente, se quiser colocar crescente tem q só mudar
+}
