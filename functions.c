@@ -53,7 +53,7 @@ void limpa_tela () {
     #endif
 }
 
-int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades, Dungeon *array_dungeons) {
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
     limpa_tela();
 
     if (iniciar_usuarios(array_usuarios, qnt_usuarios) == FALHA) {
@@ -83,11 +83,6 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 
     if (ler_arq_habilidades(array_habilidades) == FALHA) {
         print_erro("Erro ao ler arquivo de habilidades.\n");
-        return FALHA;        
-    }
-
-    if (ler_arq_dungeons(array_dungeons) == FALHA) {
-        print_erro("Erro ao ler arquivo de dungeons.\n");
         return FALHA;        
     }
 

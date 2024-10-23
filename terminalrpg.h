@@ -63,10 +63,20 @@ typedef struct {
 typedef struct {
     int id_dungeon;
     char nome[20];
-    int vida;
+    int vida_total;
+    int vida_atual;
     int dano;
     int nivel;
 } Inimigo;
+
+typedef struct {
+    char nick[TAM_NICK];
+    int vida_base;
+    int vida_atual;
+    int dano_basico;
+    int dano_especial;
+    float dano_multiplicado;
+} PlayerBatalha;
 
 // FUNCTIONS.C
 void delay(int tempo_ms);
@@ -77,7 +87,7 @@ void print_sucesso(char *texto);
 void voltar_menu();
 int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
-int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades, Dungeon *array_dungeons);
+int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
 void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 int confirmar_acao();
@@ -118,6 +128,11 @@ int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
 
 // JOGO.C 
+int jogar(Usuario *usuario_logado);
+PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
+int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida);
+void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
+void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
 
 #endif
