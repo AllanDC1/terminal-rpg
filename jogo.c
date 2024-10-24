@@ -15,7 +15,7 @@ int jogar(Usuario *usuario_logado) {
     int idx_dungeon = id_dungeon_escohlida - 1;
 
     Inimigo lista_inimigos[4];
-    if (gerar_inimigos(lista_inimigos, id_dungeon_escohlida) == FALHA) {
+    if (gerar_inimigos(lista_inimigos, id_dungeon_escohlida, usuario_logado->vida) == FALHA) {
         print_erro("Erro ao gerar inimigos da dungeon.\n");
         return FALHA;
     }
@@ -33,9 +33,11 @@ int jogar(Usuario *usuario_logado) {
             case 3:
                 if (tentar_fuga() == OK) {
                     printf("Voce conseguiu escapar.\n");
+                    delay(1000);
                     return SAIDA;
                 } else {
                     printf("Voce falhou na fuga. Turno perdido.\n");
+                    delay(1000);
                 }
                 break;
         }
@@ -69,7 +71,7 @@ int selecao_dungeon(Dungeon *array_dungeons) {
     return escolher_operacao(QNT_DUNGEONS, "a dungeon");
 }
 
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida) {
+int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario) {
     Inimigo todos_inimigos[QNT_INIMIGOS];
     
     if (ler_arq_inimigos(todos_inimigos) == FALHA) {
@@ -77,17 +79,25 @@ int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida) {
         return FALHA;    
     }
 
+    float porcentagem_vida[3] = {0.15, 0.15, 0.15}; // da pra mudar a porcentagem da vida dos monstros !!
+    
     for (int i = 0; i < QNT_INIMIGOS; i++) {
         if (todos_inimigos[i].id_dungeon == id_dungeon_escolhida) {
-            for (int j = 0; j < 4; j++) {
+            // Gerar os 3 primeiros monstros encontrados para a dungeon
+            for (int j = 0; j < 3; j++) {
                 array_inimigos[j] = todos_inimigos[i + j];
+                
+                // Ajustar a vida conforme a porcentagem
+                array_inimigos[j].vida_total = array_inimigos[j].vida_total + (vida_usuario * porcentagem_vida[j]);
+                array_inimigos[j].vida_atual = array_inimigos[j].vida_total;
+                
             }
             break;
         }
     }
 
     return OK;
-} 
+}
 
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada) {
     limpa_tela();
@@ -156,7 +166,7 @@ int tentar_fuga() {
     srand(time(NULL)); 
     int tentativa = rand() % 100; // 0 a 99
 
-    if (tentativa < 25) {
+    if (tentativa < 40) {
         return OK;
     } else {
         return FALHA; 
@@ -164,11 +174,12 @@ int tentar_fuga() {
 }
 
 int escolha_ataque(PlayerBatalha jogador) {
-    printf("|---------------------------------|\n");
-    printf("|                                 |\n");
-    printf("|     1.%s             2.%s       |\n", jogador.atq_basico.nome, jogador.atq_especial.nome);
-    printf("|                                 |\n");
-    printf("|---------------------------------|\n");
+    limpa_tela();
+    printf("|--------------------------------------------------|\n");
+    printf("|                                                  |\n");
+    printf("|  1.%-20s  2.%-20s  |\n", jogador.atq_basico.nome, jogador.atq_especial.nome);
+    printf("|                                                  |\n");
+    printf("|--------------------------------------------------|\n");
 
     return(escolher_operacao(2, "seu ataque"));
 }

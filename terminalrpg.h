@@ -134,7 +134,7 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
 int jogar(Usuario *usuario_logado);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida);
+int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
 void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
