@@ -135,70 +135,17 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
 int menu_inventario(Usuario* usuario_logado) {
     limpa_tela();
     printf("|------------------------------|\n");
-    printf("|  INVENTARIO DE %-14s|\n", usuario_logado->nickname);
+    printf("|  STATUS DE %-18s|\n", usuario_logado->nickname);
     printf("|------------------------------|\n");
     printf("|  Nivel:  %-20.1f|\n", usuario_logado->nivel);
     printf("|  Moedas: %-20d|\n", usuario_logado->moedas);
     printf("|  Vida:   %-20d|\n", usuario_logado->vida);
     printf("|------------------------------|\n\n");
 
-    int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
-    Item item_temp;
-
-    // conta a quantidade de cada item no inventario
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        if (usuario_logado->consumiveis[i].ID != -1) {
-            item_temp = usuario_logado->consumiveis[i];
-            quantidade[item_temp.ID - 1]++;
-        }
-    }  
-
-    // Verifica se tem item
-    bool itens_presentes = false;
-    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-        if (quantidade[i] > 0) {
-            itens_presentes = true;
-            break;
-        }
+    if (exibir_inventario(usuario_logado) == FALHA) {
+        print_erro("Voce nao possui itens no inventario.\n");
+        return FALHA;
     }
-
-    if (!itens_presentes) {
-        printf("Nenhum item no inventario!\n");
-        voltar_menu();
-        return OK;
-    }
-
-    printf("| CONSUMIVEIS:                                     |\n");
-    printf("|--------------------------------------------------|\n");
-    printf("| %-3s %-20s %-10s %-12s |\n", "ID", "Nome", "Efeito", "Quantidade");
-    printf("|--------------------------------------------------|\n");      
-
-    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-        if (quantidade[i] > 0) {  // Exibe apenas os itens presentes no inventário
-            for (int j = 0; j < QNT_CONSUMIVEIS; j++) {  // interno
-                if (usuario_logado->consumiveis[j].ID == i + 1) {
-                    item_temp = usuario_logado->consumiveis[j];
-                    break; // break no interno
-                }
-            }  
-
-            // Define o efeito do item
-            char efeito[50];
-            if (item_temp.vida_recuperada > 0) {
-                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item_temp.vida_recuperada);
-            } else if (item_temp.dano_aumentado > 0) {
-                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item_temp.dano_aumentado);
-            } else {
-                snprintf(efeito, sizeof(efeito), "Nenhum efeito");
-            }
-
-            // Exibe as informações formatadas
-            printf("| %-3d %-20s %-10s %-12d |\n", 
-            item_temp.ID, item_temp.nome, efeito, quantidade[item_temp.ID - 1]);
-        }
-    }
-
-    printf("|--------------------------------------------------|\n");
     voltar_menu();
 
     return OK;
@@ -261,4 +208,63 @@ void exibir_dungeons(Dungeon *array_dungeons) {
         array_dungeons[j].ID, array_dungeons[j].nome, array_dungeons[j].dificuldade, array_dungeons[j].qnt_moedas);
         }
     printf("|----------------------------------------------|\n");
+}
+
+int exibir_inventario(Usuario *usuario_logado) {
+    int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
+    Item item_temp;
+
+    // conta a quantidade de cada item no inventario
+    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
+        if (usuario_logado->consumiveis[i].ID != -1) {
+            item_temp = usuario_logado->consumiveis[i];
+            quantidade[item_temp.ID - 1]++;
+        }
+    }  
+
+    // Verifica se tem item
+    bool itens_presentes = false;
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
+        if (quantidade[i] > 0) {
+            itens_presentes = true;
+        }
+    }
+
+    if (!itens_presentes) {
+        return FALHA;
+    }
+
+    printf("|--------------------------------------------------|\n");
+    printf("|                    INVENTARIO                    |\n");
+    printf("|--------------------------------------------------|\n");
+    printf("| %-3s %-20s %-10s %-12s |\n", "ID", "Nome", "Efeito", "Quantidade");
+    printf("|--------------------------------------------------|\n");
+
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
+        if (quantidade[i] > 0) {  // Exibe apenas os itens presentes no inventário
+            for (int j = 0; j < QNT_CONSUMIVEIS; j++) {
+                if (usuario_logado->consumiveis[j].ID == i + 1) {
+                    item_temp = usuario_logado->consumiveis[j];
+                    break;
+                }
+            }  
+
+            // Define o efeito do item
+            char efeito[50];
+            if (item_temp.vida_recuperada > 0) {
+                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item_temp.vida_recuperada);
+            } else if (item_temp.dano_aumentado > 0) {
+                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item_temp.dano_aumentado);
+            } else {
+                snprintf(efeito, sizeof(efeito), "Nenhum efeito");
+            }
+
+            // Exibe as informações formatadas
+            printf("| %-3d %-20s %-10s %-12d |\n", 
+            item_temp.ID, item_temp.nome, efeito, quantidade[item_temp.ID - 1]);
+        }
+    }
+
+    printf("|--------------------------------------------------|\n");
+    return OK;
 }

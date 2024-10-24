@@ -241,71 +241,17 @@ void atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
 }
 
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
-    int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
-    int itens_diferentes = 0, id_exibido = 1;;
+    int escolha;
     Item item_temp;
 
-    // conta a quantidade de cada item no inventario
-    for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        if (usuario_logado->consumiveis[i].ID != -1) {
-            item_temp = usuario_logado->consumiveis[i];
-            quantidade[item_temp.ID - 1]++;
-        }
-    }  
-
-    // Verifica se tem item
-    bool itens_presentes = false;
-    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-        if (quantidade[i] > 0) {
-            itens_presentes = true;
-            itens_diferentes++;
-        }
+    if (exibir_inventario(usuario_logado) == FALHA) {
+        print_erro("Voce nao possui itens no inventario.\n");
+        return SAIDA;
     }
-
-    if (!itens_presentes) {
-        return FALHA;
-    }
-
-    limpa_tela();
-    printf("|--------------------------------------------------|\n");
-    printf("|                    INVENTARIO                    |\n");
-    printf("|--------------------------------------------------|\n");
-    printf("| %-3s %-20s %-10s %-12s |\n", "ID", "Nome", "Efeito", "Quantidade");
-    printf("|--------------------------------------------------|\n");
-
-    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-        if (quantidade[i] > 0) {  // Exibe apenas os itens presentes no inventário
-            for (int j = 0; j < QNT_CONSUMIVEIS; j++) {
-                if (usuario_logado->consumiveis[j].ID == i + 1) {
-                    item_temp = usuario_logado->consumiveis[j];
-                    break;
-                }
-            }  
-
-            // Define o efeito do item
-            char efeito[50];
-            if (item_temp.vida_recuperada > 0) {
-                snprintf(efeito, sizeof(efeito), "Vida +%d%%", item_temp.vida_recuperada);
-            } else if (item_temp.dano_aumentado > 0) {
-                snprintf(efeito, sizeof(efeito), "Dano +%d%%", item_temp.dano_aumentado);
-            } else {
-                snprintf(efeito, sizeof(efeito), "Nenhum efeito");
-            }
-
-            // Exibe as informações formatadas
-            printf("| %-3d %-20s %-10s %-12d |\n", 
-            id_exibido, item_temp.nome, efeito, quantidade[item_temp.ID - 1]);
-            id_exibido++;
-        }
-    }
-
-    printf("|--------------------------------------------------|\n");
     
-    int escolha;
-
     do {
         printf("> Digite 0 para voltar ou o ID do item para utilizar: ");
-        if (scanf("%d", &escolha) != 1 || (escolha < 0 || escolha > itens_diferentes) ) {
+        if (scanf("%d", &escolha) != 1 || (escolha < 0 || escolha > QNT_ITENS_LOJA) ) {
             print_erro("Escolha invalida.\n\n");
             escolha = FALHA;
         }
@@ -315,36 +261,32 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
     if (escolha == 0) {
         return OK;
     }
-    id_exibido = 1; // Reinicia o contador
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         if (usuario_logado->consumiveis[i].ID != -1) {
-            if (id_exibido == escolha) {
-                item_temp = usuario_logado->consumiveis[i];
+            item_temp = usuario_logado->consumiveis[i];
 
-                if (item_temp.vida_recuperada > 0) {
-                    int vida_recuperada = (item_temp.vida_recuperada * jogador->vida_base) / 100;
-                    jogador->vida_atual += vida_recuperada;
+            if (item_temp.vida_recuperada > 0) {
+                int vida_recuperada = (item_temp.vida_recuperada * jogador->vida_base) / 100;
+                jogador->vida_atual += vida_recuperada;
 
-                    // Garante que a vida não ultrapasse a vida_base
-                    if (jogador->vida_atual > jogador->vida_base) {
-                        jogador->vida_atual = jogador->vida_base;
-                    }
-                    limpa_tela();
-                    printf("Voce recuperou %d de vida!\n", vida_recuperada);
-                    delay(1000);
+                // Garante que a vida não ultrapasse a vida_base
+                if (jogador->vida_atual > jogador->vida_base) {
+                    jogador->vida_atual = jogador->vida_base;
                 }
-
-                if (item_temp.dano_aumentado > 0) {
-                    jogador->dano_multiplicado += (item_temp.dano_aumentado / 100.0);
-                    limpa_tela();
-                    printf("Voce aumentou seu dano em %d%%!\n", item_temp.dano_aumentado);
-                    delay(1000);
-                }
-
-                usuario_logado->consumiveis[i].ID = -1;
-                break;
+                limpa_tela();
+                printf("Voce recuperou %d de vida!\n", vida_recuperada);
+                delay(1000);
             }
-            id_exibido++;
+
+            if (item_temp.dano_aumentado > 0) {
+                jogador->dano_multiplicado += (item_temp.dano_aumentado / 100.0);
+                limpa_tela();
+                printf("Voce aumentou seu dano em %d%%!\n", item_temp.dano_aumentado);
+                delay(1000);
+            }
+
+            usuario_logado->consumiveis[i].ID = -1;
+            break;            
         }
     }
 

@@ -118,6 +118,7 @@ int menu_itens_compraveis(Usuario* usuario_logado);
 int menu_inventario(Usuario* usuario_logado);
 int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade *array_habilidades);
 void exibir_dungeons(Dungeon *array_dungeons);
+int exibir_inventario(Usuario *usuario_logado);
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
