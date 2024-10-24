@@ -111,12 +111,12 @@ int criar_arq_habilidades(){
     Habilidade lista_habilidades[] = {
         {0, "Espadada fugaz", 5, 0},
         {1, "Corte em Arco", 3, 0},
-        {2, "Golpe flamejante", 10, 10},
-        {3, "Bola de fogo", 5, 5},
-        {4, "Marretada relampago", 15, 20},
-        {5, "Raio do julgamento", 10, 15},
-        {6, "Soco sismico", 20, 30},
-        {7, "Terremoto", 15, 25}
+        {2, "Golpe flamejante", 10, 5},
+        {3, "Bola de fogo", 5, 10},
+        {4, "Marretada relampago", 15, 15},
+        {5, "Raio do julgamento", 10, 20},
+        {6, "Soco sismico", 20, 25},
+        {7, "Terremoto", 15, 30}
     };
 
     FILE *fP = abrir_arquivo("habilidades.txt", "w");
