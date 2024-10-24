@@ -111,7 +111,7 @@ int ler_arq_dungeons(Dungeon *array_dungeons);
 int ler_arq_inimigos(Inimigo *array_inimigos);
 
 // MENU.C
-int escolher_operacao(int qnt_operacoes, char *texto);
+int escolher_operacao(int min_op, int max_op, char *texto);
 int menu_inicial();
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);

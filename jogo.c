@@ -12,6 +12,10 @@ int jogar(Usuario *usuario_logado) {
     }
 
     int id_dungeon_escohlida = selecao_dungeon(dungeons);
+    if (id_dungeon_escohlida == 0) {
+        return SAIDA;
+    }
+
     int idx_dungeon = id_dungeon_escohlida - 1;
 
     Inimigo lista_inimigos[4];
@@ -69,7 +73,7 @@ int selecao_dungeon(Dungeon *array_dungeons) {
     printf("Selecione a dungeon que deseja jogar:\n");
     exibir_dungeons(array_dungeons);
     
-    return escolher_operacao(QNT_DUNGEONS, "a dungeon");
+    return escolher_operacao(0, QNT_DUNGEONS, "a dungeon ou digite 0 para voltar");
 }
 
 int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario) {
@@ -160,7 +164,7 @@ int menu_combate() {
     printf("|   3. Fugir         |\n");
     printf("|--------------------|\n");
 
-    return escolher_operacao(3, "a sua acao");
+    return escolher_operacao(1, 3, "a sua acao");
 }
 
 int tentar_fuga() {
@@ -182,7 +186,7 @@ int escolha_ataque(PlayerBatalha* jogador) {
     printf("|                                                  |\n");
     printf("|--------------------------------------------------|\n");
 
-    return(escolher_operacao(2, "seu ataque"));
+    return(escolher_operacao(1, 2, "seu ataque"));
 }
 
 int escolher_alvo(Inimigo *inimigos) {
@@ -200,7 +204,7 @@ int escolher_alvo(Inimigo *inimigos) {
         }    
         printf("|--------------------------------|\n");
 
-        idx_escolha = escolher_operacao(3, "o alvo do ataque") - 1;
+        idx_escolha = escolher_operacao(1, 3, "o alvo do ataque") - 1;
         if (inimigos[idx_escolha].vida_atual <= 0) {
             printf("Este inimigo ja foi derrotado.\n");
             idx_escolha = FALHA;
@@ -249,18 +253,12 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
         return SAIDA;
     }
     
-    do {
-        printf("> Digite 0 para voltar ou o ID do item para utilizar: ");
-        if (scanf("%d", &escolha) != 1 || (escolha < 0 || escolha > QNT_ITENS_LOJA) ) {
-            print_erro("Escolha invalida.\n\n");
-            escolha = FALHA;
-        }
-        limpar_buffer();
-    }while (escolha == FALHA);
+    escolha = escolher_operacao(0, QNT_ITENS_LOJA, "o item ou 0 para voltar");
 
     if (escolha == 0) {
-        return OK;
+        return SAIDA; // verificar
     }
+
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         if (usuario_logado->consumiveis[i].ID != -1) {
             item_temp = usuario_logado->consumiveis[i];

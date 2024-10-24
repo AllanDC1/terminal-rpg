@@ -2,12 +2,12 @@
 
 //Funções e exibições dos menus
 
-int escolher_operacao(int qnt_operacoes, char *texto) {
+int escolher_operacao(int min_op, int max_op, char *texto) {
     int escolha;
     
     do {
         printf("> Escolha %s: ", texto);
-        if (scanf("%d", &escolha) != 1 || (escolha < 1 || escolha > qnt_operacoes) ) {
+        if (scanf("%d", &escolha) != 1 || (escolha < min_op || escolha > max_op) ) {
             print_erro("Escolha invalida.\n\n");
             escolha = FALHA;
         }
@@ -21,10 +21,10 @@ int menu_inicial() {
     printf("|---------------------------|\n");
     printf("|    1. Login               |\n");
     printf("|    2. Registrar-se        |\n");
-    printf("|    3. Sair                |\n");
+    printf("|    0. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(3, "a operacao");
+    return escolher_operacao(0, 2, "a operacao");
 }
 
 // funcoes para o menu principal do personagem provisorio
@@ -35,10 +35,10 @@ int menu_principal() {
     printf("|    2. Inventario          |\n");
     printf("|    3. Loja                |\n");
     printf("|    4. Modificar Conta     |\n");
-    printf("|    5. Sair                |\n");
+    printf("|    0. Sair                |\n");
     printf("|---------------------------|\n");
 
-    return escolher_operacao(5, "a operacao");
+    return escolher_operacao(0, 4, "a operacao");
 }
 
 // MENU PARA LOJA
@@ -54,38 +54,30 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
 
     limpa_tela();
 
-    // Cabeçalho da tabela
-    do {
-        printf("BEM-VINDO A LOJA!\n");
-        printf("---------------------------------------------------------------\n");
-        printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida (%)", "Forca (%)", "Preco");
-        printf("---------------------------------------------------------------\n");
-        // Printa lista de itens
-        for (int i = 0; i < QNT_ITENS_LOJA; i++) {
-            printf("%-5d %-25s %-10d %-10d %-10d\n", 
-                array_itens[i].ID,
-                array_itens[i].nome, 
-                array_itens[i].vida_recuperada, 
-                array_itens[i].dano_aumentado, 
-                array_itens[i].preco
-            );
-        }
-        // Pede o ID do item
-        printf("\nDigite 0 para sair ou ID do item desejado: ");
-        if (scanf("%d", &id_desejado) != 1 || id_desejado < 0 || id_desejado > QNT_ITENS_LOJA) {
-            print_erro("ID invalido. Insira novamente.\n");
-            delay(1000);
-            id_desejado = FALHA;
-        }
-        limpar_buffer();
-        limpa_tela();
-    } while (id_desejado == FALHA);    
-
+    // Cabeçalho da tabela    
+    printf("BEM-VINDO A LOJA!\n");
+    printf("---------------------------------------------------------------\n");
+    printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida (%)", "Forca (%)", "Preco");
+    printf("---------------------------------------------------------------\n");
+    // Printa lista de itens
+    for (int i = 0; i < QNT_ITENS_LOJA; i++) {
+        printf("%-5d %-25s %-10d %-10d %-10d\n", 
+            array_itens[i].ID,
+            array_itens[i].nome, 
+            array_itens[i].vida_recuperada, 
+            array_itens[i].dano_aumentado, 
+            array_itens[i].preco
+        );
+    }
+    // Pede o ID do item
+    id_desejado = escolher_operacao(0, QNT_ITENS_LOJA, "o ID do item desejado ou 0 para sair"); 
     if (id_desejado == 0){
         return OK;
     } else {
         id_desejado -= 1; // id do array comeca do 0
     }
+    
+    limpa_tela();
 
     printf("\nVoce escolheu a pocao:\n");
     printf("ID: %d\n", array_itens[id_desejado].ID);
@@ -158,10 +150,10 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
     printf("|    1. Zerar Personagem    |\n");
     printf("|    2. Alterar Apelido     |\n");
     printf("|    3. Excluir Conta       |\n");
-    printf("|    4. Sair                |\n");
+    printf("|    0. Sair                |\n");
     printf("|---------------------------|\n");
 
-    switch (escolher_operacao(4, "a operacao"))
+    switch (escolher_operacao(0, 3, "a operacao"))
     {
     case 1:
         if (confirmar_acao() == FALHA) {
@@ -195,10 +187,8 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
 }
 
 // Menu das opcoes da dungeon
-void exibir_dungeons(Dungeon *array_dungeons) {    
-    
-    //qsort(array_dungeons, QNT_DUNGEONS, sizeof(Dungeon), comparar_por_ID_decrescente); se quiser decrescente
-    
+void exibir_dungeons(Dungeon *array_dungeons) { 
+
     // printa as dungeons
     printf("|----------------------------------------------|\n");
     printf("| ID  Nome da Dungeon      Dificuldade  Moedas |\n");
