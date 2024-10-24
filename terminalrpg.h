@@ -140,9 +140,10 @@ void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_d
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
 int menu_combate();
 int tentar_fuga();
-int escolha_ataque(PlayerBatalha jogador);
+int escolha_ataque(PlayerBatalha* jogador);
 int escolher_alvo(Inimigo *inimigos);
-int calcular_dano(PlayerBatalha jogador, int ataque);
-void atacar(PlayerBatalha jogador, Inimigo *inimigos);
+int calcular_dano(PlayerBatalha* jogador, int ataque);
+void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
+int usar_itens(Usuario* usuario_logado, PlayerBatalha* player_batalha);
 
 #endif
