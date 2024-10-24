@@ -55,11 +55,11 @@ int validar_nickname(char *entrada) {
     return OK;
 }
 
-void zerar_usuario(Usuario *usuario, Habilidade atq_inicial) {    
+void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {    
     usuario->nivel = 0.0;
     usuario->moedas = 1000; // TESTE
-    usuario->atq_basico = atq_inicial;
-    usuario->atq_especial = (Habilidade){-1, "", 0, 0}; // inicia como valor padrao
+    usuario->atq_basico = habilidades[0];
+    usuario->atq_especial = habilidades[1];
     usuario->vida = 100; //exemplo
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
@@ -104,7 +104,7 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
     return OK;
 }
 
-int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial) {
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
     Usuario novo_usuario;
     char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1], entrada_nickname[TAM_NICK + 1]; //testar se o limite esta correto
     int auth;
@@ -141,7 +141,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial)
         verificar_buffer(entrada_nickname);        
     } while (validar_nickname(entrada_nickname) == FALHA);
 
-    zerar_usuario(&novo_usuario, atq_inicial);
+    zerar_usuario(&novo_usuario, array_habilidades);
     strcpy(novo_usuario.nome_usuario, entrada_login);
     strcpy(novo_usuario.senha, entrada_senha);
     strcpy(novo_usuario.nickname, entrada_nickname);

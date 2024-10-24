@@ -204,7 +204,7 @@ int menu_inventario(Usuario* usuario_logado) {
     return OK;
 }
 
-int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade atq_inicial) {
+int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade *array_habilidades) {
     limpa_tela();
     printf("ALTERE DADOS DA SUA CONTA\n\n");
     printf("|---------------------------|\n");
@@ -222,7 +222,7 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
             voltar_menu();
             return FALHA;
         }
-        zerar_usuario(usuario_logado, atq_inicial);
+        zerar_usuario(usuario_logado, array_habilidades);
         print_sucesso("Seu usuario foi reiniciado. Boa sorte em sua nova aventura!\n");
         voltar_menu();
         break;    

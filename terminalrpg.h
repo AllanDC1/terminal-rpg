@@ -21,7 +21,7 @@
 
 #define QNT_CONSUMIVEIS 10
 #define QNT_ITENS_LOJA 6
-#define QNT_HABILIDADES 7
+#define QNT_HABILIDADES 8
 #define QNT_DUNGEONS 5
 #define QNT_INIMIGOS 20
 
@@ -116,7 +116,7 @@ int menu_inicial();
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
 int menu_inventario(Usuario* usuario_logado);
-int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade atq_inicial);
+int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade *array_habilidades);
 void exibir_dungeons(Dungeon *array_dungeons);
 
 // USUARIO.C
@@ -124,9 +124,9 @@ int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usu
 int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios);
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
-void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
+void zerar_usuario(Usuario *usuario, Habilidade *habilidades);
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado);
-int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
 

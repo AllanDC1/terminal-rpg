@@ -42,7 +42,7 @@ int main() {
                     break;
                 case 4:
                     // alterar dados conta
-                    if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades[0]) == SAIDA) {
+                    if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades) == SAIDA) {
                         continuar = false;
                     }            
                     break;
@@ -57,7 +57,7 @@ int main() {
             limpa_tela();
             break;
         case 2:
-            if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
+            if (registro(usuarios, &qnt_usuarios, habilidades) == FALHA) {
                 limpa_tela();
                 continue;
             }
