@@ -24,6 +24,7 @@ int jogar(Usuario *usuario_logado) {
         return FALHA;
     }
 
+    // Camada 1
     do {
         exibir_combate(jogador, lista_inimigos, dungeons[idx_dungeon].nome, 1);
         // Turno do jogador
@@ -48,6 +49,8 @@ int jogar(Usuario *usuario_logado) {
                 }
                 break;
         }
+        // Turno dos inimigos
+        dano_inimigos(&jogador, lista_inimigos);
 
     } while (verificar_fim_combate(jogador, lista_inimigos) == CONTINUAR);
     
@@ -297,4 +300,13 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
     print_erro("Voce nao possui o item com esse ID.\n");
     delay(2000);
     return SAIDA;
+}
+
+void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos) {
+    for (int i = 0; i < 3; i++) {
+        if (inimigos[i].vida_atual > 0) {
+            jogador->vida_atual -= inimigos[i].dano; // VER SE VAI TER ALGUM OUTRO FATOR QUE AFETARA O DANO
+            printf("%s te inflingiu %d de dano!\n", inimigos[i].nome, inimigos[i].dano);
+        }
+    }
 }

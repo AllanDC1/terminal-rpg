@@ -94,7 +94,6 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
 void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 int confirmar_acao();
-int comparar_por_ID_decrescente(const void *a, const void *b);
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
@@ -146,5 +145,6 @@ int escolher_alvo(Inimigo *inimigos);
 int calcular_dano(PlayerBatalha* jogador, int ataque);
 void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* player_batalha);
+void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos);
 
 #endif
