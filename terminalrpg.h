@@ -24,6 +24,7 @@
 #define QNT_HABILIDADES 8
 #define QNT_DUNGEONS 5
 #define QNT_INIMIGOS 20
+#define QNT_CAMADAS 3
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};
 enum {VITORIA = 1, DERROTA = -3, CONTINUAR = 2};
@@ -134,7 +135,8 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
 int jogar(Usuario *usuario_logado);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
+int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
+void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
 void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
@@ -144,7 +146,8 @@ int escolha_ataque(PlayerBatalha* jogador);
 int escolher_alvo(Inimigo *inimigos);
 int calcular_dano(PlayerBatalha* jogador, int ataque);
 void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
-int usar_itens(Usuario* usuario_logado, PlayerBatalha* player_batalha);
+int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
 void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos);
+int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada);
 
 #endif

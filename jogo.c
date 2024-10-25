@@ -15,45 +15,36 @@ int jogar(Usuario *usuario_logado) {
     if (id_dungeon_escohlida == 0) {
         return SAIDA;
     }
-
     int idx_dungeon = id_dungeon_escohlida - 1;
 
-    Inimigo lista_inimigos[4];
-    if (gerar_inimigos(lista_inimigos, id_dungeon_escohlida, usuario_logado->vida) == FALHA) {
-        print_erro("Erro ao gerar inimigos da dungeon.\n");
+    Inimigo *inimigos_dungeon;
+    if (gerar_inimigos_dungeon(inimigos_dungeon, id_dungeon_escohlida, jogador.vida_base) == FALHA) {
+        print_erro("Erro ao ler arquivo de inimigos.\n");
         return FALHA;
     }
 
-    // Camada 1
-    do {
-        exibir_combate(jogador, lista_inimigos, dungeons[idx_dungeon].nome, 1);
-        // Turno do jogador
-        switch (menu_combate()) {
-            case 1:
-                atacar(&jogador, lista_inimigos);
-                break;
-            case 2:
-                //usar item
-                if (usar_itens(usuario_logado, &jogador) == SAIDA){ 
-                    continue;
-                }
-                break;
-            case 3:
-                if (tentar_fuga() == OK) {
-                    print_sucesso("Voce conseguiu escapar.\n");
-                    delay(1000);
-                    return SAIDA;
-                } else {
-                    print_erro("Voce falhou na fuga. Turno perdido.\n");
-                    delay(1000);
-                }
-                break;
+    // Itera pelas camadas
+    for (int i = 0; i < QNT_CAMADAS; i++) {        
+        // Executa camada i        
+        switch (combate_camada(usuario_logado, &jogador, dungeons[idx_dungeon], inimigos_dungeon, i)) {
+            case FALHA:
+                print_erro("Cancelando combate...\n");
+                delay(2000);
+                return FALHA; // cancela a dungeon
+            case SAIDA:
+                printf("Saindo da dungeon...\n");
+                delay(1500);
+                return SAIDA; // escapa e cancela a dungeon
+            case DERROTA:
+                print_erro("Voce foi derrotado...\n");
+                voltar_menu();
+                return DERROTA; // encerra a dungeon
+            case VITORIA:
+                printf("Voce concluiu a camada %d!\n", i);
+                // PRESSIONE ENTER PARA CONTINUAR FUNCAO?
+                break;       
         }
-        // Turno dos inimigos
-        dano_inimigos(&jogador, lista_inimigos);
-
-    } while (verificar_fim_combate(jogador, lista_inimigos) == CONTINUAR);
-    
+    }    
     
     // na ultima camdada
     //exibir_combate_boss(jogador, lista_inimigos[3], dungeons[idx_dungeon].nome);
@@ -81,11 +72,10 @@ int selecao_dungeon(Dungeon *array_dungeons) {
     return escolher_operacao(0, QNT_DUNGEONS, "a dungeon ou digite 0 para voltar");
 }
 
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario) {
+int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario) {
     Inimigo todos_inimigos[QNT_INIMIGOS];
     
-    if (ler_arq_inimigos(todos_inimigos) == FALHA) {
-        print_erro("Erro ao ler arquivo de inimigos.\n");
+    if (ler_arq_inimigos(todos_inimigos) == FALHA) {        
         return FALHA;    
     }
 
@@ -107,6 +97,17 @@ int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_u
     }
 
     return OK;
+}
+
+void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada) {    
+    if (camada != 3) {
+        for (int i = 0; i < 3; i++) {            
+            inimigos_camada[i] = inimigos_dungeon[rand() % 3]; // inimigo aleatorio 0 ou 1 ou 2 (nao inclui o boss)          
+        }
+    }
+    else if (camada == 3) {
+        inimigos_camada[0] = inimigos_dungeon[3]; // gera apenas o boss        
+    }
 }
 
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada) {
@@ -172,8 +173,7 @@ int menu_combate() {
     return escolher_operacao(1, 3, "a sua acao");
 }
 
-int tentar_fuga() {
-    srand(time(NULL)); 
+int tentar_fuga() {    
     int tentativa = rand() % 100; // 0 a 99
 
     if (tentativa < 90) {
@@ -309,4 +309,49 @@ void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos) {
             printf("%s te inflingiu %d de dano!\n", inimigos[i].nome, inimigos[i].dano);
         }
     }
+}
+
+int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada) {    
+    Inimigo *inimigos_camada;
+    int estado_combate;
+
+    gerar_inimigos_camada(lista_inimigos_dungeon, inimigos_camada, n_camada);
+      
+    do {
+        exibir_combate(*jogador, inimigos_camada, dungeon.nome, n_camada);
+        // Turno do jogador
+        switch (menu_combate()) {
+            case 1:
+                atacar(&jogador, inimigos_camada);
+                break;
+            case 2:
+                //usar item
+                if (usar_itens(usuario_logado, &jogador) == SAIDA){ 
+                    continue;
+                }
+                break;
+            case 3:
+                if (tentar_fuga() == OK) {
+                    print_sucesso("Voce conseguiu escapar.\n");
+                    delay(1000);
+                    return SAIDA;
+                } else {
+                    print_erro("Voce falhou na fuga. Turno perdido.\n");
+                    delay(1000);
+                }
+                break;
+        }
+        // Turno dos inimigos
+        dano_inimigos(&jogador, inimigos_camada);
+
+        estado_combate = verificar_fim_combate(*jogador, inimigos_camada);
+
+    } while (estado_combate == CONTINUAR);
+
+    // if estado_combate == vitoria{
+    // xp
+    // verificacao nvl etc
+    //}
+
+    return estado_combate;
 }
