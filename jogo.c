@@ -33,7 +33,9 @@ int jogar(Usuario *usuario_logado) {
                 break;
             case 2:
                 //usar item
-                usar_itens(usuario_logado, &jogador);
+                if (usar_itens(usuario_logado, &jogador) == SAIDA){ 
+                    continue;
+                }
                 break;
             case 3:
                 if (tentar_fuga() == OK) {
@@ -207,6 +209,7 @@ int escolher_alvo(Inimigo *inimigos) {
         idx_escolha = escolher_operacao(1, 3, "o alvo do ataque") - 1;
         if (inimigos[idx_escolha].vida_atual <= 0) {
             printf("Este inimigo ja foi derrotado.\n");
+            delay(1500);
             idx_escolha = FALHA;
         }
     } while (idx_escolha == FALHA);
@@ -234,7 +237,7 @@ void atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
         alvo = escolher_alvo(inimigos);
         dano_causado = calcular_dano(jogador, BASICO);
         inimigos[alvo].vida_atual -= dano_causado;
-        printf("%s recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);
+        printf("%s recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);        
     } else {
         dano_causado = calcular_dano(jogador, ESPECIAL);
         for (int i = 0; i < 3; i++) {
@@ -242,25 +245,29 @@ void atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
         }
         printf("Todos os inimigos receberam %d de dano!\n", dano_causado);
     }
+
+    delay(2000);
 }
 
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
-    int escolha;
+    int id_escolhido;
     Item item_temp;
 
+    limpa_tela();
     if (exibir_inventario(usuario_logado) == FALHA) {
         print_erro("Voce nao possui itens no inventario.\n");
+        delay(1500);
         return SAIDA;
     }
     
-    escolha = escolher_operacao(0, QNT_ITENS_LOJA, "o item ou 0 para voltar");
+    id_escolhido = escolher_operacao(0, QNT_ITENS_LOJA, "o ID do item ou 0 para voltar");
 
-    if (escolha == 0) {
+    if (id_escolhido == 0) {
         return SAIDA; // verificar
     }
 
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        if (usuario_logado->consumiveis[i].ID != -1) {
+        if (id_escolhido == usuario_logado->consumiveis[i].ID) {
             item_temp = usuario_logado->consumiveis[i];
 
             if (item_temp.vida_recuperada > 0) {
@@ -273,20 +280,21 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
                 }
                 limpa_tela();
                 printf("Voce recuperou %d de vida!\n", vida_recuperada);
-                delay(1000);
+                delay(2000);
             }
 
             if (item_temp.dano_aumentado > 0) {
                 jogador->dano_multiplicado += (item_temp.dano_aumentado / 100.0);
                 limpa_tela();
                 printf("Voce aumentou seu dano em %d%%!\n", item_temp.dano_aumentado);
-                delay(1000);
+                delay(2000);
             }
 
             usuario_logado->consumiveis[i].ID = -1;
-            break;            
-        }
+            return OK;           
+        }        
     }
-
-    return OK;
+    print_erro("Voce nao possui o item com esse ID.\n");
+    delay(2000);
+    return SAIDA;
 }

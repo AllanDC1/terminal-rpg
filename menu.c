@@ -76,7 +76,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     } else {
         id_desejado -= 1; // id do array comeca do 0
     }
-    
+
     limpa_tela();
 
     printf("\nVoce escolheu a pocao:\n");
@@ -136,6 +136,7 @@ int menu_inventario(Usuario* usuario_logado) {
 
     if (exibir_inventario(usuario_logado) == FALHA) {
         print_erro("Voce nao possui itens no inventario.\n");
+        voltar_menu();
         return FALHA;
     }
     voltar_menu();
@@ -145,7 +146,7 @@ int menu_inventario(Usuario* usuario_logado) {
 
 int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade *array_habilidades) {
     limpa_tela();
-    printf("ALTERE DADOS DA SUA CONTA\n\n");
+    printf("ALTERE DADOS DA SUA CONTA\n");
     printf("|---------------------------|\n");
     printf("|    1. Zerar Personagem    |\n");
     printf("|    2. Alterar Apelido     |\n");
@@ -179,7 +180,7 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
             return SAIDA;
         }
         break;    
-    case 4:        
+    case 0:        
         break;
     }
 

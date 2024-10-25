@@ -46,7 +46,7 @@ int main() {
                         continuar = false;
                     }            
                     break;
-                case 5:
+                case 0:
                     // saida / logout
                     continuar = false;
                     break;
@@ -63,7 +63,7 @@ int main() {
             }
             limpa_tela();
             break;
-        case 3:
+        case 0:
             continuar = false;       
             break;
         }
