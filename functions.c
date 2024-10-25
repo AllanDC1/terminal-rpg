@@ -102,7 +102,7 @@ void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades) {
                 strcmp(usuario_logado->atq_especial.nome, array_habilidades[i].nome) != 0)
                 {
                 printf("Nova habilidade desbloqueada: %s!\n", array_habilidades[i].nome);
-                if (array_habilidades[i].ID % 2 == 0) {
+                if (array_habilidades[i].ID % 2 == 0) { // id par = basico, id impar = especial
                     usuario_logado->atq_basico = array_habilidades[i];
                 } else {
                     usuario_logado->atq_especial = array_habilidades[i];
@@ -130,10 +130,4 @@ int confirmar_acao() {
     } else {
         return FALHA;
     }
-}
-
-int comparar_por_ID_decrescente(const void *a, const void *b) {
-    Dungeon *dungeonA = (Dungeon *)a;
-    Dungeon *dungeonB = (Dungeon *)b;
-    return dungeonB->ID - dungeonA->ID; // decrescente, se quiser colocar crescente tem q só mudar
 }

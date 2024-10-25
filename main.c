@@ -29,7 +29,8 @@ int main() {
                 printf("Bem-Vindo, %s!\n", usuario_logado->nickname);
                 switch (menu_principal()) {
                 case 1:
-                    // batalha?
+                    // JOGAR
+                    jogar(usuario_logado);
                     break;
                 case 2:
                     // INVENTARIO
@@ -41,11 +42,11 @@ int main() {
                     break;
                 case 4:
                     // alterar dados conta
-                    if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades[0]) == SAIDA) {
+                    if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades) == SAIDA) {
                         continuar = false;
                     }            
                     break;
-                case 5:
+                case 0:
                     // saida / logout
                     continuar = false;
                     break;
@@ -56,13 +57,13 @@ int main() {
             limpa_tela();
             break;
         case 2:
-            if (registro(usuarios, &qnt_usuarios, habilidades[0]) == FALHA) {
+            if (registro(usuarios, &qnt_usuarios, habilidades) == FALHA) {
                 limpa_tela();
                 continue;
             }
             limpa_tela();
             break;
-        case 3:
+        case 0:
             continuar = false;       
             break;
         }

@@ -109,13 +109,14 @@ int criar_arq_itens(){
 int criar_arq_habilidades(){
 
     Habilidade lista_habilidades[] = {
-        {0, "Corte fugaz", 5, 0},
-        {1, "Bola de fogo", 3, 5},
-        {2, "Golpe flamejante", 10, 10},
-        {3, "Raio do julgamento", 7, 15},
-        {4, "Marretada relampago", 15, 20},
-        {5, "Terremoto", 12, 25},
-        {6, "Soco sismico", 20, 30}
+        {0, "Espadada fugaz", 5, 0},
+        {1, "Corte em Arco", 8, 0},
+        {2, "Golpe flamejante", 12, 5},
+        {3, "Bola de fogo", 18, 10},
+        {4, "Marretada relampago", 25, 15},
+        {5, "Raio do julgamento", 29, 20},
+        {6, "Soco sismico", 34, 25},
+        {7, "Terremoto", 40, 30}
     };
 
     FILE *fP = abrir_arquivo("habilidades.txt", "w");
@@ -245,30 +246,30 @@ int criar_arq_inimigos() {
 
     Inimigo lista_inimigos[] = {
     //inimigos_floresta
-        {1, "Goblin", 12, 12, 3, 1},
-        {1, "Lobo", 18, 18, 4, 1},
-        {1, "Espirito Floral", 22, 22, 6, 3},
+        {1, "Goblin", 10, 10, 3, 1},
+        {1, "Lobo", 13, 13, 4, 1},
+        {1, "Espirito Floral", 3, 3, 5, 1},
         {1, "General Ogro", 40, 40, 8, 5},
     //inimigos_montanha
-        {2, "Elemental de Gelo", 12, 12, 3, 2},
-        {2, "Arqueiro", 18, 18, 4, 2},
-        {2, "Urso Polar", 25, 25, 7, 4},
-        {2, "Golem Congelado", 45, 45, 10, 6},
+        {2, "Elemental de Gelo", 17, 17, 5, 2},
+        {2, "Arqueiro", 16, 16, 7, 2},
+        {2, "Urso Polar", 22, 22, 6, 4},
+        {2, "Golem Congelado", 60, 60, 14, 6},
     //inimigos_caverna
-        {3, "Rato de Cinzas", 12, 12, 3, 2},
-        {3, "Zumbi Carbonizado", 20, 20, 5, 3},
-        {3, "Esqueleto Negro", 22, 22, 6, 4},
-        {3, "Gargula das Chamas", 50, 50, 10, 6},
+        {3, "Rato de Cinzas", 12, 12, 7, 2},
+        {3, "Zumbi Carbonizado", 20, 20, 7, 3},
+        {3, "Esqueleto Negro", 22, 22, 8, 4},
+        {3, "Gargula das Chamas", 80, 80, 18, 6},
     //inimigos_vale
         {4, "Cultista Draconico", 12, 12, 4, 2},
         {4, "Lagarto", 20, 20, 5, 3},
         {4, "Principe Prateado", 25, 25, 7, 5},
-        {4, "Deus Dragao", 55, 55, 12, 7},
+        {4, "Deus Dragao", 100, 100, 24, 7},
     //inimigos_fortaleza
-        {5, "Cavaleiro", 15, 15, 4, 3},
-        {5, "Corvo Estranho", 20, 20, 5, 3},
-        {5, "Espectro Abissal", 25, 25, 7, 5},
-        {5, "Lorde Roberto", 60, 60, 12, 8}
+        {5, "Cavaleiro Imperial", 34, 34, 10, 3},
+        {5, "Arqueiro Imperial", 27, 27, 12, 3},
+        {5, "Golem Imperial", 50, 50, 8, 5},
+        {5, "Lorde Roberto", 150, 150, 34, 10} // ???? lorde roberto ksksksksks
     };
 
     FILE *fP = fopen("inimigos.txt", "w");

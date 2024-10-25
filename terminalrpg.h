@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -20,11 +21,13 @@
 
 #define QNT_CONSUMIVEIS 10
 #define QNT_ITENS_LOJA 6
-#define QNT_HABILIDADES 7
+#define QNT_HABILIDADES 8
 #define QNT_DUNGEONS 5
 #define QNT_INIMIGOS 20
 
-enum {SAIDA = -2, FALHA = -1, OK = 0};  
+enum {SAIDA = -2, FALHA = -1, OK = 0};
+enum {VITORIA = 1, DERROTA = -3, CONTINUAR = 2};
+enum {BASICO = 3, ESPECIAL = 4};
 
 typedef struct {
     int ID;
@@ -73,8 +76,8 @@ typedef struct {
     char nick[TAM_NICK];
     int vida_base;
     int vida_atual;
-    int dano_basico;
-    int dano_especial;
+    Habilidade atq_basico;
+    Habilidade atq_especial;
     float dano_multiplicado;
 } PlayerBatalha;
 
@@ -108,22 +111,23 @@ int ler_arq_dungeons(Dungeon *array_dungeons);
 int ler_arq_inimigos(Inimigo *array_inimigos);
 
 // MENU.C
-int escolher_operacao(int qnt_operacoes);
+int escolher_operacao(int min_op, int max_op, char *texto);
 int menu_inicial();
 int menu_principal();
 int menu_itens_compraveis(Usuario* usuario_logado);
 int menu_inventario(Usuario* usuario_logado);
-int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade atq_inicial);
+int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado, Habilidade *array_habilidades);
 void exibir_dungeons(Dungeon *array_dungeons);
+int exibir_inventario(Usuario *usuario_logado);
 
 // USUARIO.C
 int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usuarios, int qnt_usuarios);
 int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios);
 int validar_senha(char *entrada);
 int validar_nickname(char *entrada);
-void zerar_usuario(Usuario *usuario, Habilidade atq_inicial);
+void zerar_usuario(Usuario *usuario, Habilidade *habilidades);
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado);
-int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade atq_inicial);
+int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
 
@@ -131,8 +135,16 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
 int jogar(Usuario *usuario_logado);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida);
+int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
 void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
+int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
+int menu_combate();
+int tentar_fuga();
+int escolha_ataque(PlayerBatalha* jogador);
+int escolher_alvo(Inimigo *inimigos);
+int calcular_dano(PlayerBatalha* jogador, int ataque);
+void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
+int usar_itens(Usuario* usuario_logado, PlayerBatalha* player_batalha);
 
 #endif
