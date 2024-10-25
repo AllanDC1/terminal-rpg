@@ -57,7 +57,8 @@ PlayerBatalha iniciar_jogador(Usuario *usuario_logado) {
         .vida_atual = usuario_logado->vida,
         .atq_basico  = usuario_logado->atq_basico,
         .atq_especial = usuario_logado->atq_especial,
-        .dano_multiplicado = 1.0
+        .dano_multiplicado = 1.0,
+        .cooldown_atq_especial = 0
     };
     strcpy(jogador.nick, usuario_logado->nickname);    
 
@@ -233,7 +234,7 @@ int calcular_dano(PlayerBatalha* jogador, int ataque) {
     }
 }
 
-void atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
     int alvo, dano_causado;
     
     if (escolha_ataque(jogador) == 1) {
@@ -241,15 +242,20 @@ void atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
         dano_causado = calcular_dano(jogador, BASICO);
         inimigos[alvo].vida_atual -= dano_causado;
         printf("%s recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);        
-    } else {
+    } else if (jogador->cooldown_atq_especial == 0) {
         dano_causado = calcular_dano(jogador, ESPECIAL);
         for (int i = 0; i < 3; i++) {
             inimigos[i].vida_atual -= dano_causado;
         }
+        jogador->cooldown_atq_especial = 1; // coloquei como base 1 turno para usar novamente
         printf("Todos os inimigos receberam %d de dano!\n", dano_causado);
+    } else {
+        printf("Ataque especial em carregamento, espere mais %d turnos para usar novamente.", jogador->cooldown_atq_especial);
+        return FALHA;
     }
 
     delay(2000);
+    return OK;
 }
 
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
@@ -322,8 +328,11 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
         // Turno do jogador
         switch (menu_combate()) {
             case 1:
-                atacar(jogador, inimigos_camada);
-                break;
+                if (atacar(jogador, inimigos_camada) == FALHA) {
+                    continue;
+                } else {
+                    break;
+                }
             case 2:
                 //usar item
                 if (usar_itens(usuario_logado, jogador) == SAIDA){ 
@@ -340,6 +349,7 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
                 }
                 break;
         }
+        if (jogador->cooldown_atq_especial > 0) {jogador->cooldown_atq_especial -= 1;}
         // Turno dos inimigos
         dano_inimigos(jogador, inimigos_camada);
 

@@ -80,6 +80,7 @@ typedef struct {
     Habilidade atq_basico;
     Habilidade atq_especial;
     float dano_multiplicado;
+    int cooldown_atq_especial;
 } PlayerBatalha;
 
 // FUNCTIONS.C
