@@ -27,13 +27,13 @@ int jogar(Usuario *usuario_logado) {
     for (int i = 0; i < QNT_CAMADAS; i++) {        
         // Executa camada i        
         switch (combate_camada(usuario_logado, &jogador, dungeons[idx_dungeon], inimigos_dungeon, i)) {
-            case FALHA:
+            case FALHA: // erro nos arquivos
                 print_erro("Cancelando combate...\n");
-                delay(2000);
+                voltar_menu();
                 return FALHA; // cancela a dungeon
-            case SAIDA:
+            case SAIDA: // fugir
                 printf("Saindo da dungeon...\n");
-                delay(1500);
+                voltar_menu();
                 return SAIDA; // escapa e cancela a dungeon
             case DERROTA:
                 print_erro("Voce foi derrotado...\n");
@@ -41,7 +41,7 @@ int jogar(Usuario *usuario_logado) {
                 return DERROTA; // encerra a dungeon
             case VITORIA:
                 printf("Voce concluiu a camada %d!\n", i);
-                // PRESSIONE ENTER PARA CONTINUAR FUNCAO?
+                enter_continuar();
                 break;       
         }
     }    
@@ -112,44 +112,44 @@ void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, 
 
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada) {
     limpa_tela();
-    printf("                      %s %d\n", nome_dungeon, camada);
-    
-    printf("--------------------------------------------------------------------\n");
-    if (inimigos[0].vida_atual > 0) {
-        printf("                              /    (%s) [Vida: %d/%d]\n", 
-               inimigos[0].nome, inimigos[0].vida_atual, inimigos[0].vida_total);
-    } else {
-        printf("                              /    (%s) Derrotado\n", inimigos[0].nome);
+    // Exibir combate não boss
+    if (camada != 3) {
+        printf("                      %s %d\n", nome_dungeon, camada);        
+        printf("--------------------------------------------------------------------\n");
+        if (inimigos[0].vida_atual > 0) {
+            printf("                              /    %s [Vida: %d/%d]\n", 
+                inimigos[0].nome, inimigos[0].vida_atual, inimigos[0].vida_total);
+        } else {
+            printf("                              /    %s [Derrotado]\n", inimigos[0].nome);
+        }
+
+        printf("%s [Vida: %d/%d]    /    ", jogador.nick, jogador.vida_atual, jogador.vida_base);
+
+        if (inimigos[1].vida_atual > 0) {
+            printf("%s [Vida: %d/%d]\n", inimigos[1].nome, inimigos[1].vida_atual, inimigos[1].vida_total);
+        } else {
+            printf("%s [Derrotado]\n", inimigos[1].nome);
+        }
+
+        if (inimigos[2].vida_atual > 0) {
+            printf("                            /    %s [Vida: %d/%d]\n", 
+                inimigos[2].nome, inimigos[2].vida_atual, inimigos[2].vida_total);
+        } else {
+            printf("                            /    %s [Derrotado]\n", inimigos[2].nome);
+        }
+        printf("--------------------------------------------------------------------\n");
     }
-
-    printf("(%s) [Vida: %d/%d]    /    ", jogador.nick, jogador.vida_atual, jogador.vida_base);
-
-    if (inimigos[1].vida_atual > 0) {
-        printf("(%s) [Vida: %d/%d]\n", inimigos[1].nome, inimigos[1].vida_atual, inimigos[1].vida_total);
-    } else {
-        printf("(%s) Derrotado\n", inimigos[1].nome);
+    // Exibir combate boss
+    else {
+        printf("                     BOSS %s\n", nome_dungeon);    
+        printf("--------------------------------------------------------------------\n");
+        printf("                              /             \n");  // Linha vazia superior
+        printf("%s [Vida: %d/%d]    /    %s [Vida: %d/%d]\n", 
+                jogador.nick, jogador.vida_atual, jogador.vida_base,
+                inimigos[0].nome, inimigos[0].vida_atual, inimigos[0].vida_total);
+        printf("                            /             \n");  // Linha vazia inferior
+        printf("--------------------------------------------------------------------\n");
     }
-
-    if (inimigos[2].vida_atual > 0) {
-        printf("                            /    (%s) [Vida: %d/%d]\n", 
-               inimigos[2].nome, inimigos[2].vida_atual, inimigos[2].vida_total);
-    } else {
-        printf("                            /    (%s) Derrotado\n", inimigos[2].nome);
-    }
-    printf("--------------------------------------------------------------------\n");
-}
-
-void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon) {
-    limpa_tela();
-    printf("                      %s\n", nome_dungeon);
-    
-    printf("--------------------------------------------------------------------\n");
-    printf("                              /             \n");  // Linha vazia superior
-    printf("(%s) [Vida: %d/%d]    /    (%s) [Vida: %d/%d]\n", 
-            jogador.nick, jogador.vida_atual, jogador.vida_base,
-            boss.nome, boss.vida_atual, boss.vida_total);
-    printf("                            /             \n");  // Linha vazia inferior
-    printf("--------------------------------------------------------------------\n");
 }
 
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos) {
@@ -176,7 +176,7 @@ int menu_combate() {
 int tentar_fuga() {    
     int tentativa = rand() % 100; // 0 a 99
 
-    if (tentativa < 90) {
+    if (tentativa < 90) { // MUDAR PARA 24
         return OK;
     } else {
         return FALHA; 
@@ -282,18 +282,18 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
                     jogador->vida_atual = jogador->vida_base;
                 }
                 limpa_tela();
-                printf("Voce recuperou %d de vida!\n", vida_recuperada);
-                delay(2000);
+                printf("Voce recuperou %d de vida!\n", vida_recuperada);                
             }
 
             if (item_temp.dano_aumentado > 0) {
                 jogador->dano_multiplicado += (item_temp.dano_aumentado / 100.0);
                 limpa_tela();
                 printf("Voce aumentou seu dano em %d%%!\n", item_temp.dano_aumentado);
-                delay(2000);
+                
             }
 
             usuario_logado->consumiveis[i].ID = -1;
+            delay(2000);
             return OK;           
         }        
     }
@@ -322,27 +322,26 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
         // Turno do jogador
         switch (menu_combate()) {
             case 1:
-                atacar(&jogador, inimigos_camada);
+                atacar(jogador, inimigos_camada);
                 break;
             case 2:
                 //usar item
-                if (usar_itens(usuario_logado, &jogador) == SAIDA){ 
+                if (usar_itens(usuario_logado, jogador) == SAIDA){ 
                     continue;
                 }
                 break;
             case 3:
                 if (tentar_fuga() == OK) {
                     print_sucesso("Voce conseguiu escapar.\n");
-                    delay(1000);
                     return SAIDA;
                 } else {
                     print_erro("Voce falhou na fuga. Turno perdido.\n");
-                    delay(1000);
+                    delay(2000);
                 }
                 break;
         }
         // Turno dos inimigos
-        dano_inimigos(&jogador, inimigos_camada);
+        dano_inimigos(jogador, inimigos_camada);
 
         estado_combate = verificar_fim_combate(*jogador, inimigos_camada);
 

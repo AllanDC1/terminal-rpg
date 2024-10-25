@@ -89,6 +89,7 @@ void verificar_buffer(char *entrada);
 void print_erro(char *texto);
 void print_sucesso(char *texto);
 void voltar_menu();
+void enter_continuar();
 int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
 int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);

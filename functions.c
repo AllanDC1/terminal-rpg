@@ -36,6 +36,11 @@ void voltar_menu() {
     getchar();
 }
 
+void enter_continuar() {
+    printf("\n\033[1;32m Pressione ENTER para continuar. \033[0m");
+    getchar();
+}
+
 int iniciar_usuarios(Usuario *array_usuarios, int *qnt_usuarios) {    
     *qnt_usuarios = ler_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario));
     if (*qnt_usuarios == FALHA) {

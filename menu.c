@@ -56,6 +56,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
 
     // Cabeçalho da tabela    
     printf("BEM-VINDO A LOJA!\n");
+    printf("Suas moedas: %d\n", usuario_logado->moedas);
     printf("---------------------------------------------------------------\n");
     printf("%-5s %-25s %-10s %-10s %-10s\n", "ID", "Nome", "Vida (%)", "Forca (%)", "Preco");
     printf("---------------------------------------------------------------\n");
@@ -69,6 +70,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
             array_itens[i].preco
         );
     }
+    printf("\n");
     // Pede o ID do item
     id_desejado = escolher_operacao(0, QNT_ITENS_LOJA, "o ID do item desejado ou 0 para sair"); 
     if (id_desejado == 0){
@@ -80,11 +82,15 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     limpa_tela();
 
     printf("\nVoce escolheu a pocao:\n");
+    printf("-----------------------------------------------\n");
     printf("ID: %d\n", array_itens[id_desejado].ID);
     printf("Nome: %s\n", array_itens[id_desejado].nome);
     printf("Vida Recuperada: %d\n", array_itens[id_desejado].vida_recuperada);
     printf("Dano Aumentado: %d\n", array_itens[id_desejado].dano_aumentado);
     printf("Preco: %d\n", array_itens[id_desejado].preco);
+    printf("-----------------------------------------------\n");
+
+    printf("\nSuas moedas: %d\n", usuario_logado->moedas);
 
     if (array_itens[id_desejado].preco > usuario_logado->moedas) {
         print_erro("\nVoce nao possui moedas suficientes para esse item.\n");

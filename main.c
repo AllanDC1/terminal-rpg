@@ -22,7 +22,6 @@ int main() {
                 limpa_tela();
                 continue;
             }
-            delay(1000);
             // menu pos login
             do {
                 limpa_tela();
