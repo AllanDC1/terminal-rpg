@@ -10,15 +10,15 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 
 ### Menu inicial
 
-- _Login_: Usuário informa login (nome de usuário) e senha.
-- _Registro_: Usuário informa nome de usuário, senha e apelido (mostrado dentro do jogo).
+1. **Login** | Usuário informa login (nome de usuário) e senha.
+2. **Registro** | Usuário informa nome de usuário, senha e apelido (mostrado dentro do jogo).
 
 ### Menu Pós-Login
 
-- _Jogar_: Usuário selecionará uma dungeon e será levado ao combate.
-- _Loja_: Exibi os itens disponíveis, usuário pode escolher o ID de um deles para comprar por uma quantidade de moedas.
-- _Inventário_: Exibi os status e itens do inventário do usuário.
-- _Modificar conta_: Exibi os dados do usuário e permite ele recomeçar personagem, alterar o apelido e excluir conta.
+1. **Jogar** | Usuário selecionará uma dungeon e será levado ao combate.
+2. **Loja** | Exibi os itens disponíveis, usuário pode escolher o ID de um deles para comprar por uma quantidade de moedas.
+3. **Inventário** | Exibi os status e itens do inventário do usuário.
+4. **Modificar conta** | Exibi os dados do usuário e permite ele recomeçar personagem, alterar o apelido e excluir conta.
 
 ## Em jogo
 
