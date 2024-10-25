@@ -135,7 +135,7 @@ int menu_inventario(Usuario* usuario_logado) {
     printf("|------------------------------|\n");
     printf("|  STATUS DE %-18s|\n", usuario_logado->nickname);
     printf("|------------------------------|\n");
-    printf("|  Nivel:  %-20.1f|\n", usuario_logado->nivel);
+    printf("|  Nivel:  %-20d|\n", usuario_logado->xp_usuario);
     printf("|  Moedas: %-20d|\n", usuario_logado->moedas);
     printf("|  Vida:   %-20d|\n", usuario_logado->vida);
     printf("|------------------------------|\n\n");

@@ -49,7 +49,7 @@ typedef struct {
     char nome_usuario[TAM_LOGIN];
     char senha[TAM_SENHA];
     char nickname[TAM_NICK];
-    double nivel;
+    int xp_usuario;
     int moedas;
     Item consumiveis[QNT_CONSUMIVEIS];
     Habilidade atq_basico;
@@ -70,7 +70,7 @@ typedef struct {
     int vida_total;
     int vida_atual;
     int dano;
-    int nivel;
+    int xp;
 } Inimigo;
 
 typedef struct {
@@ -147,7 +147,7 @@ int tentar_fuga();
 int escolha_ataque(PlayerBatalha* jogador);
 int escolher_alvo(Inimigo *inimigos);
 int calcular_dano(PlayerBatalha* jogador, int ataque);
-void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos);
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
 void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos);
 int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada);

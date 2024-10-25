@@ -349,7 +349,7 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
                 }
                 break;
         }
-        if (jogador->cooldown_atq_especial > 0) {jogador->cooldown_atq_especial -= 1;}
+        if (jogador->cooldown_atq_especial > 0) {jogador->cooldown_atq_especial -= 1;} // dps do turno dele o cooldown diminui caso seja maior q 0
         // Turno dos inimigos
         dano_inimigos(jogador, inimigos_camada);
 
@@ -357,10 +357,18 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
 
     } while (estado_combate == CONTINUAR);
 
-    // if estado_combate == vitoria{
-    // xp
-    // verificacao nvl etc
-    //}
+    
+    int xp_total = 0;
+
+    if (estado_combate == VITORIA) {
+        for (int i = 0; i == 3; i++) {
+            xp_total += inimigos_camada->xp[&i];
+        }
+        // inimigos_camada->xp[i]
+        
+        // xp
+        // verificacao nvl etc
+    }
 
     return estado_combate;
 }

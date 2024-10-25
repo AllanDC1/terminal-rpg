@@ -56,7 +56,7 @@ int validar_nickname(char *entrada) {
 }
 
 void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {    
-    usuario->nivel = 0.0;
+    usuario->xp_usuario = 0;
     usuario->moedas = 1000; // TESTE
     usuario->atq_basico = habilidades[0];
     usuario->atq_especial = habilidades[1];

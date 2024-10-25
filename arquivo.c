@@ -246,30 +246,30 @@ int criar_arq_inimigos() {
 
     Inimigo lista_inimigos[] = {
     //inimigos_floresta
-        {1, "Goblin", 10, 10, 3, 1},
-        {1, "Lobo", 13, 13, 4, 1},
-        {1, "Espirito Floral", 3, 3, 5, 1},
-        {1, "General Ogro", 40, 40, 8, 5},
+        {1, "Goblin", 10, 10, 3, 6},
+        {1, "Lobo", 13, 13, 4, 8},
+        {1, "Espirito Floral", 3, 3, 5, 10},
+        {1, "General Ogro", 40, 40, 8, 33},
     //inimigos_montanha
-        {2, "Elemental de Gelo", 17, 17, 5, 2},
-        {2, "Arqueiro", 16, 16, 7, 2},
-        {2, "Urso Polar", 22, 22, 6, 4},
-        {2, "Golem Congelado", 60, 60, 14, 6},
+        {2, "Elemental de Gelo", 17, 17, 5, 12},
+        {2, "Arqueiro", 16, 16, 7, 15},
+        {2, "Urso Polar", 22, 22, 6, 18},
+        {2, "Golem Congelado", 60, 60, 14, 58},
     //inimigos_caverna
-        {3, "Rato de Cinzas", 12, 12, 7, 2},
-        {3, "Zumbi Carbonizado", 20, 20, 7, 3},
-        {3, "Esqueleto Negro", 22, 22, 8, 4},
-        {3, "Gargula das Chamas", 80, 80, 18, 6},
+        {3, "Rato de Cinzas", 12, 12, 7, 19},
+        {3, "Zumbi Carbonizado", 20, 20, 7, 21},
+        {3, "Esqueleto Negro", 22, 22, 8, 24},
+        {3, "Gargula das Chamas", 80, 80, 18, 85},
     //inimigos_vale
-        {4, "Cultista Draconico", 12, 12, 4, 2},
-        {4, "Lagarto", 20, 20, 5, 3},
-        {4, "Principe Prateado", 25, 25, 7, 5},
-        {4, "Deus Dragao", 100, 100, 24, 7},
+        {4, "Cultista Draconico", 12, 12, 4, 25},
+        {4, "Lagarto", 20, 20, 5, 26},
+        {4, "Principe Prateado", 25, 25, 7, 27},
+        {4, "Deus Dragao", 100, 100, 24, 90},
     //inimigos_fortaleza
-        {5, "Cavaleiro Imperial", 34, 34, 10, 3},
-        {5, "Arqueiro Imperial", 27, 27, 12, 3},
-        {5, "Golem Imperial", 50, 50, 8, 5},
-        {5, "Lorde Roberto", 150, 150, 34, 10} // ???? lorde roberto ksksksksks
+        {5, "Cavaleiro Imperial", 34, 34, 10, 30},
+        {5, "Arqueiro Imperial", 27, 27, 12, 30},
+        {5, "Golem Imperial", 50, 50, 8, 30},
+        {5, "Lorde Roberto", 150, 150, 34, 100} // ???? lorde roberto ksksksksks
     };
 
     FILE *fP = fopen("inimigos.txt", "w");
@@ -285,7 +285,7 @@ int criar_arq_inimigos() {
             lista_inimigos[i].vida_total,
             lista_inimigos[i].vida_atual,
             lista_inimigos[i].dano,
-            lista_inimigos[i].nivel
+            lista_inimigos[i].xp
         );
     }
 
@@ -349,7 +349,7 @@ int ler_arq_inimigos(Inimigo *array_inimigos) {
                    &array_inimigos[i].vida_total, 
                    &array_inimigos[i].vida_atual, 
                    &array_inimigos[i].dano,
-                   &array_inimigos[i].nivel) == 6) {
+                   &array_inimigos[i].xp) == 6) {
             i++;
         } else {
             print_erro("Erro ao processar linha de inimigos.\n");
