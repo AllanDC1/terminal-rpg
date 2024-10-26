@@ -42,7 +42,7 @@ int jogar(Usuario *usuario_logado) {
             case VITORIA:
                 printf("Voce concluiu a camada %d!\n", i);
                 enter_continuar();
-                break;       
+                break;
         }
     }    
     
@@ -360,14 +360,15 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
     
     int xp_total = 0;
 
+    Habilidade habilidades[QNT_HABILIDADES];
+
     if (estado_combate == VITORIA) {
         for (int i = 0; i == 3; i++) {
             xp_total += inimigos_camada->xp[&i];
         }
-        // inimigos_camada->xp[i]
-        
-        // xp
-        // verificacao nvl etc
+        ler_arq_habilidades(habilidades);
+        usuario_logado->xp_usuario = xp_total;
+        verificar_nivel(usuario_logado, habilidades);
     }
 
     return estado_combate;

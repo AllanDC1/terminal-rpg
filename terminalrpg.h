@@ -140,7 +140,6 @@ int selecao_dungeon(Dungeon *array_dungeons);
 int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
 void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
-void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
 int menu_combate();
 int tentar_fuga();

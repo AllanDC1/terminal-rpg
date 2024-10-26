@@ -115,8 +115,8 @@ int criar_arq_habilidades(){
         {3, "Bola de fogo", 18, 10},
         {4, "Marretada relampago", 25, 15},
         {5, "Raio do julgamento", 29, 20},
-        {6, "Soco sismico", 34, 25},
-        {7, "Terremoto", 40, 30}
+        {6, "Soco sismico", 40, 25},
+        {7, "Terremoto", 60, 30}
     };
 
     FILE *fP = abrir_arquivo("habilidades.txt", "w");
