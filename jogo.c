@@ -92,7 +92,7 @@ int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, in
                 array_inimigos[j] = todos_inimigos[i + j];
                 
                 // Ajustar a vida conforme a porcentagem
-                array_inimigos[j].vida_total = array_inimigos[j].vida_total; //+ (vida_usuario * porcentagem_vida[j]);
+                array_inimigos[j].vida_total = array_inimigos[j].vida_total; + (vida_usuario * porcentagem_vida[j]); // VERIFICAR SE VAI MANTER O CALCULO
                 array_inimigos[j].vida_atual = array_inimigos[j].vida_total;
                 
             }

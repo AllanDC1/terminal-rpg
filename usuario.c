@@ -60,7 +60,7 @@ void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {
     usuario->moedas = 100;
     usuario->atq_basico = habilidades[0];
     usuario->atq_especial = habilidades[1];
-    usuario->vida = 300; //exemplo
+    usuario->vida = 100; //exemplo
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
     }
@@ -187,7 +187,7 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
             break;
         }
     }
-    
+
     limpa_tela();
     printf("> Digite seu nome de usuario para confirmar a exclusao: ");
     fgets(entrada, sizeof(entrada), stdin);
