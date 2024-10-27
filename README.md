@@ -18,7 +18,7 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 1. **Jogar** | Usuário selecionará uma dungeon e será levado ao combate.
 2. **Loja** | Exibi os itens disponíveis, usuário pode escolher o ID de um deles para comprar por uma quantidade de moedas.
 3. **Inventário** | Exibi os status e itens do inventário do usuário.
-4. **Modificar conta** | Exibi os dados do usuário e permite ele recomeçar personagem, alterar o apelido e excluir conta.
+4. **Modificar conta** | Exibi os dados do usuário e permite ele recomeçar o personagem, alterar o apelido e excluir conta.
 
 ## Em jogo
 
@@ -32,8 +32,10 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 
 - Quando `ATAQUE` for selecionado o player poderá selecionar entre o ataque primário e ataque especial que ele possui, depois o inimigo que o ataque será direcionado.
 - Se `USAR ITEM` for selecionado, será mostrado os itens do inventário (poções), e o player poderá usar um dos itens.
-- Caso `FUGIR` seja escolhido, o player terá 25% de chance de fugir do combate e voltar para o menu inicial, caso falhe perderá seu turno.
+- Caso `FUGIR` seja escolhido, o player terá 25% de chance de fugir do combate e voltar para o menu inicial, caso falhe perderá seu turno. <br>
 
+- O ataque básico do jogador atinge apenas 1 alvo de sua escolha, o ataque especial causa mais dano e afeta todos os inimigos vivos, porém, possui um intervalo de 1 turno para ser usado novamente.
+- Após o jogador usar seu turno, os inimigos o atacaram causando dano, no sistema o jogador sempre faz a ação antes dos inimigos.
 - Quando todos os inimigos da camada forem derrotados, o combate será encerrado e o player prosseguirá para próxima camada da dungeon, ou voltar para o menu caso finalize a dungeon.
 
 ## Recursos e Recompensas
@@ -43,5 +45,38 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 - Quando o player atingir marcos de nível (5,10,15,...) ele receberá novos ataques.
 
 ## Estrutura do sistema
+- `main.c:` Arquivo que contém a lógica de execução do programa. <br>
+- `menu.c:` Arquivo que contém as funções relacionadas aos menus. <br>
+- `arquivo.c:` Arquivo que contém as funções relacionadas a manipulação de arquivos. <br>
+- `usuario.c:` Arquivo que contém as funções de manipulação e criação de usuários. <br>
+- `jogo.c:` Arquivo que contém as funções da jogabilidade e combate. <br>
+- `functions.c:` Arquivo que possui funções gerais executadas pelos arquivos do programa. <br>
+- `terminalrpg.h:` Arquivo de cabeçalho onde são declaradas as funções, structs/enums e bibliotecas usadas pelos arquivos `.c`. <br>
+- `terminal-rpg(.exe):` Arquivo executável que roda o programa.
 
-...
+## Arquivos de Dados
+- `dados-usuarios.bin:` Arquivo em binário onde são salvos os dados dos usuários. <br>
+- `dungeons.txt:` Arquivo de texto onde as informações das dungeons são salvas. <br>
+- `inimigos.txt:` Arquivo de texto onde as informações dos inimigos das dungeons são salvas. <br>
+- `habilidades.txt:` Arquivo de texto onde as informações das habilidades existentes são salvas. <br>
+- `itens.txt:` Arquivo de texto onde as informações dos itens da loja são salvas. <br>
+
+## Compilação e Execução
+*É necessário a instalação do [GCC](https://gcc.gnu.org/) no seu dispositivo para fazer a compilação.* <br>
+
+Com o GCC instalado, copie e cole essa linha no seu terminal: <br>
+`gcc *.c -o terminal-rpg`
+
+Agora que o executável foi criado, cole essa linha no terminal para executá-lo: <br>
+`./terminal-rpg
+
+## Guia de uso
+*Nota: Evite interromper o sistema usando `Ctrl+C`, pois pode ocorrer perda de dados dos usuários. Use as opções de saída (Digitar 0), fornecidas nos menus.*
+
+- Com o sistema executando no seu terminal, o menu incial já será exibido com as operações de login e registro. <br>
+- No primeiro acesso, o passo inicial é o registro, seguido pelo login, assim você terá acesso ao menu principal de operações onde todas serão listadas para serem executadas de acordo com o número indicado. <br>
+- Os arquivos de texto e binários de armazenamento de dados serão criados automaticamente na inicialização do sistema. <br>
+
+## Integrantes
+- Allan Donetti Calen R.A.: 22.124.002-1
+- Rodrigo Akira Rosado Yatate R.A.: 22.124.093-0
