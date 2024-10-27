@@ -5,6 +5,7 @@
 int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
     PlayerBatalha jogador = iniciar_jogador(usuario_logado);
     Dungeon dungeons[QNT_DUNGEONS];
+    Inimigo inimigos_dungeon[4]; // variedade de inimigos por dungeon
     
     if (ler_arq_dungeons(dungeons) == FALHA) {
         print_erro("Erro ao ler arquivo de dungeons.\n");
@@ -16,15 +17,14 @@ int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
         return SAIDA;
     }
     int idx_dungeon = id_dungeon_escohlida - 1;
-
-    Inimigo *inimigos_dungeon;
+    
     if (gerar_inimigos_dungeon(inimigos_dungeon, id_dungeon_escohlida, jogador.vida_base) == FALHA) {
         print_erro("Erro ao ler arquivo de inimigos.\n");
         return FALHA;
     }
 
     // Itera pelas camadas
-    for (int i = 0; i < QNT_CAMADAS; i++) {        
+    for (int i = 1; i <= QNT_CAMADAS; i++) {        
         // Executa camada i        
         switch (combate_camada(usuario_logado, &jogador, dungeons[idx_dungeon], inimigos_dungeon, i, habilidades)) {
             case FALHA: // erro nos arquivos
@@ -36,19 +36,22 @@ int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
                 voltar_menu();
                 return SAIDA; // escapa e cancela a dungeon
             case DERROTA:
+                limpa_tela();
                 print_erro("Voce foi derrotado...\n");
                 voltar_menu();
                 return DERROTA; // encerra a dungeon
             case VITORIA:
-                printf("Voce concluiu a camada %d!\n", i);
+                printf("\nVoce concluiu a camada %d!\n", i);
                 enter_continuar();
                 break;
         }
     }    
-    
-    // na ultima camdada
-    //exibir_combate_boss(jogador, lista_inimigos[3], dungeons[idx_dungeon].nome);
-    
+    printf("\nParabens! Voce completou a dungeon %s!\n", dungeons[idx_dungeon].nome);
+    usuario_logado->moedas += dungeons[idx_dungeon].qnt_moedas;
+    printf("Recompensa: %d Moedas!\n", dungeons[idx_dungeon].qnt_moedas);
+    voltar_menu();
+
+    return OK;
 }
 
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado) {
@@ -80,23 +83,22 @@ int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, in
         return FALHA;    
     }
 
-    float porcentagem_vida[3] = {0.15, 0.15, 0.15}; // da pra mudar a porcentagem da vida dos monstros !!
+    float porcentagem_vida[3] = {0.15, 0.15, 0.15}; // VERIFICAR SE VAI MANTER
     
     for (int i = 0; i < QNT_INIMIGOS; i++) {
         if (todos_inimigos[i].id_dungeon == id_dungeon_escolhida) {
-            // Gerar os 3 primeiros monstros encontrados para a dungeon
-            for (int j = 0; j < 3; j++) {
+            // Gerar os 4 primeiros monstros encontrados para a dungeon
+            for (int j = 0; j < 4; j++) {
                 array_inimigos[j] = todos_inimigos[i + j];
                 
                 // Ajustar a vida conforme a porcentagem
-                array_inimigos[j].vida_total = array_inimigos[j].vida_total + (vida_usuario * porcentagem_vida[j]);
+                array_inimigos[j].vida_total = array_inimigos[j].vida_total; //+ (vida_usuario * porcentagem_vida[j]);
                 array_inimigos[j].vida_atual = array_inimigos[j].vida_total;
                 
             }
             break;
         }
     }
-
     return OK;
 }
 
@@ -124,7 +126,7 @@ void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_d
             printf("                              /    %s [Derrotado]\n", inimigos[0].nome);
         }
 
-        printf("%s [Vida: %d/%d]    /    ", jogador.nick, jogador.vida_atual, jogador.vida_base);
+        printf("%s [Vida: %d/%d]    /      ", jogador.nick, jogador.vida_atual, jogador.vida_base);
 
         if (inimigos[1].vida_atual > 0) {
             printf("%s [Vida: %d/%d]\n", inimigos[1].nome, inimigos[1].vida_atual, inimigos[1].vida_total);
@@ -142,7 +144,7 @@ void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_d
     }
     // Exibir combate boss
     else {
-        printf("                     BOSS %s\n", nome_dungeon);    
+        printf("                      %s BOSS\n", nome_dungeon);    
         printf("--------------------------------------------------------------------\n");
         printf("                              /             \n");  // Linha vazia superior
         printf("%s [Vida: %d/%d]    /    %s [Vida: %d/%d]\n", 
@@ -153,15 +155,20 @@ void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_d
     }
 }
 
-int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos) {
+int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos, int qnt_inimigos) {
     if (jogador.vida_atual <= 0) {
         return DERROTA;
-    } 
-    if (inimigos[0].vida_atual <=0 && inimigos[1].vida_atual <=0 && inimigos[2].vida_atual <=0) {
-        return VITORIA;
     }
-    
-    return CONTINUAR;
+
+    for (int i = 0; i < qnt_inimigos; i++) {
+        if (inimigos[i].vida_atual <=0) {
+            continue; // vai pra proxima iteracao
+        } else {
+            return CONTINUAR; // se qualquer inimigo estiver vivo
+        }
+    }
+    // Se iterar por todos:
+    return VITORIA;
 }
 
 int menu_combate() {
@@ -195,22 +202,25 @@ int escolha_ataque(PlayerBatalha* jogador) {
     return(escolher_operacao(1, 2, "seu ataque"));
 }
 
-int escolher_alvo(Inimigo *inimigos) {
+int escolher_alvo(Inimigo *inimigos, int qnt_inimigos) {
     int idx_escolha;
 
     do {
-        limpa_tela();
-        printf("|--------------------------------|\n");
-        for (int i = 0; i < 3; i++) {
+        limpa_tela();        
+        printf("|------------------------------------------|\n");
+        
+        for (int i = 0; i < qnt_inimigos; i++) {
             if (inimigos[i].vida_atual <= 0) {
-                printf("|    %d. %s [Derrotado]         |\n", i + 1, inimigos[i].nome);
+                printf("| %2d. %-20s [Derrotado]     |\n", i + 1, inimigos[i].nome);
             } else {
-                printf("|    %d. %s [Vida: %d/%d]         |\n", i + 1, inimigos[i].nome, inimigos[i].vida_atual, inimigos[i].vida_total);
+                printf("| %2d. %-20s [Vida: %3d/%3d] |\n", i + 1, inimigos[i].nome, inimigos[i].vida_atual, inimigos[i].vida_total);
             }
-        }    
-        printf("|--------------------------------|\n");
+        }
 
-        idx_escolha = escolher_operacao(1, 3, "o alvo do ataque") - 1;
+        printf("|------------------------------------------|\n");
+
+        idx_escolha = escolher_operacao(1, qnt_inimigos, "o alvo do ataque") - 1;
+
         if (inimigos[idx_escolha].vida_atual <= 0) {
             printf("Este inimigo ja foi derrotado.\n");
             delay(1500);
@@ -234,27 +244,33 @@ int calcular_dano(PlayerBatalha* jogador, int ataque) {
     }
 }
 
-int atacar(PlayerBatalha* jogador, Inimigo *inimigos) {
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos) {
     int alvo, dano_causado;
     
     if (escolha_ataque(jogador) == 1) {
-        alvo = escolher_alvo(inimigos);
+        alvo = escolher_alvo(inimigos, qnt_inimigos);
         dano_causado = calcular_dano(jogador, BASICO);
         inimigos[alvo].vida_atual -= dano_causado;
-        printf("%s recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);        
+        limpa_tela();
+        printf("\033[0;31m%s\033[0m recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);        
     } else if (jogador->cooldown_atq_especial == 0) {
         dano_causado = calcular_dano(jogador, ESPECIAL);
-        for (int i = 0; i < 3; i++) {
-            inimigos[i].vida_atual -= dano_causado;
+        limpa_tela();
+        for (int i = 0; i < qnt_inimigos; i++) {
+            if (inimigos[i].vida_atual > 0) {
+                inimigos[i].vida_atual -= dano_causado;
+                printf("\033[0;31m%s\033[0m recebeu %d de dano!\n", inimigos[i].nome, dano_causado);
+            }
         }
-        jogador->cooldown_atq_especial = 1; // coloquei como base 1 turno para usar novamente
-        printf("Todos os inimigos receberam %d de dano!\n", dano_causado);
+        jogador->cooldown_atq_especial = 2; // 1 para o turno atual, + 1 para o turno seguinte (turno sim, turno nao)
     } else {
-        printf("Ataque especial em carregamento, espere mais %d turnos para usar novamente.", jogador->cooldown_atq_especial);
+        limpa_tela();
+        printf("Ataque especial em carregamento, espere mais %d turno(s) para usar novamente.", jogador->cooldown_atq_especial);
+        delay(2500);
         return FALHA;
     }
 
-    delay(2000);
+    enter_continuar();
     return OK;
 }
 
@@ -308,27 +324,36 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
     return SAIDA;
 }
 
-void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos) {
-    for (int i = 0; i < 3; i++) {
+void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos) {
+    for (int i = 0; i < qnt_inimigos; i++) {
         if (inimigos[i].vida_atual > 0) {
             jogador->vida_atual -= inimigos[i].dano; // VER SE VAI TER ALGUM OUTRO FATOR QUE AFETARA O DANO
-            printf("%s te inflingiu %d de dano!\n", inimigos[i].nome, inimigos[i].dano);
+            printf("\033[0;31m%s\033[0m te inflingiu \033[0;31m%d\033[0m de dano!\n", inimigos[i].nome, inimigos[i].dano);
         }
     }
+    enter_continuar();
 }
 
 int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades) {    
-    Inimigo *inimigos_camada;
-    int estado_combate;
+    Inimigo inimigos_camada[3];
+    int estado_combate = CONTINUAR, qnt_inimigos;
 
     gerar_inimigos_camada(lista_inimigos_dungeon, inimigos_camada, n_camada);
+    if (n_camada == 3) {
+        qnt_inimigos = 1;
+    } else {
+        qnt_inimigos = 3;
+    }
+
+    printf("\nEntrando na camada %d...\n", n_camada);
+    delay(2000);
       
     do {
         exibir_combate(*jogador, inimigos_camada, dungeon.nome, n_camada);
         // Turno do jogador
         switch (menu_combate()) {
             case 1:
-                if (atacar(jogador, inimigos_camada) == FALHA) {
+                if (atacar(jogador, inimigos_camada, qnt_inimigos) == FALHA) {
                     continue;
                 } else {
                     break;
@@ -341,6 +366,7 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
                 break;
             case 3:
                 if (tentar_fuga() == OK) {
+                    limpa_tela();
                     print_sucesso("Voce conseguiu escapar.\n");
                     return SAIDA;
                 } else {
@@ -349,23 +375,60 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
                 }
                 break;
         }
-        if (jogador->cooldown_atq_especial > 0) {jogador->cooldown_atq_especial -= 1;} // dps do turno dele o cooldown diminui caso seja maior q 0
-        // Turno dos inimigos
-        dano_inimigos(jogador, inimigos_camada);
+        if (jogador->cooldown_atq_especial > 0) {
+            jogador->cooldown_atq_especial -= 1;
+        } // dps do turno dele o cooldown diminui caso seja maior q 0
 
-        estado_combate = verificar_fim_combate(*jogador, inimigos_camada);
+        // Verifica se os inimigos ainda estao vivos
+        estado_combate = verificar_fim_combate(*jogador, inimigos_camada, qnt_inimigos);
+
+        // Turno dos inimigos
+        if (estado_combate == CONTINUAR) {
+            limpa_tela();
+            dano_inimigos(jogador, inimigos_camada, qnt_inimigos);
+            // Verifica se o player esta vivo
+            estado_combate = verificar_fim_combate(*jogador, inimigos_camada, qnt_inimigos);
+        }
 
     } while (estado_combate == CONTINUAR);
     
     int xp_total = 0;
 
     if (estado_combate == VITORIA) {
-        for (int i = 0; i < 3; i++) {
-            xp_total += inimigos_camada->xp[&i];
+        for (int i = 0; i < qnt_inimigos; i++) {
+            xp_total += inimigos_camada[i].xp; 
         }
         usuario_logado->xp_usuario += xp_total;
-        verificar_nivel(usuario_logado, habilidades);
+        limpa_tela();
+        printf("Ganhou \033[1;34m%d\033[0m de XP!\n", xp_total);
+        verificar_nivel(usuario_logado, jogador, habilidades);        
     }
 
+    jogador->cooldown_atq_especial = 0; // Reseta o cooldown
+
     return estado_combate;
+}
+
+void verificar_nivel(Usuario *usuario_logado, PlayerBatalha *jogador, Habilidade *array_habilidades) {
+    for (int i = 0; i < QNT_HABILIDADES; i++) {
+        if (usuario_logado->xp_usuario >= array_habilidades[i].requisito_xp * 100) {
+            if (strcmp(usuario_logado->atq_basico.nome, array_habilidades[i].nome) != 0 &&
+                strcmp(usuario_logado->atq_especial.nome, array_habilidades[i].nome) != 0)
+                {
+                if (array_habilidades[i].ID % 2 == 0) { // id par = basico, id impar = especial
+                    if (array_habilidades[i].ID > usuario_logado->atq_basico.ID) { // Confere se a habilidade eh melhor que a do usuario
+                        usuario_logado->atq_basico = array_habilidades[i];
+                        printf("Nova habilidade basica desbloqueada: \033[1;36m%s\033[0m!\n", array_habilidades[i].nome);
+                    }
+                } else {
+                    if (array_habilidades[i].ID > usuario_logado->atq_especial.ID) {
+                        usuario_logado->atq_especial = array_habilidades[i];
+                        printf("Nova habilidade especial desbloqueada: \033[1;36m%s\033[0m!\n", array_habilidades[i].nome);
+                    }       
+                }
+            }
+        }
+    }
+    jogador->atq_basico = usuario_logado->atq_basico;
+    jogador->atq_especial = usuario_logado->atq_especial;
 }

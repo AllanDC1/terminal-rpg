@@ -18,17 +18,17 @@ int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usu
 }
 
 int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios) {
-    if (strlen(entrada) > TAM_LOGIN) {
+    if (strlen(entrada) > TAM_LOGIN || strlen(entrada) < 4) {
         limpa_tela();
-        print_erro("Nome de usuario muito longo, limite de 20 caracteres.\n");
-        delay(1000);
+        print_erro("Nome de usuario invalido, deve possuir de 5 a 20 caracteres.\n");
+        delay(2000);
         return FALHA;
     }
     for (int i = 0; i < qnt_usuarios; i++) {
         if (strcmp(entrada, array_usuarios[i].nome_usuario) == 0) {
             limpa_tela();
             print_erro("O nome de usuario inserido ja possui uma conta. Voltando ao menu...\n");
-            delay(1000);
+            delay(2000);
             return SAIDA;
         }
     }
@@ -39,17 +39,17 @@ int validar_senha(char *entrada) {
     if (strlen(entrada) > TAM_SENHA || strlen(entrada) < 6) {
         limpa_tela();
         print_erro("Tamanho de senha invalida, deve ter entre 6 e 15 caracteres.\n");
-        delay(1000);
+        delay(2000);
         return FALHA;
     }
     return OK;
 }
 
 int validar_nickname(char *entrada) {
-    if (strlen(entrada) > TAM_NICK) {
+    if (strlen(entrada) > TAM_NICK || strlen(entrada) < 4) {
         limpa_tela();
-        print_erro("Nickname muito longo, limite de 30 caracteres.\n");
-        delay(1000);
+        print_erro("Nickname invalido, deve possuir de 5 a 30 caracteres.\n");
+        delay(2000);
         return FALHA;
     }
     return OK;
@@ -57,22 +57,22 @@ int validar_nickname(char *entrada) {
 
 void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {    
     usuario->xp_usuario = 0;
-    usuario->moedas = 1000; // TESTE
+    usuario->moedas = 100;
     usuario->atq_basico = habilidades[0];
     usuario->atq_especial = habilidades[1];
-    usuario->vida = 100; //exemplo
+    usuario->vida = 300; //exemplo
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
     }
 }
 
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
-    char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1]; //testar se o limite esta correto
+    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2]; //testar se o limite esta correto
     int idx_usuario;
 
     if (qnt_usuarios == 0) {
         print_erro("Nenhuma conta foi criada no sistema.\n");
-        delay(1000);
+        delay(1500);
         return FALHA;
     }
 
@@ -106,10 +106,8 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
 
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
     Usuario novo_usuario;
-    char entrada_login[TAM_LOGIN + 1], entrada_senha[TAM_SENHA + 1], entrada_nickname[TAM_NICK + 1]; //testar se o limite esta correto
-    int auth;
-
-    limpa_tela();
+    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2], entrada_nickname[TAM_NICK + 2]; //testar se o limite esta correto
+    int auth = FALHA;
 
     if (*qnt_usuarios >= MAX_USUARIOS) {
         print_erro("Quantidade limite de usuarios criados atingida. Cancelando operacao...\n");
@@ -117,6 +115,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habil
     }
 
     do {
+        limpa_tela();
         printf("Registre sua conta:\n");
 
         printf("> Informe nome de usuario (Usado para login): ");
@@ -156,12 +155,12 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habil
     limpa_tela();
     print_sucesso("Usuario criado com sucesso!\n");
 
-    voltar_menu();
+    enter_continuar();
     return OK;
 }
 
 int alterar_apelido(Usuario *usuario_logado) {
-    char entrada_nickname[TAM_NICK + 1];
+    char entrada_nickname[TAM_NICK + 2];
     do {
         printf("> Informe um novo nickname: ");
         fgets(entrada_nickname, sizeof(entrada_nickname), stdin);
@@ -178,7 +177,7 @@ int alterar_apelido(Usuario *usuario_logado) {
 }
 
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado) {
-    char entrada[TAM_LOGIN + 1];
+    char entrada[TAM_LOGIN + 2];
     int idx_usuario;
 
     // achar idx do usuario no array
@@ -188,7 +187,8 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
             break;
         }
     }
-
+    
+    limpa_tela();
     printf("> Digite seu nome de usuario para confirmar a exclusao: ");
     fgets(entrada, sizeof(entrada), stdin);
     verificar_buffer(entrada);

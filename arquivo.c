@@ -217,7 +217,7 @@ int criar_arq_dungeons() {
 
     Dungeon lista_dungeons[] = {
         {1, "Floresta do Leste", 1, 150},
-        {2, "Montanha Gelida", 2, 300},
+        {2, "Montanhas Gelida", 2, 300},
         {3, "Caverna das Cinzas", 3, 500},
         {4, "Vale do Dragao", 4, 750},    
         {5, "Fortaleza Sombria", 5, 1000}

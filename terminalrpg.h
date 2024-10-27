@@ -95,7 +95,6 @@ int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
 int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
-void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 int confirmar_acao();
 
 // ARQUIVO.C
@@ -140,15 +139,16 @@ int selecao_dungeon(Dungeon *array_dungeons);
 int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
 void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
-int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
+int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos, int qnt_inimigos);
 int menu_combate();
 int tentar_fuga();
 int escolha_ataque(PlayerBatalha* jogador);
-int escolher_alvo(Inimigo *inimigos);
+int escolher_alvo(Inimigo *inimigos, int qnt_inimigos);
 int calcular_dano(PlayerBatalha* jogador, int ataque);
-int atacar(PlayerBatalha* jogador, Inimigo *inimigos);
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos);
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
-void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos);
+void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos);
 int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades);
+void verificar_nivel(Usuario *usuario_logado, PlayerBatalha *jogador, Habilidade *array_habilidades);
 
 #endif
