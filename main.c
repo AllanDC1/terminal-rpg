@@ -29,7 +29,7 @@ int main() {
                 switch (menu_principal()) {
                 case 1:
                     // JOGAR
-                    jogar(usuario_logado);
+                    jogar(usuario_logado, habilidades);
                     break;
                 case 2:
                     // INVENTARIO

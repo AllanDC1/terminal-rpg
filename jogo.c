@@ -2,7 +2,7 @@
 
 //Funções relacionadas ao funcionamento/mecânicas do jogo
 
-int jogar(Usuario *usuario_logado) {
+int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
     PlayerBatalha jogador = iniciar_jogador(usuario_logado);
     Dungeon dungeons[QNT_DUNGEONS];
     
@@ -26,7 +26,7 @@ int jogar(Usuario *usuario_logado) {
     // Itera pelas camadas
     for (int i = 0; i < QNT_CAMADAS; i++) {        
         // Executa camada i        
-        switch (combate_camada(usuario_logado, &jogador, dungeons[idx_dungeon], inimigos_dungeon, i)) {
+        switch (combate_camada(usuario_logado, &jogador, dungeons[idx_dungeon], inimigos_dungeon, i, habilidades)) {
             case FALHA: // erro nos arquivos
                 print_erro("Cancelando combate...\n");
                 voltar_menu();
@@ -317,7 +317,7 @@ void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos) {
     }
 }
 
-int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada) {    
+int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades) {    
     Inimigo *inimigos_camada;
     int estado_combate;
 
@@ -356,18 +356,14 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
         estado_combate = verificar_fim_combate(*jogador, inimigos_camada);
 
     } while (estado_combate == CONTINUAR);
-
     
     int xp_total = 0;
 
-    Habilidade habilidades[QNT_HABILIDADES];
-
     if (estado_combate == VITORIA) {
-        for (int i = 0; i == 3; i++) {
+        for (int i = 0; i < 3; i++) {
             xp_total += inimigos_camada->xp[&i];
         }
-        ler_arq_habilidades(habilidades);
-        usuario_logado->xp_usuario = xp_total;
+        usuario_logado->xp_usuario += xp_total;
         verificar_nivel(usuario_logado, habilidades);
     }
 

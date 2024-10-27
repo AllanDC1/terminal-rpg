@@ -134,7 +134,7 @@ int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
 
 // JOGO.C 
-int jogar(Usuario *usuario_logado);
+int jogar(Usuario *usuario_logado, Habilidade *habilidades);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
 int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
@@ -149,6 +149,6 @@ int calcular_dano(PlayerBatalha* jogador, int ataque);
 int atacar(PlayerBatalha* jogador, Inimigo *inimigos);
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
 void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos);
-int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada);
+int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades);
 
 #endif
