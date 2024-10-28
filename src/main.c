@@ -1,4 +1,4 @@
-#include "terminalrpg.h"
+#include "../terminalrpg.h"
 
 //Execução principal/inicial do programa
 

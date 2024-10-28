@@ -1,4 +1,4 @@
-#include "terminalrpg.h"
+#include "../terminalrpg.h"
 
 //Funções gerais do programa
 
@@ -44,7 +44,7 @@ void enter_continuar() {
 }
 
 int iniciar_usuarios(Usuario *array_usuarios, int *qnt_usuarios) {    
-    *qnt_usuarios = ler_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario));
+    *qnt_usuarios = ler_arquivo_bin("assets/dados-usuarios.bin", array_usuarios, sizeof(Usuario));
     if (*qnt_usuarios == FALHA) {
         print_erro("Falha ao carregar dados dos usuarios.\n");
         return FALHA;
@@ -98,7 +98,7 @@ int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *arra
 }
 
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios) {
-    salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
+    salvar_arquivo_bin("assets/dados-usuarios.bin", array_usuarios, sizeof(Usuario), qnt_usuarios);
     limpa_tela();
     printf("Obrigado pela sua presenca!\nEncerrando o programa...\n");
 }

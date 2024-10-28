@@ -1,4 +1,4 @@
-#include "terminalrpg.h"
+#include "../terminalrpg.h"
 
 //Funções relacionadas a criação, alteração e exclusão de usuários
 
@@ -149,7 +149,7 @@ int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habil
     array_usuarios[*qnt_usuarios] = novo_usuario;
     (*qnt_usuarios)++;
 
-    if (salvar_arquivo_bin("dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
+    if (salvar_arquivo_bin("assets/dados-usuarios.bin", array_usuarios, sizeof(Usuario), *qnt_usuarios) == FALHA) {
         return FALHA;
     }
     
