@@ -45,16 +45,18 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 - Quando o player atingir marcos de nível (5,10,15,...) ele receberá novos ataques.
 
 ## Estrutura do sistema
+- `terminal-rpg(.exe):` Arquivo executável que roda o programa.
+- `terminalrpg.h:` Arquivo de cabeçalho onde são declaradas as funções, structs/enums e bibliotecas usadas pelos arquivos `.c`. <br>
+### Pasta src
 - `main.c:` Arquivo que contém a lógica de execução do programa. <br>
 - `menu.c:` Arquivo que contém as funções relacionadas aos menus. <br>
 - `arquivo.c:` Arquivo que contém as funções relacionadas a manipulação de arquivos. <br>
 - `usuario.c:` Arquivo que contém as funções de manipulação e criação de usuários. <br>
 - `jogo.c:` Arquivo que contém as funções da jogabilidade e combate. <br>
 - `functions.c:` Arquivo que possui funções gerais executadas pelos arquivos do programa. <br>
-- `terminalrpg.h:` Arquivo de cabeçalho onde são declaradas as funções, structs/enums e bibliotecas usadas pelos arquivos `.c`. <br>
-- `terminal-rpg(.exe):` Arquivo executável que roda o programa.
 
 ## Arquivos de Dados
+### Pasta assets
 - `dados-usuarios.bin:` Arquivo em binário onde são salvos os dados dos usuários. <br>
 - `dungeons.txt:` Arquivo de texto onde as informações das dungeons são salvas. <br>
 - `inimigos.txt:` Arquivo de texto onde as informações dos inimigos das dungeons são salvas. <br>
@@ -65,10 +67,10 @@ Além disso o sistema conta com registro e login para os usuários operarem pelo
 *É necessário a instalação do [GCC](https://gcc.gnu.org/) no seu dispositivo para fazer a compilação.* <br>
 
 Com o GCC instalado, copie e cole essa linha no seu terminal: <br>
-`gcc *.c -o terminal-rpg`
+`gcc src/*.c -o terminal-rpg`
 
 Agora que o executável foi criado, cole essa linha no terminal para executá-lo: <br>
-`./terminal-rpg
+`./terminal-rpg`
 
 ## Guia de uso
 *Nota: Evite interromper o sistema usando `Ctrl+C`, pois pode ocorrer perda de dados dos usuários. Use as opções de saída (Digitar 0), fornecidas nos menus.*
