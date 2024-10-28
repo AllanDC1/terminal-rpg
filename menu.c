@@ -122,7 +122,7 @@ int menu_itens_compraveis(Usuario* usuario_logado) {
     
     usuario_logado->consumiveis[idx_disp] = array_itens[id_desejado]; 
     usuario_logado->moedas -= array_itens[id_desejado].preco;
-
+    limpa_tela();
     print_sucesso("\nCompra bem sucedida!\n");
     voltar_menu();
     return OK;

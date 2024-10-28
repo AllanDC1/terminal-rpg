@@ -61,6 +61,7 @@ void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {
     usuario->atq_basico = habilidades[0];
     usuario->atq_especial = habilidades[1];
     usuario->vida = 100; //exemplo
+    usuario->dificuldade = 0;
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
     }

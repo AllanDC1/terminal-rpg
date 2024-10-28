@@ -18,7 +18,7 @@ int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
     }
     int idx_dungeon = id_dungeon_escohlida - 1;
     
-    if (gerar_inimigos_dungeon(inimigos_dungeon, id_dungeon_escohlida, jogador.vida_base) == FALHA) {
+    if (gerar_inimigos_dungeon(inimigos_dungeon, id_dungeon_escohlida, jogador.vida_base, usuario_logado->dificuldade) == FALHA) {
         print_erro("Erro ao ler arquivo de inimigos.\n");
         return FALHA;
     }
@@ -46,7 +46,11 @@ int jogar(Usuario *usuario_logado, Habilidade *habilidades) {
                 break;
         }
     }    
+    limpa_tela();
     printf("\nParabens! Voce completou a dungeon %s!\n", dungeons[idx_dungeon].nome);
+    if (id_dungeon_escohlida == 5) {
+        usuario_logado->dificuldade += 1;
+    }
     usuario_logado->moedas += dungeons[idx_dungeon].qnt_moedas;
     printf("Recompensa: %d Moedas!\n", dungeons[idx_dungeon].qnt_moedas);
     voltar_menu();
@@ -76,15 +80,21 @@ int selecao_dungeon(Dungeon *array_dungeons) {
     return escolher_operacao(0, QNT_DUNGEONS, "a dungeon ou digite 0 para voltar");
 }
 
-int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario) {
+int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario, int dificuldade_usuario) {
     Inimigo todos_inimigos[QNT_INIMIGOS];
     
     if (ler_arq_inimigos(todos_inimigos) == FALHA) {        
         return FALHA;    
     }
 
-    float porcentagem_vida[3] = {0.15, 0.15, 0.15}; // VERIFICAR SE VAI MANTER
-    
+    int vida_dificuldade = 0;
+    int dano = 1;
+
+    if (dificuldade_usuario != 0) {
+        vida_dificuldade = dificuldade_usuario * 100;
+        dano = dificuldade_usuario + 1;
+    }
+
     for (int i = 0; i < QNT_INIMIGOS; i++) {
         if (todos_inimigos[i].id_dungeon == id_dungeon_escolhida) {
             // Gerar os 4 primeiros monstros encontrados para a dungeon
@@ -92,8 +102,9 @@ int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, in
                 array_inimigos[j] = todos_inimigos[i + j];
                 
                 // Ajustar a vida conforme a porcentagem
-                array_inimigos[j].vida_total = array_inimigos[j].vida_total; + (vida_usuario * porcentagem_vida[j]); // VERIFICAR SE VAI MANTER O CALCULO
+                array_inimigos[j].vida_total = array_inimigos[j].vida_total + vida_dificuldade;
                 array_inimigos[j].vida_atual = array_inimigos[j].vida_total;
+                array_inimigos[j].dano = array_inimigos[j].dano * dano;
                 
             }
             break;
@@ -231,30 +242,30 @@ int escolher_alvo(Inimigo *inimigos, int qnt_inimigos) {
     return idx_escolha;
 }
 
-int calcular_dano(PlayerBatalha* jogador, int ataque) {
+int calcular_dano(PlayerBatalha* jogador, int ataque, int dano_base_multiplicado) {
     int dano = 0;
     if (ataque == BASICO) {
-        dano = jogador->atq_basico.dano * jogador->dano_multiplicado;
+        dano = jogador->atq_basico.dano * jogador->dano_multiplicado * dano_base_multiplicado;
         jogador->dano_multiplicado = 1;
         return dano;
     } else if (ataque == ESPECIAL) {
-        dano = jogador->atq_especial.dano * jogador->dano_multiplicado;
+        dano = jogador->atq_especial.dano * jogador->dano_multiplicado * dano_base_multiplicado;
         jogador->dano_multiplicado = 1;
         return dano;
     }
 }
 
-int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos) {
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos, int dano_base_multiplicado) {
     int alvo, dano_causado;
     
     if (escolha_ataque(jogador) == 1) {
         alvo = escolher_alvo(inimigos, qnt_inimigos);
-        dano_causado = calcular_dano(jogador, BASICO);
+        dano_causado = calcular_dano(jogador, BASICO, dano_base_multiplicado);
         inimigos[alvo].vida_atual -= dano_causado;
         limpa_tela();
         printf("\033[0;31m%s\033[0m recebeu %d de dano!\n", inimigos[alvo].nome, dano_causado);        
     } else if (jogador->cooldown_atq_especial == 0) {
-        dano_causado = calcular_dano(jogador, ESPECIAL);
+        dano_causado = calcular_dano(jogador, ESPECIAL, dano_base_multiplicado);
         limpa_tela();
         for (int i = 0; i < qnt_inimigos; i++) {
             if (inimigos[i].vida_atual > 0) {
@@ -337,6 +348,7 @@ void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos) 
 int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades) {    
     Inimigo inimigos_camada[3];
     int estado_combate = CONTINUAR, qnt_inimigos;
+    int dano_base_multiplicado = 1 + (usuario_logado->xp_usuario / 3500);
 
     gerar_inimigos_camada(lista_inimigos_dungeon, inimigos_camada, n_camada);
     if (n_camada == 3) {
@@ -345,15 +357,22 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
         qnt_inimigos = 3;
     }
 
-    printf("\nEntrando na camada %d...\n", n_camada);
-    delay(2000);
+    limpa_tela();
+    printf("\n\033[0;33mEntrando na camada %d.\033[0m\n", n_camada); 
+    delay(500);
+    limpa_tela();
+    printf("\n\033[0;33mEntrando na camada %d..\033[0m\n", n_camada); 
+    delay(500);
+    limpa_tela();
+    printf("\n\033[0;33mEntrando na camada %d...\033[0m\n", n_camada); 
+    delay(500);
       
     do {
         exibir_combate(*jogador, inimigos_camada, dungeon.nome, n_camada);
         // Turno do jogador
         switch (menu_combate()) {
             case 1:
-                if (atacar(jogador, inimigos_camada, qnt_inimigos) == FALHA) {
+                if (atacar(jogador, inimigos_camada, qnt_inimigos, dano_base_multiplicado) == FALHA) {
                     continue;
                 } else {
                     break;
@@ -424,11 +443,18 @@ void verificar_nivel(Usuario *usuario_logado, PlayerBatalha *jogador, Habilidade
                     if (array_habilidades[i].ID > usuario_logado->atq_especial.ID) {
                         usuario_logado->atq_especial = array_habilidades[i];
                         printf("Nova habilidade especial desbloqueada: \033[1;36m%s\033[0m!\n", array_habilidades[i].nome);
-                    }       
+                    }
                 }
             }
         }
     }
     jogador->atq_basico = usuario_logado->atq_basico;
     jogador->atq_especial = usuario_logado->atq_especial;
+
+    // aumenta a vida do usuario conforme ele evolui de nivel
+    int nivel_atual = usuario_logado->xp_usuario / 100;
+    int vida_atualizada = 100 + (nivel_atual * 25);
+    usuario_logado->vida = vida_atualizada;
+    jogador->vida_base = vida_atualizada;
+    
 }

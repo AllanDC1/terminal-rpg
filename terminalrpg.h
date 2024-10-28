@@ -55,6 +55,7 @@ typedef struct {
     Habilidade atq_basico;
     Habilidade atq_especial;
     int vida;
+    int dificuldade;
 } Usuario;
 
 typedef struct {
@@ -136,7 +137,7 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
 int jogar(Usuario *usuario_logado, Habilidade *habilidades);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
-int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
+int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario, int dificuldade_usuario);
 void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
 int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos, int qnt_inimigos);
@@ -144,8 +145,8 @@ int menu_combate();
 int tentar_fuga();
 int escolha_ataque(PlayerBatalha* jogador);
 int escolher_alvo(Inimigo *inimigos, int qnt_inimigos);
-int calcular_dano(PlayerBatalha* jogador, int ataque);
-int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos);
+int calcular_dano(PlayerBatalha* jogador, int ataque, int dano_base_multiplicado);
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos, int dano_base_multiplicado);
 int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
 void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos);
 int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades);
