@@ -1,0 +1,6 @@
+1 "Pocao de Vida Fraca" 50 0 100
+2 "Pocao de Vida Media" 75 0 200
+3 "Pocao de Vida Forte" 100 0 400
+4 "Pocao de Forca Fraca" 0 50 100
+5 "Pocao de Forca Media" 0 100 200
+6 "Pocao de Forca Forte" 0 150 400

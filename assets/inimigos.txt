@@ -1,0 +1,20 @@
+1 "Goblin" 10 14 3 18
+1 "Lobo" 13 13 4 17
+1 "Espirito Floral" 3 3 5 18
+1 "General Ogro" 40 40 8 60
+2 "Elemental de Gelo" 18 18 6 24
+2 "Arqueiro" 16 16 8 25
+2 "Urso Polar" 22 22 7 25
+2 "Golem Congelado" 60 60 12 90
+3 "Rato de Cinzas" 25 25 12 33
+3 "Zumbi Carbonizado" 26 26 12 32
+3 "Esqueleto Negro" 27 27 12 33
+3 "Gargula das Chamas" 100 100 16 120
+4 "Cultista Draconico" 29 29 15 39
+4 "Lagarto" 31 31 17 38
+4 "Principe Prateado" 33 33 17 39
+4 "Deus Dragao" 190 190 19 150
+5 "Cavaleiro Imperial" 34 34 20 50
+5 "Arqueiro Imperial" 38 38 22 50
+5 "Golem Imperial" 65 65 12 50
+5 "Lorde Roberto" 300 300 30 250

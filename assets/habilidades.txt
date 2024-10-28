@@ -1,0 +1,8 @@
+0 "Espadada Fugaz" 5 0
+1 "Corte em Arco" 8 0
+2 "Golpe Flamejante" 12 3
+3 "Bola de Fogo" 18 6
+4 "Marretada Relampago" 25 10
+5 "Raio do Julgamento" 29 14
+6 "Soco Sismico" 40 20
+7 "Terremoto" 60 22
