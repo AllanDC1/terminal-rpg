@@ -22,7 +22,6 @@ int main() {
                 limpa_tela();
                 continue;
             }
-            delay(1000);
             // menu pos login
             do {
                 limpa_tela();
@@ -30,7 +29,7 @@ int main() {
                 switch (menu_principal()) {
                 case 1:
                     // JOGAR
-                    jogar(usuario_logado);
+                    jogar(usuario_logado, habilidades);
                     break;
                 case 2:
                     // INVENTARIO

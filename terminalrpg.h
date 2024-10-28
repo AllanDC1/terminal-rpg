@@ -24,6 +24,7 @@
 #define QNT_HABILIDADES 8
 #define QNT_DUNGEONS 5
 #define QNT_INIMIGOS 20
+#define QNT_CAMADAS 3
 
 enum {SAIDA = -2, FALHA = -1, OK = 0};
 enum {VITORIA = 1, DERROTA = -3, CONTINUAR = 2};
@@ -48,12 +49,13 @@ typedef struct {
     char nome_usuario[TAM_LOGIN];
     char senha[TAM_SENHA];
     char nickname[TAM_NICK];
-    double nivel;
+    int xp_usuario;
     int moedas;
     Item consumiveis[QNT_CONSUMIVEIS];
     Habilidade atq_basico;
     Habilidade atq_especial;
     int vida;
+    int dificuldade;
 } Usuario;
 
 typedef struct {
@@ -69,7 +71,7 @@ typedef struct {
     int vida_total;
     int vida_atual;
     int dano;
-    int nivel;
+    int xp;
 } Inimigo;
 
 typedef struct {
@@ -79,6 +81,7 @@ typedef struct {
     Habilidade atq_basico;
     Habilidade atq_especial;
     float dano_multiplicado;
+    int cooldown_atq_especial;
 } PlayerBatalha;
 
 // FUNCTIONS.C
@@ -88,13 +91,12 @@ void verificar_buffer(char *entrada);
 void print_erro(char *texto);
 void print_sucesso(char *texto);
 void voltar_menu();
+void enter_continuar();
 int iniciar_usuarios(Usuario *usuarios, int *qnt_usuarios);
 void limpa_tela();
 int iniciar_sistema(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades);
 void encerrar_sistema(Usuario *array_usuarios, int qnt_usuarios);
-void verificar_nivel(Usuario *usuario_logado, Habilidade *array_habilidades);
 int confirmar_acao();
-int comparar_por_ID_decrescente(const void *a, const void *b);
 
 // ARQUIVO.C
 int criar_arquivo(const char* nome_arquivo);
@@ -132,19 +134,22 @@ int alterar_apelido(Usuario *usuario_logado);
 int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_logado);
 
 // JOGO.C 
-int jogar(Usuario *usuario_logado);
+int jogar(Usuario *usuario_logado, Habilidade *habilidades);
 PlayerBatalha iniciar_jogador(Usuario *usuario_logado);
 int selecao_dungeon(Dungeon *array_dungeons);
-int gerar_inimigos(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario);
+int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario, int dificuldade_usuario);
+void gerar_inimigos_camada(Inimigo *inimigos_dungeon, Inimigo *inimigos_camada, int camada);
 void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_dungeon, int camada);
-void exibir_combate_boss(PlayerBatalha jogador, Inimigo boss, const char *nome_dungeon);
-int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos);
+int verificar_fim_combate(PlayerBatalha jogador, Inimigo *inimigos, int qnt_inimigos);
 int menu_combate();
 int tentar_fuga();
 int escolha_ataque(PlayerBatalha* jogador);
-int escolher_alvo(Inimigo *inimigos);
-int calcular_dano(PlayerBatalha* jogador, int ataque);
-void atacar(PlayerBatalha* jogador, Inimigo *inimigos);
-int usar_itens(Usuario* usuario_logado, PlayerBatalha* player_batalha);
+int escolher_alvo(Inimigo *inimigos, int qnt_inimigos);
+int calcular_dano(PlayerBatalha* jogador, int ataque, int dano_base_multiplicado);
+int atacar(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos, int dano_base_multiplicado);
+int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador);
+void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos);
+int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dungeon, Inimigo *lista_inimigos_dungeon, int n_camada, Habilidade *habilidades);
+void verificar_nivel(Usuario *usuario_logado, PlayerBatalha *jogador, Habilidade *array_habilidades);
 
 #endif
