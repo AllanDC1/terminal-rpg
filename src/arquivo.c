@@ -78,12 +78,12 @@ int criar_arq_itens(){
 
 
     Item lista_itens_criar[] = {
-        {1, "Pocao de Vida fraca", 50, 0, 100},
-        {2, "Pocao de Vida media", 75, 0, 200},
-        {3, "Pocao de Vida forte", 100, 0, 400},
-        {4, "Pocao de forca Fraca", 0, 50, 100},
-        {5, "Pocao de forca media", 0, 100, 200},
-        {6, "Pocao de forca forte", 0, 150, 400},
+        {1, "Pocao de Vida Fraca", 50, 0, 100},
+        {2, "Pocao de Vida Media", 75, 0, 200},
+        {3, "Pocao de Vida Forte", 100, 0, 400},
+        {4, "Pocao de Forca Fraca", 0, 50, 100},
+        {5, "Pocao de Forca Media", 0, 100, 200},
+        {6, "Pocao de Forca Forte", 0, 150, 400},
     };
 
     FILE *fP = abrir_arquivo("assets/itens.txt", "w");
@@ -109,13 +109,13 @@ int criar_arq_itens(){
 int criar_arq_habilidades(){
 
     Habilidade lista_habilidades[] = {
-        {0, "Espadada fugaz", 5, 0},
+        {0, "Espadada Fugaz", 5, 0},
         {1, "Corte em Arco", 8, 0},
-        {2, "Golpe flamejante", 12, 3},
-        {3, "Bola de fogo", 18, 6},
-        {4, "Marretada relampago", 25, 10},
-        {5, "Raio do julgamento", 29, 14},
-        {6, "Soco sismico", 40, 20},
+        {2, "Golpe Flamejante", 12, 3},
+        {3, "Bola de Fogo", 18, 6},
+        {4, "Marretada Relampago", 25, 10},
+        {5, "Raio do Julgamento", 29, 14},
+        {6, "Soco Sismico", 40, 20},
         {7, "Terremoto", 60, 22}
     };
 
