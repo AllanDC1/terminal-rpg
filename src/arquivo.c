@@ -1,4 +1,4 @@
-#include "terminalrpg.h"
+#include "../terminalrpg.h"
 
 //Funções relacionadas a criação e alteração de arquivos
 
@@ -20,7 +20,7 @@ FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura) {
     if (ponteiro_arquivo == NULL) {
         if (criar_arquivo(nome_arquivo) == FALHA) {
             print_erro("Erro na abertura do arquivo.\n");
-            return NULL; // retorna como NULL
+            return NULL; // retorna ponteiro como NULL
         }
         ponteiro_arquivo = fopen(nome_arquivo, modo_abertura); 
     }
@@ -78,15 +78,15 @@ int criar_arq_itens(){
 
 
     Item lista_itens_criar[] = {
-        {1, "Pocao de Vida fraca", 50, 0, 100},
-        {2, "Pocao de Vida media", 75, 0, 200},
-        {3, "Pocao de Vida forte", 100, 0, 400},
-        {4, "Pocao de forca Fraca", 0, 50, 100},
-        {5, "Pocao de forca media", 0, 100, 200},
-        {6, "Pocao de forca forte", 0, 150, 400},
+        {1, "Pocao de Vida Fraca", 50, 0, 100},
+        {2, "Pocao de Vida Media", 75, 0, 200},
+        {3, "Pocao de Vida Forte", 100, 0, 400},
+        {4, "Pocao de Forca Fraca", 0, 50, 100},
+        {5, "Pocao de Forca Media", 0, 100, 200},
+        {6, "Pocao de Forca Forte", 0, 150, 400},
     };
 
-    FILE *fP = abrir_arquivo("itens.txt", "w");
+    FILE *fP = abrir_arquivo("assets/itens.txt", "w");
     if (fP == NULL) {
         print_erro("Erro ao criar arquivo de itens.\n");
         return FALHA;
@@ -109,17 +109,17 @@ int criar_arq_itens(){
 int criar_arq_habilidades(){
 
     Habilidade lista_habilidades[] = {
-        {0, "Espadada fugaz", 5, 0},
+        {0, "Espadada Fugaz", 5, 0},
         {1, "Corte em Arco", 8, 0},
-        {2, "Golpe flamejante", 12, 3},
-        {3, "Bola de fogo", 18, 6},
-        {4, "Marretada relampago", 25, 10},
-        {5, "Raio do julgamento", 29, 14},
-        {6, "Soco sismico", 40, 20},
+        {2, "Golpe Flamejante", 12, 3},
+        {3, "Bola de Fogo", 18, 6},
+        {4, "Marretada Relampago", 25, 10},
+        {5, "Raio do Julgamento", 29, 14},
+        {6, "Soco Sismico", 40, 20},
         {7, "Terremoto", 60, 22}
     };
 
-    FILE *fP = abrir_arquivo("habilidades.txt", "w");
+    FILE *fP = abrir_arquivo("assets/habilidades.txt", "w");
     if (fP == NULL) {
         print_erro("Erro ao criar arquivo de habilidades.\n");
         return FALHA;
@@ -140,7 +140,7 @@ int criar_arq_habilidades(){
 
 int ler_arq_itens(Item *array_itens) {    
 
-    FILE *fP = abrir_arquivo("itens.txt", "r");
+    FILE *fP = abrir_arquivo("assets/itens.txt", "r");
     
     if (fP == NULL) {
         print_erro("Erro ao ler arquivo. Cancelando operacao...\n");
@@ -178,7 +178,7 @@ int ler_arq_itens(Item *array_itens) {
 
 int ler_arq_habilidades(Habilidade *array_habilidades) {    
 
-    FILE *fP = abrir_arquivo("habilidades.txt", "r");
+    FILE *fP = abrir_arquivo("assets/habilidades.txt", "r");
     
     if (fP == NULL) {
         print_erro("Erro ao abrir arquivo de habilidades. Cancelando operacao...\n");
@@ -223,7 +223,7 @@ int criar_arq_dungeons() {
         {5, "Fortaleza Sombria", 5, 2000}
     };
 
-    FILE *fP = abrir_arquivo("dungeons.txt", "w");
+    FILE *fP = abrir_arquivo("assets/dungeons.txt", "w");
     if (fP == NULL) {
         print_erro("Erro ao criar arquivo de dungeons.\n");
         return FALHA;
@@ -269,10 +269,10 @@ int criar_arq_inimigos() {
         {5, "Cavaleiro Imperial", 34, 34, 20, 50},
         {5, "Arqueiro Imperial", 38, 38, 22, 50},
         {5, "Golem Imperial", 65, 65, 12, 50},
-        {5, "Lorde Roberto", 300, 300, 30, 250} // ???? lorde roberto ksksksksks
+        {5, "Lorde Roberto", 300, 300, 30, 250}
     };
 
-    FILE *fP = fopen("inimigos.txt", "w");
+    FILE *fP = fopen("assets/inimigos.txt", "w");
     if (fP == NULL) {
         printf("Erro ao criar arquivo de inimigos.\n");
         return FALHA;
@@ -295,7 +295,7 @@ int criar_arq_inimigos() {
 
 int ler_arq_dungeons(Dungeon *array_dungeons) {    
 
-    FILE *fP = abrir_arquivo("dungeons.txt", "r");
+    FILE *fP = abrir_arquivo("assets/dungeons.txt", "r");
     
     if (fP == NULL) {
         print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");
@@ -332,7 +332,7 @@ int ler_arq_dungeons(Dungeon *array_dungeons) {
 
 int ler_arq_inimigos(Inimigo *array_inimigos) {    
 
-    FILE *fP = abrir_arquivo("inimigos.txt", "r");
+    FILE *fP = abrir_arquivo("assets/inimigos.txt", "r");
     
     if (fP == NULL) {
         print_erro("Erro ao abrir arquivo de dungeons. Cancelando operacao...\n");

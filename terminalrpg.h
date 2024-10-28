@@ -13,12 +13,14 @@
 #include <unistd.h>
 #endif
 
+// Limitações de tamanho dos dados do usuário
 #define TAM_LOGIN 20
 #define TAM_SENHA 15
 #define TAM_NICK 30
 
 #define MAX_USUARIOS 10
 
+// Quantidade das mecânicas criadas 
 #define QNT_CONSUMIVEIS 10
 #define QNT_ITENS_LOJA 6
 #define QNT_HABILIDADES 8
@@ -26,6 +28,7 @@
 #define QNT_INIMIGOS 20
 #define QNT_CAMADAS 3
 
+// Respostas das funções para melhor legibilidade
 enum {SAIDA = -2, FALHA = -1, OK = 0};
 enum {VITORIA = 1, DERROTA = -3, CONTINUAR = 2};
 enum {BASICO = 3, ESPECIAL = 4};

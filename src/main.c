@@ -1,4 +1,4 @@
-#include "terminalrpg.h"
+#include "../terminalrpg.h"
 
 //Execução principal/inicial do programa
 
@@ -15,17 +15,18 @@ int main() {
     }
 
     do{        
-        printf("Bem-Vindo ao Terminal RPG !\n");
+        printf("Bem-Vindo ao \033[0;31mTerminal RPG\033[0m!\n");
+        // Menu Inicial
         switch (menu_inicial()) {
         case 1:
             if (login(usuarios, qnt_usuarios, &usuario_logado) == FALHA) {
                 limpa_tela();
                 continue;
             }
-            // menu pos login
+            // Menu Pos-Login
             do {
                 limpa_tela();
-                printf("Bem-Vindo, %s!\n", usuario_logado->nickname);
+                printf("Bem-Vindo, \033[1;35m%s\033[0m!\n", usuario_logado->nickname);
                 switch (menu_principal()) {
                 case 1:
                     // JOGAR
@@ -40,13 +41,13 @@ int main() {
                     menu_itens_compraveis(usuario_logado);
                     break;
                 case 4:
-                    // alterar dados conta
+                    // MODIFICAR CONTA
                     if (modificar_conta(usuarios, &qnt_usuarios, usuario_logado, habilidades) == SAIDA) {
                         continuar = false;
                     }            
                     break;
                 case 0:
-                    // saida / logout
+                    // SAIDA / LOGOUT
                     continuar = false;
                     break;
                 }

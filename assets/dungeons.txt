@@ -1,0 +1,5 @@
+1 "Floresta do Leste" 1 250
+2 "Montanhas Gelida" 2 500
+3 "Caverna das Cinzas" 3 750
+4 "Vale do Dragao" 4 1000
+5 "Fortaleza Sombria" 5 2000
