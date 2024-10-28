@@ -20,7 +20,7 @@ FILE* abrir_arquivo(const char* nome_arquivo, const char* modo_abertura) {
     if (ponteiro_arquivo == NULL) {
         if (criar_arquivo(nome_arquivo) == FALHA) {
             print_erro("Erro na abertura do arquivo.\n");
-            return NULL; // retorna como NULL
+            return NULL; // retorna ponteiro como NULL
         }
         ponteiro_arquivo = fopen(nome_arquivo, modo_abertura); 
     }
@@ -269,7 +269,7 @@ int criar_arq_inimigos() {
         {5, "Cavaleiro Imperial", 34, 34, 20, 50},
         {5, "Arqueiro Imperial", 38, 38, 22, 50},
         {5, "Golem Imperial", 65, 65, 12, 50},
-        {5, "Lorde Roberto", 300, 300, 30, 250} // ???? lorde roberto ksksksksks
+        {5, "Lorde Roberto", 300, 300, 30, 250}
     };
 
     FILE *fP = fopen("inimigos.txt", "w");

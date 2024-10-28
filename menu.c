@@ -27,7 +27,7 @@ int menu_inicial() {
     return escolher_operacao(0, 2, "a operacao");
 }
 
-// funcoes para o menu principal do personagem provisorio
+// Funcoes para o menu principal pos login
 
 int menu_principal() {   
     printf("|---------------------------|\n");
@@ -140,6 +140,13 @@ int menu_inventario(Usuario* usuario_logado) {
     printf("|  Vida:   %-20d|\n", usuario_logado->vida);
     printf("|------------------------------|\n\n");
 
+    printf("|-------------------------------------|\n");
+    printf("|             HABILIDADES             |\n");
+    printf("|-------------------------------------|\n");
+    printf("|  Basico:    %-24s|\n", usuario_logado->atq_basico.nome);
+    printf("|  Especial:  %-24s|\n", usuario_logado->atq_especial.nome);
+    printf("|-------------------------------------|\n\n");
+
     if (exibir_inventario(usuario_logado) == FALHA) {
         print_erro("Voce nao possui itens no inventario.\n");
         voltar_menu();
@@ -163,6 +170,8 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
     switch (escolher_operacao(0, 3, "a operacao"))
     {
     case 1:
+        limpa_tela();
+        printf("Zerar seu personagem ira excluir todo seu progresso, itens e nivel.\n");
         if (confirmar_acao() == FALHA) {
             printf("Reinicio de personagem cancelada.\n");
             voltar_menu();
@@ -173,6 +182,8 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
         voltar_menu();
         break;    
     case 2:
+        limpa_tela();
+        printf("Altere seu apelido que sera exibido dentro do jogo.\n");
         if (alterar_apelido(usuario_logado) == OK) {
             print_sucesso("Seu apelido foi alterado!\n");
             voltar_menu();
@@ -181,12 +192,12 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
     case 3:
         if (excluir_conta(array_usuarios, qnt_usuarios, usuario_logado) == SAIDA) {
             usuario_logado = NULL;
-            print_sucesso("Sua conta foi excluida do sistema. Ate a proxima!\n");
+            print_sucesso("\nSua conta foi excluida do sistema. Ate a proxima!\n");
             delay(2000);
             return SAIDA;
         }
         break;    
-    case 0:        
+    case 0:
         break;
     }
 
@@ -196,7 +207,7 @@ int modificar_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario
 // Menu das opcoes da dungeon
 void exibir_dungeons(Dungeon *array_dungeons) { 
 
-    // printa as dungeons
+    // Printa as dungeons
     printf("|----------------------------------------------|\n");
     printf("| ID  Nome da Dungeon      Dificuldade  Moedas |\n");
     printf("|----------------------------------------------|\n");
@@ -211,7 +222,7 @@ int exibir_inventario(Usuario *usuario_logado) {
     int quantidade[QNT_ITENS_LOJA] = {0, 0, 0, 0, 0, 0};
     Item item_temp;
 
-    // conta a quantidade de cada item no inventario
+    // Conta a quantidade de cada item no inventario
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
         if (usuario_logado->consumiveis[i].ID != -1) {
             item_temp = usuario_logado->consumiveis[i];

@@ -60,15 +60,15 @@ void zerar_usuario(Usuario *usuario, Habilidade *habilidades) {
     usuario->moedas = 100;
     usuario->atq_basico = habilidades[0];
     usuario->atq_especial = habilidades[1];
-    usuario->vida = 100; //exemplo
+    usuario->vida = 100;
     usuario->dificuldade = 0;
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
-        usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao
+        usuario->consumiveis[i] = (Item){-1, "", 0, 0, 0}; // inicia como valor padrao (sem item)
     }
 }
 
 int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
-    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2]; //testar se o limite esta correto
+    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2];
     int idx_usuario;
 
     if (qnt_usuarios == 0) {
@@ -107,7 +107,7 @@ int login(Usuario *array_usuarios, int qnt_usuarios, Usuario **usuario_logado) {
 
 int registro(Usuario *array_usuarios, int *qnt_usuarios, Habilidade *array_habilidades) {
     Usuario novo_usuario;
-    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2], entrada_nickname[TAM_NICK + 2]; //testar se o limite esta correto
+    char entrada_login[TAM_LOGIN + 2], entrada_senha[TAM_SENHA + 2], entrada_nickname[TAM_NICK + 2];
     int auth = FALHA;
 
     if (*qnt_usuarios >= MAX_USUARIOS) {
@@ -190,12 +190,13 @@ int excluir_conta(Usuario *array_usuarios, int *qnt_usuarios, Usuario *usuario_l
     }
 
     limpa_tela();
-    printf("> Digite seu nome de usuario para confirmar a exclusao: ");
+    printf("> Digite seu nome de usuario para confirmar a \033[0;31mexclusao\033[0m: ");
     fgets(entrada, sizeof(entrada), stdin);
     verificar_buffer(entrada);
     if (strcmp(entrada, usuario_logado->nome_usuario) == 0) {
         if (confirmar_acao() == FALHA) {
-            printf("Exclusao de conta cancelada.\n");
+            printf("\nExclusao de conta cancelada.\n");
+            voltar_menu();
             return FALHA;
         }
         for (int i = idx_usuario; i < *qnt_usuarios - 1; i++) {

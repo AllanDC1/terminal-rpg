@@ -77,7 +77,7 @@ int selecao_dungeon(Dungeon *array_dungeons) {
     printf("Selecione a dungeon que deseja jogar:\n");
     exibir_dungeons(array_dungeons);
     
-    return escolher_operacao(0, QNT_DUNGEONS, "a dungeon ou digite 0 para voltar");
+    return escolher_operacao(0, QNT_DUNGEONS, "o ID da dungeon ou digite 0 para voltar");
 }
 
 int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, int vida_usuario, int dificuldade_usuario) {
@@ -101,7 +101,7 @@ int gerar_inimigos_dungeon(Inimigo *array_inimigos, int id_dungeon_escolhida, in
             for (int j = 0; j < 4; j++) {
                 array_inimigos[j] = todos_inimigos[i + j];
                 
-                // Ajustar a vida conforme a porcentagem
+                // Ajustar a vida conforme a dificuldade
                 array_inimigos[j].vida_total = array_inimigos[j].vida_total + vida_dificuldade;
                 array_inimigos[j].vida_atual = array_inimigos[j].vida_total;
                 array_inimigos[j].dano = array_inimigos[j].dano * dano;
@@ -195,7 +195,7 @@ int menu_combate() {
 int tentar_fuga() {    
     int tentativa = rand() % 100; // 0 a 99
 
-    if (tentativa < 90) { // MUDAR PARA 24
+    if (tentativa < 24) { // 25% de chance
         return OK;
     } else {
         return FALHA; 
@@ -299,7 +299,7 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
     id_escolhido = escolher_operacao(0, QNT_ITENS_LOJA, "o ID do item ou 0 para voltar");
 
     if (id_escolhido == 0) {
-        return SAIDA; // verificar
+        return SAIDA;
     }
 
     for (int i = 0; i < QNT_CONSUMIVEIS; i++) {
@@ -338,7 +338,7 @@ int usar_itens(Usuario* usuario_logado, PlayerBatalha* jogador) {
 void dano_inimigos(PlayerBatalha* jogador, Inimigo *inimigos, int qnt_inimigos) {
     for (int i = 0; i < qnt_inimigos; i++) {
         if (inimigos[i].vida_atual > 0) {
-            jogador->vida_atual -= inimigos[i].dano; // VER SE VAI TER ALGUM OUTRO FATOR QUE AFETARA O DANO
+            jogador->vida_atual -= inimigos[i].dano;
             printf("\033[0;31m%s\033[0m te inflingiu \033[0;31m%d\033[0m de dano!\n", inimigos[i].nome, inimigos[i].dano);
         }
     }
@@ -372,18 +372,20 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
         // Turno do jogador
         switch (menu_combate()) {
             case 1:
+                // Ataque
                 if (atacar(jogador, inimigos_camada, qnt_inimigos, dano_base_multiplicado) == FALHA) {
                     continue;
                 } else {
                     break;
                 }
             case 2:
-                //usar item
+                // Usar item
                 if (usar_itens(usuario_logado, jogador) == SAIDA){ 
                     continue;
                 }
                 break;
             case 3:
+                // Fugir
                 if (tentar_fuga() == OK) {
                     limpa_tela();
                     print_sucesso("Voce conseguiu escapar.\n");
@@ -411,16 +413,26 @@ int combate_camada(Usuario *usuario_logado, PlayerBatalha* jogador, Dungeon dung
 
     } while (estado_combate == CONTINUAR);
     
-    int xp_total = 0;
-
     if (estado_combate == VITORIA) {
+        int xp_total = 0;
+        // Salva nivel ANTES de somar
+        int nivel_anterior = usuario_logado->xp_usuario / 100;
+
+        limpa_tela();
+        // Calcula XP da camada
         for (int i = 0; i < qnt_inimigos; i++) {
             xp_total += inimigos_camada[i].xp; 
         }
+        // Soma XP da camada no usuario
         usuario_logado->xp_usuario += xp_total;
-        limpa_tela();
         printf("Ganhou \033[1;34m%d\033[0m de XP!\n", xp_total);
-        verificar_nivel(usuario_logado, jogador, habilidades);        
+        // Verifica se player subiu de nivel
+        int nivel_atualizado = usuario_logado->xp_usuario / 100;
+        if (nivel_atualizado > nivel_anterior) {
+            printf("Subiu para o nivel \033[1;34m%d\033[0m!\n", nivel_atualizado);
+        } 
+        
+        verificar_nivel(usuario_logado, jogador, habilidades);       
     }
 
     jogador->cooldown_atq_especial = 0; // Reseta o cooldown
