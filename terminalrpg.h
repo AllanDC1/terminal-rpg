@@ -14,9 +14,9 @@
 #endif
 
 // Limitações de tamanho dos dados do usuário
-#define TAM_LOGIN 20
+#define TAM_LOGIN 15
 #define TAM_SENHA 15
-#define TAM_NICK 30
+#define TAM_NICK 15
 
 #define MAX_USUARIOS 10
 

@@ -128,41 +128,41 @@ void exibir_combate(PlayerBatalha jogador, Inimigo *inimigos, const char *nome_d
     limpa_tela();
     // Exibir combate não boss
     if (camada != 3) {
-        printf("                      %s %d\n", nome_dungeon, camada);        
-        printf("--------------------------------------------------------------------\n");
+        printf("                         %s %d\n", nome_dungeon, camada);        
+        printf("--------------------------------------------------------------------------\n");
         if (inimigos[0].vida_atual > 0) {
-            printf("                              /    %s [Vida: %d/%d]\n", 
+            printf("                                    /    %s [Vida: %3d/%3d]\n", 
                 inimigos[0].nome, inimigos[0].vida_atual, inimigos[0].vida_total);
         } else {
-            printf("                              /    %s [Derrotado]\n", inimigos[0].nome);
+            printf("                                    /    %s [Derrotado]\n", inimigos[0].nome);
         }
 
-        printf("%s [Vida: %d/%d]    /      ", jogador.nick, jogador.vida_atual, jogador.vida_base);
+        printf("%15s [Vida: %3d/%3d]    /      ", jogador.nick, jogador.vida_atual, jogador.vida_base);
 
         if (inimigos[1].vida_atual > 0) {
-            printf("%s [Vida: %d/%d]\n", inimigos[1].nome, inimigos[1].vida_atual, inimigos[1].vida_total);
+            printf("%s [Vida: %3d/%3d]\n", inimigos[1].nome, inimigos[1].vida_atual, inimigos[1].vida_total);
         } else {
             printf("%s [Derrotado]\n", inimigos[1].nome);
         }
 
         if (inimigos[2].vida_atual > 0) {
-            printf("                            /    %s [Vida: %d/%d]\n", 
+            printf("                                  /    %s [Vida: %3d/%3d]\n", 
                 inimigos[2].nome, inimigos[2].vida_atual, inimigos[2].vida_total);
         } else {
-            printf("                            /    %s [Derrotado]\n", inimigos[2].nome);
+            printf("                                  /    %s [Derrotado]\n", inimigos[2].nome);
         }
-        printf("--------------------------------------------------------------------\n");
+        printf("--------------------------------------------------------------------------\n");
     }
     // Exibir combate boss
     else {
-        printf("                      %s BOSS\n", nome_dungeon);    
-        printf("--------------------------------------------------------------------\n");
-        printf("                              /             \n");  // Linha vazia superior
-        printf("%s [Vida: %d/%d]    /    %s [Vida: %d/%d]\n", 
+        printf("                         %s BOSS\n", nome_dungeon);    
+        printf("--------------------------------------------------------------------------\n");
+        printf("                                    /             \n");  // Linha vazia superior
+        printf("%15s [Vida: %3d/%3d]    /    %s [Vida: %3d/%3d]\n", 
                 jogador.nick, jogador.vida_atual, jogador.vida_base,
                 inimigos[0].nome, inimigos[0].vida_atual, inimigos[0].vida_total);
-        printf("                            /             \n");  // Linha vazia inferior
-        printf("--------------------------------------------------------------------\n");
+        printf("                                  /             \n");  // Linha vazia inferior
+        printf("--------------------------------------------------------------------------\n");
     }
 }
 

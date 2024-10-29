@@ -20,7 +20,7 @@ int validar_usuario(char *entrada_login, char *entrada_senha, Usuario *array_usu
 int validar_nome_usuario(char *entrada, Usuario *array_usuarios, int qnt_usuarios) {
     if (strlen(entrada) > TAM_LOGIN || strlen(entrada) < 4) {
         limpa_tela();
-        print_erro("Nome de usuario invalido, deve possuir de 5 a 20 caracteres.\n");
+        print_erro("Nome de usuario invalido, deve possuir de 5 a 15 caracteres.\n");
         delay(2000);
         return FALHA;
     }
@@ -48,7 +48,7 @@ int validar_senha(char *entrada) {
 int validar_nickname(char *entrada) {
     if (strlen(entrada) > TAM_NICK || strlen(entrada) < 4) {
         limpa_tela();
-        print_erro("Nickname invalido, deve possuir de 5 a 30 caracteres.\n");
+        print_erro("Nickname invalido, deve possuir de 5 a 15 caracteres.\n");
         delay(2000);
         return FALHA;
     }
